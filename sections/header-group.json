@@ -104,7 +104,7 @@
         "ss_font_family": "montserrat_n4",
         "text_size": 12,
         "link": "",
-        "animation_duration": 60,
+        "animation_duration": 40,
         "animation_direction": "left",
         "pause_hover": false,
         "text_color": "#ffffff",
