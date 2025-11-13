@@ -106,7 +106,7 @@
         "link": "",
         "animation_duration": 40,
         "animation_direction": "left",
-        "pause_hover": false,
+        "pause_hover": true,
         "text_color": "#ffffff",
         "bg": "#000000",
         "hover_opacity": 0,
