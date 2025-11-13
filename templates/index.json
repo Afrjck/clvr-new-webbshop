@@ -28,19 +28,37 @@
             "parallax_direction": "top",
             "overlay_opacity": 10
           }
+        },
+        "image_dAaUDH": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "drop 002",
+            "title": "Two line\ntitle slide.",
+            "title_size": 80,
+            "subheading": "And optional subtext",
+            "link": "",
+            "link_text": "Optional button",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "rgba(0,0,0,0)",
+            "text_align": "vertical-center horizontal-center",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
         }
       },
       "block_order": [
-        "slideshow-0"
+        "slideshow-0",
+        "image_dAaUDH"
       ],
       "settings": {
         "section_height": "450px",
         "mobile_height": "auto",
         "parallax": false,
-        "style": "bars",
-        "autoplay": false,
-        "autoplay_speed": 7,
-        "lazyload_images": true
+        "style": "dots",
+        "autoplay": true,
+        "autoplay_speed": 6,
+        "lazyload_images": false
       }
     },
     "rich-text": {
