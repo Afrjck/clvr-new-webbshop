@@ -34,8 +34,8 @@
         "image_position": "left",
         "show_social_icons": false,
         "enable_newsletter": true,
-        "button_label": "Optional button",
-        "button_link": ""
+        "button_label": "Optional Button",
+        "button_link": "{{ shop.brand.favicon_url }}"
       }
     },
     "age-verification-popup": {
