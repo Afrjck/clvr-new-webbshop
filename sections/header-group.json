@@ -120,6 +120,7 @@
         "header-0": {
           "type": "logo",
           "settings": {
+            "logo-inverted": "shopify://shop_images/ChatGPT_Image_Apr_30_2025_03_31_18_PM.png",
             "desktop_logo_width": 190,
             "mobile_logo_width": 160
           }
