@@ -16,7 +16,7 @@
           "type": "image",
           "settings": {
             "top_subheading": "Something new is on the way",
-            "title": "🌟 Unfold the Unexpected",
+            "title": "🌟 UNFOLD THE UNEXPECTED",
             "title_size": 40,
             "subheading": "",
             "link": "shopify://products/drop-002-coming-soon",
@@ -33,10 +33,11 @@
         },
         "image_dAaUDH": {
           "type": "image",
+          "name": "Slide 2",
           "settings": {
             "top_subheading": "drop 001",
-            "title": "The future in black",
-            "title_size": 50,
+            "title": "THE FUTURE IN BLACK",
+            "title_size": 40,
             "subheading": "",
             "link": "shopify://products/clvr-x-morocco-shirt",
             "link_text": "",
