@@ -34,18 +34,20 @@
         "image_dAaUDH": {
           "type": "image",
           "settings": {
-            "top_subheading": "drop 002",
-            "title": "Two line\ntitle slide.",
-            "title_size": 80,
-            "subheading": "And optional subtext",
-            "link": "",
-            "link_text": "Optional button",
-            "link_2": "",
+            "top_subheading": "drop 001",
+            "title": "The future in black",
+            "title_size": 50,
+            "subheading": "",
+            "link": "shopify://products/clvr-x-morocco-shirt",
+            "link_text": "",
+            "link_2": "shopify://products/clvr-x-morocco-shirt",
             "link_text_2": "",
             "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
+            "text_align": "vertical-bottom horizontal-left",
+            "image": "shopify://shop_images/Afbeelding_van_WhatsApp_op_2025-09-19_om_16.11.25_49703a67.jpg",
+            "image_mobile": "shopify://shop_images/Afbeelding_van_WhatsApp_op_2025-09-19_om_16.11.25_49703a67.jpg",
             "parallax_direction": "top",
-            "overlay_opacity": 0
+            "overlay_opacity": 30
           }
         }
       },
