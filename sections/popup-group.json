@@ -16,6 +16,7 @@
       "blocks": {
         "reminder-block": {
           "type": "header",
+          "disabled": true,
           "settings": {
             "reminder_label": "Get 10% off"
           }
@@ -24,6 +25,7 @@
       "block_order": [
         "reminder-block"
       ],
+      "disabled": true,
       "settings": {
         "disable_for_account_holders": true,
         "popup_seconds": 5,
@@ -34,7 +36,7 @@
         "show_social_icons": false,
         "enable_newsletter": true,
         "button_label": "Optional Button",
-        "button_link": "{{ shop.brand.favicon_url }}"
+        "button_link": "shopify://products/clvr-x-morocco-shirt"
       }
     },
     "age-verification-popup": {
