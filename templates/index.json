@@ -15,16 +15,18 @@
         "slideshow-0": {
           "type": "image",
           "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 80,
-            "subheading": "10 year anniversary sale discount up to -70%",
-            "link": "shopify://products/clvr-x-morocco-shirt",
-            "link_text": "Shop Now",
+            "top_subheading": "Something new is on the way",
+            "title": "🌟 Unfold the Unexpected",
+            "title_size": 40,
+            "subheading": "",
+            "link": "shopify://products/drop-002-coming-soon",
+            "link_text": "",
             "link_2": "shopify://products/drop-002-coming-soon",
             "link_text_2": "",
             "color_accent": "#000000",
-            "text_align": "vertical-center horizontal-center",
+            "text_align": "vertical-bottom horizontal-left",
+            "image": "shopify://shop_images/ChatGPT_Image_Sep_9_2025_01_39_16_PM-Photoroom_1.png",
+            "image_mobile": "shopify://shop_images/ChatGPT_Image_Sep_9_2025_01_39_16_PM-Photoroom_1.png",
             "parallax_direction": "top",
             "overlay_opacity": 10
           }
