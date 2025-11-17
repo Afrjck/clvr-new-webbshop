@@ -97,8 +97,8 @@
       "type": "featured-collection",
       "settings": {
         "title": "Very popular at the moment",
-        "home_featured_products": "blazers",
-        "per_row": 4,
+        "home_featured_products": "t-shirts-tees",
+        "per_row": 2,
         "rows": 1,
         "mobile_scrollable": true,
         "view_all": true,
