@@ -210,7 +210,7 @@
           "type": "testimonial",
           "settings": {
             "icon": "4-stars",
-            "testimonial": "<p>“Great service from Lisa & Peter London. The clothes fit perfectly and the personal touch really makes a difference.”</p>",
+            "testimonial": "<p>“Great service from CLVR. The clothes fit perfectly and the personal touch really makes a difference.”</p>",
             "author": "Claire W.",
             "author_info": "Manchester – 1 day ago"
           }
@@ -251,7 +251,7 @@
         "testimonial_W7FMQc"
       ],
       "settings": {
-        "title": "What customers have to say about Lisa & Peter London",
+        "title": "What customers have to say about CLVR",
         "align_text": "center",
         "round_images": true,
         "color_background": "#ffffff",
