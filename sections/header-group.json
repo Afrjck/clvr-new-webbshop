@@ -136,11 +136,11 @@
         "header_style": "normal",
         "sticky_index": false,
         "sticky_collection": false,
-        "toolbar_menu": "",
+        "toolbar_menu": "main-menu",
         "toolbar_social": true,
         "show_locale_selector": true,
-        "show_currency_selector": false,
-        "show_currency_flags": false
+        "show_currency_selector": true,
+        "show_currency_flags": true
       }
     }
   },
