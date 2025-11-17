@@ -132,7 +132,7 @@
         "main_menu_link_list": "",
         "hover_menu": true,
         "mega_menu_images": true,
-        "main_menu_alignment": "center",
+        "main_menu_alignment": "left",
         "header_style": "normal",
         "sticky_index": false,
         "sticky_collection": false,
