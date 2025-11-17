@@ -111,13 +111,14 @@
         "collection_3c6EHD": {
           "type": "collection",
           "settings": {
-            "collection": "dresses",
+            "collection": "t-shirts-tees",
             "title": "",
             "focal_point": "center center"
           }
         },
         "collection_AeLxPN": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "collection": "footwear",
             "title": "",
@@ -126,6 +127,7 @@
         },
         "collection_XQTnUH": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "collection": "jackets-coats",
             "title": "",
@@ -134,6 +136,7 @@
         },
         "collection_ATJQQ3": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "collection": "jumpers-hoodies",
             "title": "",
