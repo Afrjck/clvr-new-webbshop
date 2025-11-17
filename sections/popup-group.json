@@ -26,7 +26,7 @@
         "reminder-block"
       ],
       "settings": {
-        "disable_for_account_holders": true,
+        "disable_for_account_holders": false,
         "popup_seconds": 5,
         "popup_days": 30,
         "popup_title": "Save 10% off your first purchase",
