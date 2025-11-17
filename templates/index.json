@@ -160,6 +160,7 @@
     },
     "580bc108-8f79-4c00-b080-103cccb091ef": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "OUR FAVORITES",
         "home_featured_products": "footwear",
@@ -174,11 +175,13 @@
       "type": "text-and-image",
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
+        "image": "shopify://shop_images/Afbeelding_van_WhatsApp_op_2025-09-19_om_16.11.25_49703a67.jpg",
         "image_mask": "none",
+        "image2": "shopify://shop_images/Afbeelding_van_WhatsApp_op_2025-09-19_om_16.11.25_5c9be405.jpg",
         "image2_mask": "none",
         "subtitle": "",
-        "title": "Meet Pieter & Lisa",
-        "text": "<p>At <strong>Lisa & Peter London</strong>, everything starts with <strong>passion for fashion</strong>. From a young age, Pieter and Lisa shared a lifelong love for style and creativity. Both studied <strong>Fashion Design and Business</strong> before building their careers in the industry. After working for different companies, they came together as a couple and decided to create something of their own.</p><p>Now, more than <strong>10 years later</strong>, they run their store with countless happy clients and inspiring projects. Their mission has always been clear: to stay ahead of <strong>new trends</strong>, deliver <strong>high-quality pieces</strong>, and offer a truly <strong>personal approach</strong>. For Pieter and Lisa, it’s about more than fashion — it’s about making every customer feel seen, valued, and stylish in their own unique way.</p>",
+        "title": "Meet CLVR",
+        "text": "<p>At <strong>CLVR</strong>, everything starts with a passion for style. From the very beginning, our vision has been to merge the bold energy of <strong>streetwear</strong> with the refined touch of <strong>luxury</strong>. Every design, every piece, is crafted with care and creativity, reflecting our commitment to quality and innovation.</p><p>Over time, <strong>CLVR </strong>has grown into a brand that stands for more than just clothing — it’s about<strong> self-expression, confidence, and individuality.</strong> Our mission is simple: stay ahead of trends, deliver <strong>premium-quality</strong> pieces, and create a brand experience that makes every customer feel seen, valued, and stylish in their own way. With <strong>CLVR</strong>, street meets luxury — and fashion becomes a statement.</p>",
         "button_label": "",
         "button_link": "",
         "button_style": "primary",
