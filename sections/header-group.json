@@ -136,7 +136,7 @@
         "header_style": "normal",
         "sticky_index": false,
         "sticky_collection": false,
-        "toolbar_menu": "customer-account-main-menu",
+        "toolbar_menu": "",
         "toolbar_social": true,
         "show_locale_selector": true,
         "show_currency_selector": false,
