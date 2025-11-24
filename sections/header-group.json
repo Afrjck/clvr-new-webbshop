@@ -128,7 +128,10 @@
       "block_order": [
         "header-0"
       ],
-      "custom_css": [],
+      "custom_css": [
+        "header,[role=\"banner\"],.header,.site-header {opacity: 0.3; transition: opacity 0.3s ease;}",
+        "header:hover,[role=\"banner\"]:hover,.header:hover,.site-header:hover {opacity: 1;}"
+      ],
       "settings": {
         "main_menu_link_list": "",
         "hover_menu": true,
