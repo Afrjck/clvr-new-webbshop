@@ -240,6 +240,7 @@
     },
     "featured_collection_zRnJ6y": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "Combine and receive up to 25% extra discount!",
         "home_featured_products": "dresses",
@@ -547,11 +548,13 @@
       "type": "text-and-image",
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
+        "image": "shopify://shop_images/Heren_T-shirt_Marokk_2.jpg",
         "image_mask": "none",
+        "image2": "shopify://shop_images/Heren_T-shirt_Marokk_1.jpg",
         "image2_mask": "none",
         "subtitle": "",
-        "title": "Meet Pieter & Lisa",
-        "text": "<p>At <strong>Lisa & Peter London</strong>, everything starts with <strong>passion for fashion</strong>. From a young age, Pieter and Lisa shared a lifelong love for style and creativity. Both studied <strong>Fashion Design and Business</strong> before building their careers in the industry. After working for different companies, they came together as a couple and decided to create something of their own.</p><p>Now, more than <strong>10 years later</strong>, they run their store with countless happy clients and inspiring projects. Their mission has always been clear: to stay ahead of <strong>new trends</strong>, deliver <strong>high-quality pieces</strong>, and offer a truly <strong>personal approach</strong>. For Pieter and Lisa, it’s about more than fashion — it’s about making every customer feel seen, valued, and stylish in their own unique way.</p>",
+        "title": "Meet CLVR",
+        "text": "<p>At <strong>CLVR</strong>, we focus on sharp design, quality materials, and pieces that actually work in everyday life. Our team brings experience from both fashion and business, which guides how we curate and create our collections.</p><p>We keep our selection modern, consistent, and trend-aware without chasing hype. Most importantly, we believe in a direct, honest approach: clear advice, reliable quality, and clothing that makes people feel confident without the drama.</p>",
         "button_label": "",
         "button_link": "",
         "button_style": "primary",
@@ -570,6 +573,7 @@
         "image_raTfgL": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/money_back_guarantee_1.jpg",
             "link": "",
             "width": "50%",
             "alignment": "center"
@@ -578,7 +582,7 @@
         "liquid_yeGTF4": {
           "type": "liquid",
           "settings": {
-            "code": "<h2>Money-Back Guarantee</h2>\n<p>\n  I truly believe in the quality of our clothing – and I’m confident you’ll love it too. \n  That’s why we offer a hassle-free 30-day money-back guarantee.\n</p>\n<p>\n  If you’re not completely satisfied with your purchase, simply return it within 30 days \n  and receive a full refund – no questions asked.\n</p>",
+            "code": "<h2>Money-back guarantee</h2>\n<p>\n  I truly believe in the quality of our clothing – and I’m confident you’ll love it too. \n  That’s why we offer a hassle-free 30-day money-back guarantee.\n</p>\n<p>\n  If you’re not completely satisfied with your purchase, simply return it within 30 days \n  and receive a full refund – no questions asked.\n</p>",
             "width": "50%",
             "alignment": "center"
           }
