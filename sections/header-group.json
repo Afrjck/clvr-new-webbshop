@@ -133,7 +133,7 @@
         "hover_menu": true,
         "mega_menu_images": true,
         "main_menu_alignment": "center",
-        "header_style": "sticky",
+        "header_style": "normal",
         "sticky_index": false,
         "sticky_collection": false,
         "toolbar_menu": "main-menu",
