@@ -79,7 +79,7 @@
           "type": "text",
           "settings": {
             "enlarge_text": false,
-            "text": "<p><br/>At CLVR, we’re embracing the latest street-luxury trends this season. Every piece is crafted to combine bold streetwear energy with refined, high-quality details, so you can step out confident and on-trend.</p><p>Explore our collections below and discover clothing designed to make a statement wherever you go.</p>"
+            "text": "<p><br/>At <strong>CLVR</strong>, we’re embracing the latest street-luxury trends this season. Every piece is crafted to combine bold streetwear energy with refined, high-quality details, so you can step out confident and on-trend.</p><p>Explore our collections below and discover clothing designed to make a statement wherever you go.</p>"
           }
         }
       },
