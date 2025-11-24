@@ -129,10 +129,8 @@
         "header-0"
       ],
       "custom_css": [
-        "/* Make your header transparent by default */.header {background-color: rgba(255, 255, 255, 0); /* fully transparent */ transition: background-color 0.3s ease; /* smooth fade */ position: fixed; /* keeps it at top */ width: 100%; z-index: 1000; /* stay above other content */}",
-        "/* When hovered, make it opaque */.header:hover {background-color: rgba(255, 255, 255, 0.9); /* slightly opaque */}",
-        "/* Optional: change link colors on hover */.header a {color: black; text-decoration: none; transition: color 0.3s ease;}",
-        ".header:hover a {color: #333; /* darken links on hover */}"
+        "/* Maak header transparant standaard */.header {background-color: transparent !important; opacity: 0.3; transition: opacity 0.3s ease, background-color 0.3s ease;}",
+        "/* Maak header volledig zichtbaar bij hover */.header:hover {opacity: 1; background-color: rgba(255, 255, 255, 1);}"
       ],
       "settings": {
         "main_menu_link_list": "",
