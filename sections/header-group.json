@@ -129,8 +129,8 @@
         "header-0"
       ],
       "custom_css": [
-        "/* Maak header transparant standaard */.header {background-color: transparent !important; opacity: 0.3; transition: opacity 0.3s ease, background-color 0.3s ease;}",
-        "/* Maak header volledig zichtbaar bij hover */.header:hover {opacity: 1; background-color: rgba(255, 255, 255, 1);}"
+        ".header {opacity: 0.3; transition: opacity 0.3s ease;}",
+        ".header:hover {opacity: 1;}"
       ],
       "settings": {
         "main_menu_link_list": "",
