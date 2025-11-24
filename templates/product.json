@@ -782,7 +782,6 @@
       "name": "SS - Social proof",
       "settings": {
         "coupon_position": "above_title",
-        "first_image": "shopify://shop_images/money_back_guarantee_1.jpg",
         "image_size": 30,
         "image_size_mobile": 25,
         "image_radius": 100,
