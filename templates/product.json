@@ -89,7 +89,6 @@
         },
         "custom_GLi9Ha": {
           "type": "custom",
-          "disabled": true,
           "settings": {
             "code": "<div id='ss-social-proof'></div>"
           }
