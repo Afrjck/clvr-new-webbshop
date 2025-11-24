@@ -128,10 +128,7 @@
       "block_order": [
         "header-0"
       ],
-      "custom_css": [
-        "> * {opacity: 0.3; transition: opacity 0.3s ease;}",
-        "> *:hover {opacity: 1;}"
-      ],
+      "custom_css": [],
       "settings": {
         "main_menu_link_list": "",
         "hover_menu": true,
