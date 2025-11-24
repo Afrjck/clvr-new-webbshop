@@ -21,30 +21,6 @@
     },
     "alireviews-section-8f10ed54-0f59-42a6-af49-0519e3363a87": {
       "type": "apps",
-      "blocks": {
-        "iconaro_snappy_custom_icons_value_bullets_tczHVH": {
-          "type": "shopify://apps/iconaro-snappy-custom-icons/blocks/value-bullets/f0704ab7-e6b9-43bd-96bc-4da96a62c432",
-          "settings": {
-            "as-bullets": true,
-            "value-color": "#000000",
-            "value-text-size": 1,
-            "background-color": "",
-            "background-corner-radius": 10,
-            "background-padding": 0,
-            "icon-size": 40,
-            "value-padding-between": 1,
-            "value-image-1": "shopify://shop_images/ChatGPT_Image_Apr_30_2025_03_31_18_PM.png",
-            "value-text-1": "li7wak test",
-            "value-text-2": "Text 2",
-            "value-text-3": "",
-            "value-text-4": "",
-            "value-text-5": ""
-          }
-        }
-      },
-      "block_order": [
-        "iconaro_snappy_custom_icons_value_bullets_tczHVH"
-      ],
       "settings": {
         "full_width": false,
         "space_around": true
