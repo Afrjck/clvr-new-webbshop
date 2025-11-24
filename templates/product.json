@@ -190,8 +190,8 @@
           "type": "testimonial",
           "settings": {
             "icon": "4-stars",
-            "testimonial": "<p>“Great service from Lisa & Peter London. The clothes fit perfectly and the personal touch really makes a difference.”</p>",
-            "author": "Claire W.",
+            "testimonial": "<p>“Great service from CLVR. The clothes fit perfectly and the personal touch really makes a difference.”</p>",
+            "author": "Lorens G.",
             "author_info": "Manchester – 1 day ago"
           }
         },
@@ -210,16 +210,16 @@
             "icon": "5-stars",
             "testimonial": "<p>“Fantastic experience! The items are high quality and you can tell the store genuinely cares about its customers.”</p>",
             "author": "Olivia R.",
-            "author_info": "Leeds – 3 days ago"
+            "author_info": "Madrid – 3 days ago"
           }
         },
         "testimonial_VTwX68": {
           "type": "testimonial",
           "settings": {
             "icon": "5-stars",
-            "testimonial": "<p>“My package arrived safely and beautifully presented. Lisa & Peter London make online shopping feel truly personal.”</p>",
+            "testimonial": "<p>“My package arrived safely and beautifully presented. CLVR make online shopping feel truly personal.”</p>",
             "author": "Helen P.",
-            "author_info": "Liverpool – 5 days ago"
+            "author_info": "Amsterdam – 5 days ago"
           }
         }
       },
