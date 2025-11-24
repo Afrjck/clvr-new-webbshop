@@ -45,8 +45,8 @@
           "settings": {
             "tp_star_color": "#00b77f",
             "tp_rating": 4.5,
-            "tp_reviews": 0,
-            "review_text": "4.5 Out of 3.172+"
+            "tp_reviews": 3,
+            "review_text": "4.5 Out of 20+"
           }
         },
         "price": {
