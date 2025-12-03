@@ -32,6 +32,7 @@
         "countdown_jRdLQE",
         "text_XH8rQG"
       ],
+      "disabled": true,
       "settings": {
         "bg_color": "#000000",
         "bar_height": 41
@@ -231,7 +232,7 @@
         "testimonial_VTwX68"
       ],
       "settings": {
-        "title": "What customers have to say about Lisa & Peter London",
+        "title": "What customers have to say about CLVR",
         "align_text": "center",
         "round_images": true,
         "color_background": "#ffffff",
