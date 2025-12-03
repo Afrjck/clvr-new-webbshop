@@ -44,7 +44,7 @@
         "selluxe_tp_stars_PKy6qi": {
           "type": "selluxe_tp_stars",
           "settings": {
-            "tp_star_color": "#00b77f",
+            "tp_star_color": "#289530",
             "tp_rating": 4.5,
             "tp_reviews": 4.5,
             "review_text": "4.5 Out of 20+"
@@ -84,7 +84,7 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false,
-            "surface_pickup_enable": true,
+            "surface_pickup_enable": false,
             "show_gift_card_recipient": false
           }
         },
