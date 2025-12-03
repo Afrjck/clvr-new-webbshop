@@ -635,7 +635,7 @@
           "type": "question",
           "settings": {
             "title": "How Can I Track My Order?",
-            "text": "<p>Once your order is confirmed, you will receive an email with your order number. To <strong>track your order!</strong></p>"
+            "text": "<p>Once your order is confirmed, you will receive an email with your order number to <strong>track your order!</strong></p>"
           }
         },
         "question_t4YRrf": {
