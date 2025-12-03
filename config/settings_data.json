@@ -76,7 +76,7 @@
     "cart_type": "drawer",
     "cart_icon": "bag-minimal",
     "cart_additional_buttons": false,
-    "cart_notes_enable": false,
+    "cart_notes_enable": true,
     "cart_terms_conditions_enable": false,
     "social_instagram_link": "https://www.instagram.com/official.clvr/",
     "social_tiktok_link": "https://www.tiktok.com/@clvr.jpg",
