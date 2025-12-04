@@ -24,14 +24,14 @@
         "heading_AiJcPx": {
           "type": "heading",
           "settings": {
-            "title": "STYLE FOR THE SEASON"
+            "title": "ELEVATE YOUR STYLE"
           }
         },
         "text_NQGAxw": {
           "type": "text",
           "settings": {
             "enlarge_text": false,
-            "text": "<p><br/>This season, <strong>CLVR</strong> is all about pieces that actually work — for your life, your style, and your wardrobe. Think smart layers, versatile essentials, and statement pieces designed to move with you, not against you. No fluff, no trends-for-trends’ sake — just clothing that looks sharp, feels effortless, and makes getting dressed the easiest part of your day. Elevate your everyday. Stay ahead. Stay <strong>CLVR</strong>.</p>"
+            "text": "<p>At CLVR, we’re all about pieces that actually work — for your life, your style, and your wardrobe. Think smart layers, versatile essentials, and statement pieces designed to move with you, not against you. No fluff, no trends-for-trend’s–sake — just clothing that looks sharp, feels effortless, and makes getting dressed the easiest part of your day. Elevate your style. Stay ahead. Stay CLVR.</p>"
           }
         },
         "text_ANmYeB": {
@@ -68,10 +68,6 @@
     "main-collection": {
       "type": "main-collection",
       "blocks": {
-        "collection_description": {
-          "type": "collection_description",
-          "settings": {}
-        },
         "subcollections": {
           "type": "subcollections",
           "settings": {
@@ -89,7 +85,6 @@
         }
       },
       "block_order": [
-        "collection_description",
         "subcollections",
         "product_grid"
       ],
