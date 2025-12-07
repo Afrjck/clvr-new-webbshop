@@ -97,6 +97,9 @@
           <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <span class="cart__price">
             {{ product.original_price | money }}
+          </span>
+                <span style="text-decoration: line-through;    opacity: 0.65;">{{ product.original_price | times: 2 | money }}</span>
+          </div>
         {% endif %}
 
         {%- if product.line_level_discount_allocations != blank -%}
