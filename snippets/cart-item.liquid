@@ -93,6 +93,10 @@
             {{ product.final_price | money }}
           </span>
           
+        {% else %}
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <span class="cart__price">
+            {{ product.original_price | money }}
         {% endif %}
 
         {%- if product.line_level_discount_allocations != blank -%}
