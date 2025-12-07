@@ -224,7 +224,6 @@
                         {%- endunless -%}
                       </span>
 
-                      {% assign newkopstorm = current_variant.price | times: 3 %}
 {% unless current_variant.compare_at_price  %}
                       <span data-product-price-wrap="" class="">
                           <span data-compare-price="" class="product__price product__price--compare">{{ newkopstorm | money_with_currency }}
