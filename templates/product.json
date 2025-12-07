@@ -110,8 +110,8 @@
         "6fbafccd-e300-4684-a364-9c3fb056e3f9": {
           "type": "tab",
           "settings": {
-            "title": "30-day return guarantee",
-            "content": "<p>If our product does not meet your expectations, you can return it within <strong>30 days upon receipt</strong>.</p><p>Before returning the goods, please contact our customer service at <strong>clv3r4@gmail.com</strong> and let us know the reason for the return so we can process your request correctly.</p>",
+            "title": "14-day return guarantee",
+            "content": "<p>If our product does not meet your expectations, you can return it within 14<strong> days upon receipt</strong>.</p><p>Before returning the goods, please contact our customer service at <strong>clv3r4@gmail.com</strong> and let us know the reason for the return so we can process your request correctly.</p>",
             "page": ""
           }
         },
@@ -126,8 +126,8 @@
         "f9420f3c-75d6-4aa6-96b3-4ed76131dc4e": {
           "type": "tab",
           "settings": {
-            "title": "20+ SATISFIED CUSTOMERS",
-            "content": "<p><strong>CLVR</strong> has over 20+ satisfied customers and our customers give us a rating of 4.7/5.0.</p>",
+            "title": "100+ SATISFIED CUSTOMERS",
+            "content": "<p><strong>CLVR</strong> has over 100+ satisfied customers and our customers give us a rating of 4.7/5.0.</p>",
             "page": ""
           }
         },
@@ -136,7 +136,7 @@
           "settings": {
             "reviewers": "<strong>Santiago H.</strong>",
             "show_verified": true,
-            "add_text": "and <strong>20+</strong> other people love <strong>CLVR</strong>",
+            "add_text": "and <strong>100+</strong> other people love <strong>CLVR</strong>",
             "font_size": 14,
             "image_size": 40,
             "horizontal_alignment": "flex-start"
