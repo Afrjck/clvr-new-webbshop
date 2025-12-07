@@ -634,21 +634,21 @@
         "question_gXfXEb": {
           "type": "question",
           "settings": {
-            "title": "How Can I Track My Order?",
+            "title": "How can I track my order?",
             "text": "<p>Once your order is confirmed, you will receive an email with your order number to <strong>track your order!</strong></p>"
           }
         },
         "question_t4YRrf": {
           "type": "question",
           "settings": {
-            "title": "What is the Return Policy?",
-            "text": "<p>You can return items within <strong>30 calendar days</strong> of receiving them.</p><ul><li>Return shipping costs are the buyer’s responsibility.</li><li>Approved refunds will be issued to your original payment method.</li></ul>"
+            "title": "What is the return policy?",
+            "text": "<p>You can return items within <strong>14 calendar days</strong> of receiving them.</p><ul><li>Return shipping costs are the buyer’s responsibility.</li><li>Approved refunds will be issued to your original payment method.</li></ul>"
           }
         },
         "question_fTgniy": {
           "type": "question",
           "settings": {
-            "title": "I Have an Issue With My Order. How Can I Contact You?",
+            "title": "I have an issue with my order. How can I contact you?",
             "text": "<p>If you experience any issues or have questions, visit our <strong>Contact Page </strong>to connect with our support team. We’re here to assist you promptly!</p>"
           }
         }
@@ -735,8 +735,8 @@
           "type": "text_block",
           "settings": {
             "icon": "calendar",
-            "title": "30-DAY MONEY-BACK GUARANTEE",
-            "text": "<p>We offer a <strong>30-day return</strong> period. Feel free to return any item within <strong>30 days</strong> if you are not completely satisfied.</p>"
+            "title": "14-DAY MONEY-BACK GUARANTEE",
+            "text": "<p>We offer a <strong>14-day return</strong> period. Feel free to return any item within 14<strong> days</strong> if you are not completely satisfied.</p>"
           }
         },
         "text_block_f3GT7y": {
