@@ -135,7 +135,7 @@
           "settings": {
             "icon": "calendar",
             "title": "14-DAY MONEY BACK GUARANTEE",
-            "text": "<p>We offer a 14-day return period. Feel free to return any item within 14 days if you are not completely satisfied.</p>"
+            "text": "<p>We offer a <strong>14-day return</strong> period. Feel free to return any item within <strong>14 days</strong> if you are not completely satisfied.</p>"
           }
         },
         "text_block_NdCgmc": {
@@ -143,7 +143,7 @@
           "settings": {
             "icon": "truck",
             "title": "FREE DELIVERY",
-            "text": "<p>We offer free shipping incl. Track & Trace to the Netherlands!</p>"
+            "text": "<p>We offer <strong>free shipping</strong> incl. Track & Trace to the Netherlands!</p>"
           }
         },
         "text_block_wqnjy6": {
