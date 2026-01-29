@@ -14,10 +14,10 @@
     "color_price": "#1c1d1d",
     "color_savings_text": "#c20000",
     "color_borders": "#e8e8e1",
-    "color_button": "#00b77f",
+    "color_button": "#141f60",
     "color_button_text": "#ffffff",
     "color_sale_tag": "#1c1d1d",
-    "color_cart_dot": "#00b77f",
+    "color_cart_dot": "#141f60",
     "color_small_image_bg": "#ffffff",
     "color_large_image_bg": "#0f0f0f",
     "color_header": "rgba(0,0,0,0)",
@@ -80,13 +80,14 @@
     "cart_terms_conditions_enable": false,
     "social_instagram_link": "https://www.instagram.com/official.clvr/",
     "social_tiktok_link": "https://www.tiktok.com/@clvr.jpg",
-    "share_facebook": false,
-    "share_twitter": false,
+    "share_facebook": true,
+    "share_twitter": true,
     "share_pinterest": false,
     "favicon": "shopify://shop_images/Afbeelding_van_WhatsApp_op_2025-12-04_om_14.30.45_c480e814.jpg",
     "search_enable": true,
     "predictive_search_enabled": true,
     "show_breadcrumbs": false,
+    "show_breadcrumbs_collection_link": false,
     "checkout_logo_image": "shopify://shop_images/Beige_Thin_Lined_Linkedin_Banner_40_701b0572-a53b-40b7-a1a9-fd5adc754964.png",
     "checkout_logo_position": "center",
     "checkout_logo_size": "large",
@@ -106,6 +107,32 @@
           "enable": true,
           "collection_image_enable": true,
           "parallax": true
+        }
+      },
+      "newsletter-popup": {
+        "type": "newsletter-popup",
+        "blocks": {
+          "newsletter-popup-0": {
+            "type": "header",
+            "settings": {
+              "reminder_label": "Get 10% off"
+            }
+          }
+        },
+        "block_order": [
+          "newsletter-popup-0"
+        ],
+        "settings": {
+          "disable_for_account_holders": true,
+          "popup_seconds": 5,
+          "popup_days": 30,
+          "popup_title": "Sign up and save",
+          "popup_text": "<p>Entice customers to sign up for your mailing list with discounts or exclusive offers. Include an image for extra impact.</p>",
+          "image_position": "left",
+          "show_social_icons": false,
+          "enable_newsletter": true,
+          "button_label": "Optional button",
+          "button_link": ""
         }
       }
     },
