@@ -9,6 +9,37 @@
  */
 {
   "sections": {
+    "blocks_fttnUT": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_f5482c7_4NXxbV": {
+          "type": "ai_gen_block_f5482c7",
+          "settings": {
+            "video": "shopify://files/videos/0520(1).mp4",
+            "enable_overlay": true,
+            "overlay_opacity_top": 0.2,
+            "overlay_opacity_bottom": 0.3,
+            "heading": "CLVR",
+            "tagline": "Premium streetwear essentials",
+            "text_color": "#c20000",
+            "text_shadow_opacity": 0.8,
+            "heading_font": "serif",
+            "heading_size": 80,
+            "heading_letter_spacing": 2,
+            "heading_uppercase": true,
+            "tagline_font": "montserrat_n4",
+            "tagline_size": 18,
+            "tagline_letter_spacing": 1
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_f5482c7_4NXxbV"
+      ],
+      "name": "Fullscreen hero video",
+      "settings": {}
+    },
     "slideshow": {
       "type": "slideshow",
       "blocks": {
@@ -258,30 +289,16 @@
         "color_background": "#ffffff",
         "color_text": "#1c1d1d"
       }
-    },
-    "1779275961b5da34ba": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "17792775838204a107": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "177927774585c42472": {
-      "type": "_blocks",
-      "settings": {}
     }
   },
   "order": [
+    "blocks_fttnUT",
     "slideshow",
     "rich-text",
     "featured-collection",
     "featured_collections_cfHkr4",
     "580bc108-8f79-4c00-b080-103cccb091ef",
     "text_and_image_nfpwGg",
-    "testimonials_fMUe9F",
-    "1779275961b5da34ba",
-    "17792775838204a107",
-    "177927774585c42472"
+    "testimonials_fMUe9F"
   ]
 }
