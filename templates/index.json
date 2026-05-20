@@ -351,6 +351,41 @@
         "ai_gen_block_ee461d8_4yU9m8"
       ],
       "settings": {}
+    },
+    "17792857396edb3e81": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_0ae58ba_nGMQPm": {
+          "type": "ai_gen_block_0ae58ba",
+          "settings": {
+            "heading": "Get in Touch",
+            "description": "Have questions? We're here to help.",
+            "email": "clv3r4@gmail.com",
+            "response_time": "We respond within 24 hours on business days.",
+            "desktop_width_percent": 100,
+            "section_padding": 80,
+            "background_color": "#0f0f0f",
+            "text_color": "#ffffff",
+            "description_color": "#b0b0b0",
+            "email_color": "#ffffff",
+            "email_hover_color": "#ffffff",
+            "glow_color": "#ffffff",
+            "glow_intensity": 0.3,
+            "response_time_color": "#808080",
+            "heading_size": 56,
+            "heading_letter_spacing": 0,
+            "heading_uppercase": "none",
+            "description_size": 16,
+            "email_size": 24,
+            "response_time_size": 13
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_0ae58ba_nGMQPm"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -364,6 +399,7 @@
     "text_and_image_nfpwGg",
     "testimonials_fMUe9F",
     "1779285234c44aaafb",
-    "1779285486a818f98b"
+    "1779285486a818f98b",
+    "17792857396edb3e81"
   ]
 }
