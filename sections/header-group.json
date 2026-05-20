@@ -181,14 +181,14 @@
           "type": "ai_gen_block_a421522",
           "settings": {
             "tagline": "Redefining streetwear",
-            "padding_top": 100,
-            "padding_bottom": 100,
-            "max_width": 900,
+            "padding_top": 50,
+            "padding_bottom": 50,
+            "max_width": 800,
             "font_family": "montserrat_n4",
             "font_size": 48,
             "line_height": 1.2,
             "letter_spacing": 2,
-            "background_color": "#0f0f0f",
+            "background_color": "#980a0a",
             "text_color": "#ffffff"
           },
           "blocks": {}
