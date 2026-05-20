@@ -325,6 +325,7 @@
       "blocks": {
         "ai_gen_block_ee461d8_4yU9m8": {
           "type": "ai_gen_block_ee461d8",
+          "disabled": true,
           "settings": {
             "heading": "Get in Touch",
             "description": "Have questions about our latest drops? Want to collaborate? We're here for it.",

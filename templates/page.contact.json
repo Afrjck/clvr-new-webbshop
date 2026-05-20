@@ -49,10 +49,44 @@
         "show_phone": false,
         "narrow_column": true
       }
+    },
+    "blocks_YQDR4j": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ee461d8_nLaycJ": {
+          "type": "ai_gen_block_ee461d8",
+          "settings": {
+            "heading": "Get in Touch",
+            "description": "Have questions about our latest drops? Want to collaborate? We're here for it.",
+            "email": "clv3r4@gmail.com",
+            "response_time": "We respond within 24 hours on business days.",
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "glow_color": "#ffffff",
+            "glow_intensity": 15,
+            "desktop_width_percent": 100,
+            "section_padding": 80,
+            "heading_size": 50,
+            "heading_letter_spacing": 1,
+            "heading_uppercase": "uppercase",
+            "description_size": 16,
+            "email_size": 18,
+            "email_border_radius": 4,
+            "response_time_size": 13
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ee461d8_nLaycJ"
+      ],
+      "name": "Contact info",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "blocks_YQDR4j",
     "rich-text",
     "form"
   ]
