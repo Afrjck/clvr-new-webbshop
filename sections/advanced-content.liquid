@@ -1,277 +1,388 @@
-{%- if section.settings.space_around -%}
-  <div class="index-section">
-{%- endif -%}
-{%- unless section.settings.full_width -%}
-  <div class="page-width">
-{%- endunless -%}
-  <div class="custom-content">
-  {%- for block in section.blocks -%}
-    {%- liquid
-      case block.settings.width
-        when '25%'
-          assign block_width = 'small--one-whole one-quarter'
-        when '33%'
-          assign block_width = 'small--one-whole one-third'
-        when '50%'
-          assign block_width = 'small--one-whole one-half'
-        when '66%'
-          assign block_width = 'small--one-whole two-thirds'
-        when '75%'
-          assign block_width = 'small--one-whole three-quarters'
-        when '100%'
-          assign block_width = 'one-whole'
-      endcase
-    -%}
-    <div class="custom__item {{ block_width }}{% if block.settings.alignment %} align--{{ block.settings.alignment }}{% endif %}" {{ block.shopify_attributes }}>
-      <div class="custom__item-inner custom__item-inner--{{ block.type }}{% if block.settings.image == blank and block.type == 'image' %} custom__item-inner--placeholder-image{% endif %}">
-        {%- case block.type -%}
-          {%- when 'liquid' -%}
-            {%- if block.settings.code != blank -%}
-              <div class="rte">
-                {{ block.settings.code }}
-              </div>
-            {%- else -%}
-              <div class="rte">
-                {{ 'home_page.onboarding.no_content' | t }}
-              </div>
-            {%- endif -%}
-          {%- when 'image' -%}
-            <div class="aos-animate">
-              {%- if block.settings.link != blank -%}
-                <a href="{{ block.settings.link }}">
-              {%- endif -%}
-              {%- if block.settings.image != blank -%}
-                <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
-                  {%- liquid
-                    assign blockWidth = block.settings.width | remove: '%' | times: 1
-                    if forloop.index == 1 and blockWidth >= 50
-                      assign loading = section.settings.lazyload_images
-                    else
-                      assign loading = true
-                    endif
-                  -%}
-                  {%- render 'image-element',
-                    img: block.settings.image,
-                    loading: loading,
-                    sizeVariable: block.settings.width,
-                    widths: '360, 540, 720, 900, 1080, 1600',
-                  -%}
-                </div>
-                {%- else -%}
-                  <div class="image-wrap">
-                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                  </div>
-              {%- endif -%}
-              {%- if block.settings.link != blank -%}
-                </a>
-              {%- endif -%}
-            </div>
-        {%- endcase -%}
-      </div>
-    </div>
-  {%- endfor -%}
-  {%- if section.blocks.size == 0 -%}
-    <div class="page-width">
-      <div class="grid">
-        <div class="grid__item">
-          <div class="rte">
-            {{ 'home_page.onboarding.no_content' | t }}
-          </div>
-        </div>
-      </div>
-   </div>
-  {%- endif -%}
-  </div>
-{%- unless section.settings.full_width -%}
-  </div>
-{%- endunless -%}
-{%- if section.settings.space_around -%}
-  </div>
-{%- endif -%}
-
-{% schema %}
-{
-  "name": "t:sections.advanced-content.name",
-  "max_blocks": 3,
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "t:sections.advanced-content.settings.full_width.label",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "space_around",
-      "label": "t:sections.advanced-content.settings.space_around.label",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "lazyload_images",
-      "label": "t:common.lazyload_images.label",
-      "info": "t:common.lazyload_images.info",
-      "default": true
-    }
-  ],
-  "blocks": [
-    {
-      "type": "liquid",
-      "name": "t:sections.advanced-content.blocks.html.name",
-      "settings": [
-        {
-          "type": "liquid",
-          "id": "code",
-          "label": "t:sections.advanced-content.blocks.html.settings.code.label",
-          "default": "<h2>Custom content</h2><p>Use this advanced section to build your own layouts or to add custom HTML, Liquid, or scripts.</p>",
-          "info": "t:sections.advanced-content.blocks.html.settings.code.info"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "t:sections.advanced-content.blocks.html.settings.width.label",
-          "default": "100%",
-          "options": [
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "alignment",
-          "label": "t:sections.advanced-content.blocks.html.settings.alignment.label",
-          "default": "center",
-          "info": "t:sections.advanced-content.blocks.html.settings.alignment.info",
-          "options": [
-            {
-              "value": "top-middle",
-              "label": "t:sections.advanced-content.blocks.html.settings.alignment.options.top-middle.label"
-            },
-            {
-              "value": "center",
-              "label": "t:sections.advanced-content.blocks.html.settings.alignment.options.center.label"
-            },
-            {
-              "value": "bottom-middle",
-              "label": "t:sections.advanced-content.blocks.html.settings.alignment.options.bottom-middle.label"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "image",
-      "name": "t:sections.advanced-content.blocks.image.name",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "t:sections.advanced-content.blocks.image.settings.image.label"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "t:sections.advanced-content.blocks.image.settings.link.label"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "t:sections.advanced-content.blocks.image.settings.width.label",
-          "default": "100%",
-          "options": [
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "alignment",
-          "label": "t:sections.advanced-content.blocks.image.settings.alignment.label",
-          "default": "center",
-          "info": "t:sections.advanced-content.blocks.image.settings.alignment.info",
-          "options": [
-            {
-              "value": "top-middle",
-              "label": "t:sections.advanced-content.blocks.image.settings.alignment.options.top-middle.label"
-            },
-            {
-              "value": "center",
-              "label": "t:sections.advanced-content.blocks.image.settings.alignment.options.center.label"
-            },
-            {
-              "value": "bottom-middle",
-              "label": "t:sections.advanced-content.blocks.image.settings.alignment.options.bottom-middle.label"
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "t:sections.advanced-content.presets.custom_content.name",
-      "blocks": [
-        {
-          "type": "image",
-          "settings": {
-            "width": "50%"
-          }
-        },
-        {
-          "type": "liquid",
-          "settings": {
-            "width": "50%"
-          }
-        }
-      ]
-    }
-  ],
-  "disabled_on": {
-    "groups": ["custom.popups"]
+<style>
+  #clvr-game {
+    background: #0a0a0a;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
   }
-}
-{% endschema %}
+  #clvr-game h1 { font-size: 1.8rem; margin: 0; letter-spacing: 0.1em; }
+  #clvr-game h2 { font-size: 1rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin: 1.5rem 0 0.75rem; }
+  #clvr-game .subtitle { color: #888; font-size: 0.9rem; margin-top: 0.25rem; }
+  #clvr-game .header {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    background: #1a1a1a; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;
+  }
+  #clvr-game .header-right { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+  #clvr-game .badge {
+    border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.85rem; border: 1px solid #444; color: #fff; background: #222;
+  }
+  #clvr-game .badge.energy { border-color: #f39c12; color: #f39c12; }
+  #clvr-game .badge.hints { border-color: #3498db; color: #3498db; }
+  #clvr-game .badge.progress { border-color: #444; color: #aaa; }
+  #clvr-game .badge.progress.done { border-color: #2ecc71; color: #2ecc71; }
+  #clvr-game .btn {
+    background: transparent; border: 1px solid #444; color: #fff;
+    padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: border-color 0.15s;
+  }
+  #clvr-game .btn:hover:not(:disabled) { border-color: #fff; }
+  #clvr-game .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  #clvr-game .btn.primary { background: #fff; color: #000; border-color: #fff; }
+  #clvr-game .btn.primary:hover:not(:disabled) { background: #ddd; }
+  #clvr-game .hint-controls {
+    background: #111; border: 1px solid #222; border-radius: 8px;
+    padding: 1.25rem; margin-bottom: 1.5rem;
+  }
+  #clvr-game .hint-controls .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  #clvr-game .revealed-hints { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; }
+  #clvr-game .hint-card {
+    background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 0.75rem; font-size: 0.8rem; color: #aaa;
+  }
+  #clvr-game .hint-card .result { color: #fff; margin-top: 0.3rem; }
+  #clvr-game .hint-card.solved { border-color: #2ecc71; }
+  #clvr-game .notification {
+    border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: none; font-size: 0.9rem;
+  }
+  #clvr-game .notification.success { background: #0d2b0d; border: 1px solid #2ecc71; display: block; }
+  #clvr-game .notification.info { background: #0d0d2b; border: 1px solid #3498db; display: block; }
+  #clvr-game .notification.error { background: #2b0d0d; border: 1px solid #e74c3c; display: block; }
+  #clvr-game .notification a { color: #2ecc71; }
+  #clvr-game .selected-bar {
+    background: #1a1a1a; border: 1px solid #555; border-radius: 8px;
+    padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: #aaa; display: none;
+  }
+  #clvr-game .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;
+  }
+  #clvr-game .card {
+    background: #111; border: 1px solid #2a2a2a; border-radius: 8px;
+    padding: 0.75rem 0.5rem; text-align: center; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s; user-select: none;
+  }
+  #clvr-game .card:hover { border-color: #555; }
+  #clvr-game .card.selected { border-color: #fff; background: #1e1e1e; }
+  #clvr-game .card.special { border-color: #f39c12; }
+  #clvr-game .card.superspecial { border-color: #9b59b6; }
+  #clvr-game .card .emoji { font-size: 1.75rem; display: block; margin-bottom: 0.4rem; }
+  #clvr-game .card .name { font-size: 0.72rem; color: #ccc; line-height: 1.3; }
+  #clvr-game .card .tag {
+    font-size: 0.62rem; margin-top: 0.3rem; padding: 0.15rem 0.4rem;
+    border-radius: 10px; display: inline-block;
+  }
+  #clvr-game .tag.basis { background: #0d1a2e; color: #5599ff; }
+  #clvr-game .tag.speciaal { background: #2e1a00; color: #f39c12; }
+  #clvr-game .tag.legendarisch { background: #1a0d2e; color: #9b59b6; }
+  #clvr-game .overview-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem;
+  }
+  #clvr-game .overview-card {
+    background: #111; border: 1px solid #1e1e1e; border-radius: 8px;
+    padding: 0.6rem 0.4rem; text-align: center; font-size: 0.72rem; color: #ccc;
+  }
+  #clvr-game .overview-card.locked { opacity: 0.35; }
+  #clvr-game .overview-card a { color: #f39c12; font-size: 0.65rem; display: block; margin-top: 0.2rem; }
+  #clvr-game .win-banner {
+    background: #0d2b0d; border: 1px solid #2ecc71; border-radius: 8px;
+    padding: 1.25rem; text-align: center; margin-bottom: 1.5rem; display: none; font-size: 1rem;
+  }
+  #clvr-game .win-banner.visible { display: block; }
+</style>
+
+<div id="clvr-game">
+  <div class="header">
+    <div>
+      <h1>CLVR — Element Game</h1>
+      <div class="subtitle">Combineer elementen om nieuwe streetwear te ontdekken</div>
+    </div>
+    <div class="header-right">
+      <span class="badge energy" id="energy-badge">⚡ 200</span>
+      <span class="badge hints" id="hints-badge">💡 3</span>
+      <span class="badge progress" id="progress-badge">0 / 50 ontdekt</span>
+      <button class="btn" onclick="resetGame()">Opnieuw beginnen</button>
+    </div>
+  </div>
+
+  <div class="win-banner" id="win-banner">🏆 Volledig ontdekt! Je hebt alle 50 elementen gevonden. CLVR respect! 🔥 +50 ⚡ bonus ontvangen!</div>
+  <div class="notification" id="notification"></div>
+
+  <div class="hint-controls">
+    <h2 style="margin-top:0;">Hints</h2>
+    <div class="btn-row">
+      <button class="btn primary" id="use-hint-btn" onclick="useHint()">💡 Gebruik Hint</button>
+      <button class="btn" id="buy-hints-btn" onclick="buyHints()">Koop 5 hints (150 ⚡)</button>
+    </div>
+    <div class="revealed-hints" id="revealed-hints"></div>
+  </div>
+
+  <div class="selected-bar" id="selected-bar"></div>
+
+  <h2>Speelveld</h2>
+  <p style="color:#666;font-size:0.82rem;margin:0 0 0.75rem;">Klik op een element om het te selecteren, klik daarna op een tweede om te combineren.</p>
+  <div class="grid" id="game-grid"></div>
+
+  <h2>Alle Elementen (<span id="disc-count">0</span> / 50 ontdekt)</h2>
+  <div class="overview-grid" id="overview-grid"></div>
+</div>
+
+<script>
+(function() {
+  const ELEMENTS = [
+    { id: 'stof',       emoji: '🧵', name: 'Stof',                 starter: true },
+    { id: 'verf',       emoji: '🎨', name: 'Verf',                 starter: true },
+    { id: 'straat',     emoji: '🏙️', name: 'Straat',               starter: true },
+    { id: 'nacht',      emoji: '🌙', name: 'Nacht',                starter: true },
+    { id: 'naald',      emoji: '🪡', name: 'Naald',                starter: true },
+    { id: 'schaar',     emoji: '✂️', name: 'Schaar',               starter: true },
+    { id: 'sneaker',    emoji: '👟', name: 'Sneaker',              starter: true },
+    { id: 'leer',       emoji: '🐄', name: 'Leer',                 starter: true },
+    { id: 'rits',       emoji: '🤐', name: 'Rits',                 starter: true },
+    { id: 'zonnebril',  emoji: '🕶️', name: 'Zonnebril',           starter: true },
+    { id: 'print',      emoji: '🖨️', name: 'Print',               starter: false },
+    { id: 'shirt',      emoji: '👕', name: 'Shirt',                starter: false },
+    { id: 'drop',       emoji: '💧', name: 'Drop',                 starter: false },
+    { id: 'hype',       emoji: '🔥', name: 'Hype',                 starter: false },
+    { id: 'collectie',  emoji: '👗', name: 'Collectie',            starter: false },
+    { id: 'clvr_shirt', emoji: '🇲🇦', name: 'CLVR x Morocco Shirt', starter: false, special: true, url: '/products/clvr-x-morocco-shirt' },
+    { id: 'cultuur',    emoji: '🎭', name: 'Cultuur',              starter: false },
+    { id: 'icoon',      emoji: '⭐', name: 'Icoon',                starter: false },
+    { id: 'katoen',     emoji: '☁️', name: 'Katoen',              starter: false },
+    { id: 'denim',      emoji: '👖', name: 'Denim',                starter: false },
+    { id: 'hoodie',     emoji: '🧥', name: 'Hoodie',               starter: false },
+    { id: 'laars',      emoji: '🥾', name: 'Laars',                starter: false },
+    { id: 'sokken',     emoji: '🧦', name: 'Sokken',               starter: false },
+    { id: 'jas',        emoji: '🧣', name: 'Jas',                  starter: false },
+    { id: 'muts',       emoji: '🧢', name: 'Muts',                 starter: false },
+    { id: 'cap',        emoji: '🎩', name: 'Cap',                  starter: false },
+    { id: 'look',       emoji: '👀', name: 'Look',                 starter: false },
+    { id: 'fotograaf',  emoji: '📸', name: 'Fotograaf',            starter: false },
+    { id: 'campagne',   emoji: '📢', name: 'Campagne',             starter: false },
+    { id: 'model',      emoji: '🚶', name: 'Model',                starter: false },
+    { id: 'runway',     emoji: '🛤️', name: 'Runway',              starter: false },
+    { id: 'seizoen',    emoji: '🍂', name: 'Seizoen',              starter: false },
+    { id: 'trend',      emoji: '📈', name: 'Trend',                starter: false },
+    { id: 'vintage',    emoji: '📻', name: 'Vintage',              starter: false },
+    { id: 'patch',      emoji: '🩹', name: 'Patch',                starter: false },
+    { id: 'borduursel', emoji: '🌸', name: 'Borduursel',           starter: false },
+    { id: 'logo',       emoji: '🔖', name: 'Logo',                 starter: false },
+    { id: 'merk',       emoji: '🏷️', name: 'Merk',               starter: false },
+    { id: 'streetwear', emoji: '🛹', name: 'Streetwear',           starter: false },
+    { id: 'uniform',    emoji: '🎽', name: 'Uniform',              starter: false },
+    { id: 'outfit',     emoji: '🪞', name: 'Outfit',               starter: false },
+    { id: 'stijl',      emoji: '💎', name: 'Stijl',                starter: false },
+    { id: 'kleur',      emoji: '🌈', name: 'Kleur',                starter: false },
+    { id: 'patroon',    emoji: '🔷', name: 'Patroon',              starter: false },
+    { id: 'textuur',    emoji: '🧱', name: 'Textuur',              starter: false },
+    { id: 'materiaal',  emoji: '⚙️', name: 'Materiaal',           starter: false },
+    { id: 'kwaliteit',  emoji: '🏅', name: 'Kwaliteit',            starter: false },
+    { id: 'luxe',       emoji: '👑', name: 'Luxe',                 starter: false },
+    { id: 'exclusief',  emoji: '🔐', name: 'Exclusief',            starter: false },
+    { id: 'signature',  emoji: '✍️', name: 'Signature',           starter: false },
+    { id: 'clvr_dna',   emoji: '🧬', name: 'CLVR DNA',             starter: false, superspecial: true },
+  ];
+
+  const RECIPES = [
+    { a: 'stof',       b: 'verf',       r: 'print' },
+    { a: 'stof',       b: 'print',      r: 'shirt' },
+    { a: 'straat',     b: 'nacht',      r: 'drop' },
+    { a: 'drop',       b: 'shirt',      r: 'hype' },
+    { a: 'hype',       b: 'shirt',      r: 'collectie' },
+    { a: 'collectie',  b: 'straat',     r: 'clvr_shirt' },
+    { a: 'straat',     b: 'verf',       r: 'cultuur' },
+    { a: 'cultuur',    b: 'hype',       r: 'icoon' },
+    { a: 'stof',       b: 'naald',      r: 'katoen' },
+    { a: 'katoen',     b: 'straat',     r: 'denim' },
+    { a: 'denim',      b: 'shirt',      r: 'hoodie' },
+    { a: 'leer',       b: 'straat',     r: 'laars' },
+    { a: 'katoen',     b: 'naald',      r: 'sokken' },
+    { a: 'hoodie',     b: 'rits',       r: 'jas' },
+    { a: 'katoen',     b: 'nacht',      r: 'muts' },
+    { a: 'muts',       b: 'straat',     r: 'cap' },
+    { a: 'cap',        b: 'zonnebril',  r: 'look' },
+    { a: 'look',       b: 'nacht',      r: 'fotograaf' },
+    { a: 'fotograaf',  b: 'collectie',  r: 'campagne' },
+    { a: 'look',       b: 'hype',       r: 'model' },
+    { a: 'model',      b: 'collectie',  r: 'runway' },
+    { a: 'runway',     b: 'drop',       r: 'seizoen' },
+    { a: 'seizoen',    b: 'hype',       r: 'trend' },
+    { a: 'trend',      b: 'nacht',      r: 'vintage' },
+    { a: 'verf',       b: 'schaar',     r: 'patch' },
+    { a: 'patch',      b: 'naald',      r: 'borduursel' },
+    { a: 'borduursel', b: 'icoon',      r: 'logo' },
+    { a: 'logo',       b: 'collectie',  r: 'merk' },
+    { a: 'merk',       b: 'straat',     r: 'streetwear' },
+    { a: 'shirt',      b: 'schaar',     r: 'uniform' },
+    { a: 'uniform',    b: 'look',       r: 'outfit' },
+    { a: 'outfit',     b: 'icoon',      r: 'stijl' },
+    { a: 'verf',       b: 'nacht',      r: 'kleur' },
+    { a: 'kleur',      b: 'print',      r: 'patroon' },
+    { a: 'patroon',    b: 'stof',       r: 'textuur' },
+    { a: 'textuur',    b: 'leer',       r: 'materiaal' },
+    { a: 'materiaal',  b: 'merk',       r: 'kwaliteit' },
+    { a: 'kwaliteit',  b: 'icoon',      r: 'luxe' },
+    { a: 'luxe',       b: 'drop',       r: 'exclusief' },
+    { a: 'exclusief',  b: 'logo',       r: 'signature' },
+    { a: 'signature',  b: 'streetwear', r: 'clvr_dna' },
+  ];
+
+  const RECIPE_MAP = {};
+  RECIPES.forEach(r => { RECIPE_MAP[[r.a, r.b].sort().join('+')] = r.r; });
+
+  const STARTERS = new Set(ELEMENTS.filter(e => e.starter).map(e => e.id));
+  const TOTAL = ELEMENTS.length;
+  const INITIAL_ENERGY = 200;
+  const INITIAL_HINTS = 3;
+  const HINT_COST = 150;
+  const HINT_PACK = 5;
+
+  let discovered = new Set(STARTERS);
+  let selected = null;
+  let energy = INITIAL_ENERGY;
+  let hints = INITIAL_HINTS;
+  let revealedHints = [];
+  let notifTimer = null;
+
+  function getEl(id) { return ELEMENTS.find(e => e.id === id); }
+
+  function updateHeader() {
+    document.getElementById('energy-badge').textContent = '⚡ ' + energy;
+    document.getElementById('hints-badge').textContent = '💡 ' + hints;
+    const pb = document.getElementById('progress-badge');
+    pb.textContent = discovered.size + ' / ' + TOTAL + ' ontdekt';
+    pb.className = 'badge progress' + (discovered.size === TOTAL ? ' done' : '');
+    document.getElementById('disc-count').textContent = discovered.size;
+    document.getElementById('use-hint-btn').disabled = hints <= 0;
+    document.getElementById('buy-hints-btn').disabled = energy < HINT_COST;
+  }
+
+  function showNotif(msg, type, link) {
+    clearTimeout(notifTimer);
+    const el = document.getElementById('notification');
+    el.className = 'notification ' + type;
+    el.innerHTML = msg + (link ? ' <a href="' + link + '" target="_blank">Bekijk het product →</a>' : '');
+    const dur = type === 'error' ? 3500 : type === 'success' ? 5000 : 2500;
+    notifTimer = setTimeout(() => { el.className = 'notification'; }, dur);
+  }
+
+  function renderGameGrid() {
+    const grid = document.getElementById('game-grid');
+    grid.innerHTML = '';
+    ELEMENTS.filter(e => discovered.has(e.id)).forEach(e => {
+      const d = document.createElement('div');
+      d.className = 'card' + (selected === e.id ? ' selected' : '') + (e.special ? ' special' : '') + (e.superspecial ? ' superspecial' : '');
+      d.innerHTML = '<span class="emoji">' + e.emoji + '</span><span class="name">' + e.name + '</span>' +
+        (e.starter ? '<span class="tag basis">Basis</span>' : '') +
+        (e.special ? '<span class="tag speciaal">Speciaal</span>' : '') +
+        (e.superspecial ? '<span class="tag legendarisch">Legendarisch</span>' : '');
+      d.onclick = () => handleClick(e.id);
+      grid.appendChild(d);
+    });
+  }
+
+  function renderOverview() {
+    const grid = document.getElementById('overview-grid');
+    grid.innerHTML = '';
+    ELEMENTS.forEach(e => {
+      const isDisc = discovered.has(e.id);
+      const d = document.createElement('div');
+      d.className = 'overview-card' + (isDisc ? '' : ' locked');
+      d.innerHTML = '<div style="font-size:1.4rem;">' + (isDisc ? e.emoji : '🔒') + '</div>' +
+        '<div>' + (isDisc ? e.name : '???') + '</div>' +
+        (isDisc && e.special ? '<a href="' + e.url + '" target="_blank">Bekijk product</a>' : '');
+      grid.appendChild(d);
+    });
+  }
+
+  function renderRevealedHints() {
+    const container = document.getElementById('revealed-hints');
+    container.innerHTML = '';
+    revealedHints.forEach(h => {
+      const aEl = getEl(h.a), bEl = getEl(h.b), rEl = getEl(h.r);
+      const solved = discovered.has(h.r);
+      const d = document.createElement('div');
+      d.className = 'hint-card' + (solved ? ' solved' : '');
+      d.innerHTML = aEl.emoji + ' ' + aEl.name + ' + ' + bEl.emoji + ' ' + bEl.name +
+        '<div class="result">→ ' + (solved ? rEl.emoji + ' ' + rEl.name : '🔒 ???') + '</div>';
+      container.appendChild(d);
+    });
+  }
+
+  function render() {
+    renderGameGrid();
+    renderOverview();
+    renderRevealedHints();
+    updateHeader();
+  }
+
+  function handleClick(id) {
+    if (selected === null) {
+      selected = id;
+      const bar = document.getElementById('selected-bar');
+      bar.style.display = 'block';
+      bar.innerHTML = '✋ Geselecteerd: ' + getEl(id).emoji + ' <strong>' + getEl(id).name + '</strong> — klik nu op een tweede element';
+      renderGameGrid();
+    } else {
+      const prev = selected;
+      selected = null;
+      document.getElementById('selected-bar').style.display = 'none';
+      const k = [prev, id].sort().join('+');
+      const resultId = RECIPE_MAP[k];
+      if (resultId) {
+        const rEl = getEl(resultId);
+        if (discovered.has(resultId)) {
+          showNotif('Al ontdekt: ' + rEl.emoji + ' ' + rEl.name, 'info');
+        } else {
+          discovered.add(resultId);
+          if (rEl.superspecial) {
+            showNotif('🧬 LEGENDARISCH ELEMENT ONTDEKT: ' + rEl.emoji + ' ' + rEl.name + '! De DNA van CLVR zit in jou.', 'success');
+          } else if (rEl.special) {
+            showNotif('🎉 SPECIAAL ELEMENT ONTDEKT: ' + rEl.emoji + ' ' + rEl.name + '!', 'success', rEl.url);
+          } else {
+            showNotif('🎉 Nieuw element ontdekt: ' + rEl.emoji + ' ' + rEl.name + '!', 'success');
+          }
+          if (discovered.size === TOTAL) {
+            energy += 50;
+            document.getElementById('win-banner').classList.add('visible');
+          }
+        }
+      } else {
+        showNotif('Geen combinatie gevonden. Probeer iets anders!', 'info');
+      }
+      render();
+    }
+  }
+
+  window.useHint = function() {
+    if (hints <= 0) { showNotif('Geen hints meer! Koop meer hints met energie.', 'error'); return; }
+    const undiscovered = RECIPES.filter(r => !discovered.has(r.r));
+    if (undiscovered.length === 0) { showNotif('Alle elementen zijn al ontdekt!', 'info'); return; }
+    const pick = undiscovered[Math.floor(Math.random() * undiscovered.length)];
+    hints--;
+    if (!revealedHints.some(h => h.r === pick.r)) {
+      revealedHints.push({ a: pick.a, b: pick.b, r: pick.r });
+    }
+    render();
+  };
+
+  window.buyHints = function() {
+    if (energy < HINT_COST) { showNotif('Niet genoeg energie! Je hebt ' + HINT_COST + ' ⚡ nodig maar hebt ' + energy + ' ⚡.', 'error'); return; }
+    energy -= HINT_COST;
+    hints += HINT_PACK;
+    render();
+  };
+
+  window.resetGame = function() {
+    discovered = new Set(STARTERS);
+    selected = null;
+    energy = INITIAL_ENERGY;
+    hints = INITIAL_HINTS;
+    revealedHints = [];
+    document.getElementById('selected-bar').style.display = 'none';
+    document.getElementById('win-banner').classList.remove('visible');
+    document.getElementById('notification').className = 'notification';
+    render();
+  };
+
+  render();
+})();
+</script>
