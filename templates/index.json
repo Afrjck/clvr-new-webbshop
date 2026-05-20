@@ -15,7 +15,7 @@
         "ai_gen_block_f5482c7_4NXxbV": {
           "type": "ai_gen_block_f5482c7",
           "settings": {
-            "video": "shopify://files/videos/0520(1).mp4",
+            "video": "shopify://files/videos/upscaled-video.mp4",
             "enable_overlay": true,
             "overlay_opacity_top": 0.2,
             "overlay_opacity_bottom": 0.3,
