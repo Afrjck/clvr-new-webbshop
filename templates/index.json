@@ -258,6 +258,10 @@
         "color_background": "#ffffff",
         "color_text": "#1c1d1d"
       }
+    },
+    "1779275961b5da34ba": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
@@ -267,6 +271,7 @@
     "featured_collections_cfHkr4",
     "580bc108-8f79-4c00-b080-103cccb091ef",
     "text_and_image_nfpwGg",
-    "testimonials_fMUe9F"
+    "testimonials_fMUe9F",
+    "1779275961b5da34ba"
   ]
 }
