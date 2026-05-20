@@ -1,6 +1,360 @@
+{% doc %}
+  @prompt
+    Create a premium animated contact section for a streetwear brand. The section should have a bold heading "Get in Touch" that fades in on scroll, followed by a short description text that slides in. Include an email address (clv3r4@gmail.com) displayed with a subtle hover glow effect. Add a response time note "We respond within 24 hours on business days." The overall aesthetic should be dark, minimal, and premium streetwear — think clean typography, dark background, white text, with smooth CSS animations. No contact form needed, just the info block with animations.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-contact-section-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 40px;
+    background-color: {{ block.settings.background_color }};
+    text-align: center;
+  }
+
+  .ai-contact-section__container-{{ ai_gen_id }} {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .ai-contact-section__heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 20px;
+    letter-spacing: {{ block.settings.heading_letter_spacing }}px;
+    text-transform: {{ block.settings.heading_uppercase }};
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .ai-contact-section__heading-{{ ai_gen_id }}.ai-contact-visible-{{ ai_gen_id }} {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .ai-contact-section__description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 40px;
+    opacity: 0.8;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  .ai-contact-section__description-{{ ai_gen_id }}.ai-contact-visible-{{ ai_gen_id }} {
+    opacity: 0.8;
+    transform: translateX(0);
+    transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+  }
+
+  .ai-contact-section__email-wrapper-{{ ai_gen_id }} {
+    margin-bottom: 30px;
+  }
+
+  .ai-contact-section__email-{{ ai_gen_id }} {
+    display: inline-block;
+    font-size: {{ block.settings.email_size }}px;
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    padding: 15px 30px;
+    border: 2px solid {{ block.settings.text_color }};
+    border-radius: {{ block.settings.email_border_radius }}px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-contact-section__email-{{ ai_gen_id }}:hover {
+    box-shadow: 0 0 {{ block.settings.glow_intensity }}px {{ block.settings.glow_color }};
+    border-color: {{ block.settings.glow_color }};
+    color: {{ block.settings.glow_color }};
+  }
+
+  .ai-contact-section__response-time-{{ ai_gen_id }} {
+    font-size: {{ block.settings.response_time_size }}px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.6;
+    margin: 0;
+    font-style: italic;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-contact-section-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding | times: 0.6 }}px 20px;
+    }
+
+    .ai-contact-section__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-contact-section__description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.description_size | times: 0.9 }}px;
+    }
+
+    .ai-contact-section__email-{{ ai_gen_id }} {
+      font-size: {{ block.settings.email_size | times: 0.85 }}px;
+      padding: 12px 20px;
+    }
+  }
+{% endstyle %}
+
+<contact-section-{{ ai_gen_id }}
+  class="ai-contact-section-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-contact-section__container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-contact-section__heading-{{ ai_gen_id }}" data-animate>
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if block.settings.description != blank %}
+      <p class="ai-contact-section__description-{{ ai_gen_id }}" data-animate>
+        {{ block.settings.description }}
+      </p>
+    {% endif %}
+
+    {% if block.settings.email != blank %}
+      <div class="ai-contact-section__email-wrapper-{{ ai_gen_id }}">
+        <a
+          href="mailto:{{ block.settings.email }}"
+          class="ai-contact-section__email-{{ ai_gen_id }}"
+        >
+          {{ block.settings.email }}
+        </a>
+      </div>
+    {% endif %}
+
+    {% if block.settings.response_time != blank %}
+      <p class="ai-contact-section__response-time-{{ ai_gen_id }}">
+        {{ block.settings.response_time }}
+      </p>
+    {% endif %}
+  </div>
+</contact-section-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ContactSection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.animatedElements = this.querySelectorAll('[data-animate]');
+        this.observer = null;
+      }
+
+      connectedCallback() {
+        this.setupIntersectionObserver();
+      }
+
+      setupIntersectionObserver() {
+        const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.2
+        };
+
+        this.observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('ai-contact-visible-{{ ai_gen_id }}');
+            }
+          });
+        }, options);
+
+        this.animatedElements.forEach((element) => {
+          this.observer.observe(element);
+        });
+      }
+
+      disconnectedCallback() {
+        if (this.observer) {
+          this.observer.disconnect();
+        }
+      }
+    }
+
+    customElements.define('contact-section-{{ ai_gen_id }}', ContactSection{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Contact info",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Have questions about our latest drops? Want to collaborate? We're here for it."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email address",
+      "default": "clv3r4@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "response_time",
+      "label": "Response time note",
+      "default": "We respond within 24 hours on business days."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Glow color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "glow_intensity",
+      "label": "Glow intensity",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 30,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "label": "Heading letter spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "heading_uppercase",
+      "label": "Heading text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "email_size",
+      "label": "Email size",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "email_border_radius",
+      "label": "Email border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "response_time_size",
+      "label": "Response time size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact info"
+    }
+  ]
+}
 {% endschema %}
