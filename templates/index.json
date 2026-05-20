@@ -315,6 +315,42 @@
         "color_background": "#ffffff",
         "color_text": "#1c1d1d"
       }
+    },
+    "1779285234c44aaafb": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1779285486a818f98b": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ee461d8_4yU9m8": {
+          "type": "ai_gen_block_ee461d8",
+          "settings": {
+            "heading": "Get in Touch",
+            "description": "Have questions about our latest drops? Want to collaborate? We're here for it.",
+            "email": "clv3r4@gmail.com",
+            "response_time": "We respond within 24 hours on business days.",
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "glow_color": "#ffffff",
+            "glow_intensity": 15,
+            "desktop_width_percent": 100,
+            "section_padding": 80,
+            "heading_size": 50,
+            "heading_letter_spacing": 1,
+            "heading_uppercase": "uppercase",
+            "description_size": 16,
+            "email_size": 18,
+            "email_border_radius": 4,
+            "response_time_size": 13
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ee461d8_4yU9m8"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -326,6 +362,8 @@
     "featured_collections_cfHkr4",
     "580bc108-8f79-4c00-b080-103cccb091ef",
     "text_and_image_nfpwGg",
-    "testimonials_fMUe9F"
+    "testimonials_fMUe9F",
+    "1779285234c44aaafb",
+    "1779285486a818f98b"
   ]
 }
