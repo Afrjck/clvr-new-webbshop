@@ -262,6 +262,14 @@
     "1779275961b5da34ba": {
       "type": "_blocks",
       "settings": {}
+    },
+    "17792775838204a107": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "177927774585c42472": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
@@ -272,6 +280,8 @@
     "580bc108-8f79-4c00-b080-103cccb091ef",
     "text_and_image_nfpwGg",
     "testimonials_fMUe9F",
-    "1779275961b5da34ba"
+    "1779275961b5da34ba",
+    "17792775838204a107",
+    "177927774585c42472"
   ]
 }

@@ -173,12 +173,39 @@
       ],
       "name": "Fullscreen hero video",
       "settings": {}
+    },
+    "blocks_3Bwrhi": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_a421522_M9DtCN": {
+          "type": "ai_gen_block_a421522",
+          "settings": {
+            "tagline": "Redefining streetwear",
+            "padding_top": 100,
+            "padding_bottom": 100,
+            "max_width": 900,
+            "font_family": "montserrat_n4",
+            "font_size": 48,
+            "line_height": 1.2,
+            "letter_spacing": 2,
+            "background_color": "#0f0f0f",
+            "text_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_a421522_M9DtCN"
+      ],
+      "name": "Brand tagline",
+      "settings": {}
     }
   },
   "order": [
     "announcement",
     "scrolling_announcement_bar_9pcDe6",
     "header",
-    "blocks_ckbRtN"
+    "blocks_ckbRtN",
+    "blocks_3Bwrhi"
   ]
 }
