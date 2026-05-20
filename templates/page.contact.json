@@ -1,1 +1,59 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{}},"rich-text":{"type":"rich-text","settings":{"align_text":"center","narrow_column":true,"divider":false}},"form":{"type":"contact-form","settings":{"title":"Contact us","text":"","show_phone":false,"narrow_column":true}}},"order":["main","rich-text","form"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "blocks": {
+        "text_qYc9dw": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>Have a question about your order, sizing, or anything else? We'd love to hear from you — fill in the form below and we'll get back to you as soon as possible.</p><p>📧 You can also reach us directly at clv3r4@gmail.com</p><p>⏱️ Response time: We typically respond within 24 hours on business days.</p>"
+          }
+        },
+        "heading_kU83pM": {
+          "type": "heading",
+          "settings": {
+            "title": "Get in Touch"
+          }
+        }
+      },
+      "block_order": [
+        "text_qYc9dw",
+        "heading_kU83pM"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {
+        "title": "Contact us",
+        "text": "",
+        "show_phone": false,
+        "narrow_column": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich-text",
+    "form"
+  ]
+}
