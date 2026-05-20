@@ -56,17 +56,10 @@
             "enlarge_text": true,
             "text": "<p>Have a question about your order, sizing, or anything else? We'd love to hear from you — fill in the form below and we'll get back to you as soon as possible.</p>"
           }
-        },
-        "heading_kU83pM": {
-          "type": "heading",
-          "settings": {
-            "title": "Get in Touch"
-          }
         }
       },
       "block_order": [
-        "text_qYc9dw",
-        "heading_kU83pM"
+        "text_qYc9dw"
       ],
       "settings": {
         "align_text": "center",
