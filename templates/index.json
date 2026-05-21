@@ -9,20 +9,17 @@
  */
 {
   "sections": {
-    "1779358367171cf212": {
+    "177936085488ade408": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_af29dad_N8hL44": {
-          "type": "ai_gen_block_af29dad",
-          "settings": {
-            "vimeo_url": "",
-            "background_color": "#000000"
-          },
+        "ai_gen_block_525ad21_EKR7Yg": {
+          "type": "ai_gen_block_525ad21",
+          "settings": {},
           "blocks": {}
         }
       },
       "block_order": [
-        "ai_gen_block_af29dad_N8hL44"
+        "ai_gen_block_525ad21_EKR7Yg"
       ],
       "settings": {}
     },
@@ -34,8 +31,8 @@
           "settings": {
             "video": "shopify://files/videos/upscaled-video.mp4",
             "enable_overlay": true,
-            "overlay_opacity_top": 0.2,
-            "overlay_opacity_bottom": 0.3,
+            "overlay_opacity_top": 0,
+            "overlay_opacity_bottom": 0,
             "heading": "CLVR",
             "tagline": "Premium streetwear essentials",
             "text_color": "#c20000",
@@ -408,7 +405,7 @@
     }
   },
   "order": [
-    "1779358367171cf212",
+    "177936085488ade408",
     "blocks_fttnUT",
     "blocks_kGAgti",
     "slideshow",
