@@ -1,6 +1,102 @@
+{% doc %}
+  @prompt
+    Create a fullscreen hero video section that embeds a Vimeo video using an iframe. The Vimeo embed URL is https://player.vimeo.com/video/1194319357?badge=0&autopause=0&player_id=0&app_id=58479&loop=1&autoplay=1&muted=1&background=1. The video should be fullscreen width and height (100vw x 100vh), autoplay, muted, looping, with no controls visible — just like a hero background video. It should look identical to a native fullscreen hero video section. No text overlay needed.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-video-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-hero-video__iframe-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
+    transform: translate(-50%, -50%);
+    border: none;
+    pointer-events: none;
+  }
+
+  @media (min-aspect-ratio: 16/9) {
+    .ai-hero-video__iframe-{{ ai_gen_id }} {
+      height: 56.25vw;
+    }
+  }
+
+  @media (max-aspect-ratio: 16/9) {
+    .ai-hero-video__iframe-{{ ai_gen_id }} {
+      width: 177.78vh;
+    }
+  }
+{% endstyle %}
+
+<hero-video-{{ ai_gen_id }}
+  class="ai-hero-video-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <iframe
+    class="ai-hero-video__iframe-{{ ai_gen_id }}"
+    src="{{ block.settings.vimeo_url }}"
+    frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen
+    title="Hero background video"
+  ></iframe>
+</hero-video-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HeroVideo{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.iframe = this.querySelector('.ai-hero-video__iframe-{{ ai_gen_id }}');
+        this.setupVideo();
+      }
+
+      setupVideo() {
+        if (this.iframe) {
+          this.iframe.setAttribute('loading', 'eager');
+        }
+      }
+    }
+
+    customElements.define('hero-video-{{ ai_gen_id }}', HeroVideo{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Hero video",
+  "settings": [
+    {
+      "type": "url",
+      "id": "vimeo_url",
+      "label": "Vimeo embed URL"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero video"
+    }
+  ]
+}
 {% endschema %}
