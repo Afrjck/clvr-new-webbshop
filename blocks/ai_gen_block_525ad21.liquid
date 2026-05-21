@@ -36,30 +36,11 @@
 
 <div class="ai-fullscreen-hero-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
   <div class="ai-fullscreen-hero-video-wrapper-{{ ai_gen_id }}">
-    <iframe id="vimeo-iframe-{{ ai_gen_id }}" src="https://player.vimeo.com/video/1194319357?badge=0&autopause=0&player_id=0&app_id=58479&loop=1&autoplay=1&muted=1&background=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+    <iframe src="https://player.vimeo.com/video/1194319357?badge=0&autopause=0&player_id=0&app_id=58479&loop=1&autoplay=1&muted=1&background=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
   </div>
-
-  <!-- Text overlay -->
-  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:10;text-shadow:0 0 20px rgba(0,0,0,0.8);">
-    <h1 style="font-family:serif;font-size:80px;letter-spacing:2px;color:#c20000;text-transform:uppercase;margin:0;">CLVR</h1>
-    <p style="font-family:'Montserrat',sans-serif;font-size:18px;letter-spacing:1px;color:#ffffff;margin:8px 0 0;">Premium streetwear essentials</p>
-  </div>
-
-  <!-- Geluid knop -->
-  <button id="sound-btn-{{ ai_gen_id }}" style="position:absolute;bottom:30px;right:30px;z-index:10;background:rgba(0,0,0,0.5);color:white;border:1px solid white;padding:8px 16px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:14px;">🔇 Sound</button>
 </div>
 
 <script src="https://player.vimeo.com/api/player.js"></script>
-<script>
-  var iframe = document.getElementById('vimeo-iframe-{{ ai_gen_id }}');
-  var player = new Vimeo.Player(iframe);
-  var muted = true;
-  document.getElementById('sound-btn-{{ ai_gen_id }}').addEventListener('click', function() {
-    muted = !muted;
-    player.setMuted(muted);
-    this.innerHTML = muted ? '🔇 Sound' : '🔊 Sound';
-  });
-</script>
 
 {% schema %}
 {
