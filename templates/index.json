@@ -402,6 +402,34 @@
         "ai_gen_block_0ae58ba_nGMQPm"
       ],
       "settings": {}
+    },
+    "1779370836749ced13": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_2e48659_Mptzg7": {
+          "type": "ai_gen_block_2e48659",
+          "settings": {
+            "heading_text": "ENTER THE GAME",
+            "font_family": "montserrat_n7",
+            "font_size": 70,
+            "letter_spacing": 4,
+            "text_alignment": "center",
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "glow_color": "#00d4ff",
+            "glow_intensity": 20,
+            "animation_duration": 2,
+            "desktop_width_percent": 100,
+            "padding_vertical": 60,
+            "padding_horizontal": 20
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_2e48659_Mptzg7"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -417,6 +445,7 @@
     "testimonials_fMUe9F",
     "1779285234c44aaafb",
     "1779285486a818f98b",
-    "17792857396edb3e81"
+    "17792857396edb3e81",
+    "1779370836749ced13"
   ]
 }
