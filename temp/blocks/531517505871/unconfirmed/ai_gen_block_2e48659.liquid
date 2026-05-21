@@ -1,6 +1,210 @@
+{% doc %}
+  @prompt
+    Create a heading block with an animated glowing effect. The heading text is "ENTER THE GAME". Style: dark background, white text, uppercase, bold serif or modern sans-serif font, large size (60-80px), with a pulsing white or electric blue glow animation using CSS keyframes. Minimal and premium streetwear aesthetic. No other elements needed.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-glow-heading-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px;
+    background-color: {{ block.settings.background_color }};
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-glow-heading__text-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.font_size }}px;
+    font-family: {{ block.settings.font_family.family }}, {{ block.settings.font_family.fallback_families }};
+    font-weight: {{ block.settings.font_family.weight }};
+    color: {{ block.settings.text_color }};
+    text-transform: uppercase;
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    line-height: 1.1;
+    animation: ai-glow-pulse-{{ ai_gen_id }} {{ block.settings.animation_duration }}s ease-in-out infinite;
+  }
+
+  @keyframes ai-glow-pulse-{{ ai_gen_id }} {
+    0%, 100% {
+      text-shadow: 
+        0 0 {{ block.settings.glow_intensity }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 2 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 3 }}px {{ block.settings.glow_color }};
+    }
+    50% {
+      text-shadow: 
+        0 0 {{ block.settings.glow_intensity | times: 1.5 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 3 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 4.5 }}px {{ block.settings.glow_color }};
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-glow-heading__text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.6 }}px;
+      letter-spacing: {{ block.settings.letter_spacing | times: 0.6 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-glow-heading-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <h1 class="ai-glow-heading__text-{{ ai_gen_id }}">
+    {{ block.settings.heading_text }}
+  </h1>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Glowing heading",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading text",
+      "default": "ENTER THE GAME"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "font_family",
+      "label": "Font",
+      "default": "montserrat_n7"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 30,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Glow",
+      "default": "#00d4ff"
+    },
+    {
+      "type": "header",
+      "content": "Glow effect"
+    },
+    {
+      "type": "range",
+      "id": "glow_intensity",
+      "label": "Glow intensity",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "label": "Animation speed",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "s",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Glowing heading"
+    }
+  ],
+  "tag": null
+}
 {% endschema %}
