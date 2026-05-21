@@ -5,7 +5,7 @@
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
-  .ai-fullscreen-hero-{{ ai_gen_id }} {
+    .ai-fullscreen-hero-{{ ai_gen_id }} {
     position: relative;
     width: 100vw;
     height: 100vh;
@@ -13,10 +13,7 @@
     display: block;
     margin: 0;
     padding: 0;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    margin-left: calc(-50vw + 50%);
   }
 {% endstyle %}
 
