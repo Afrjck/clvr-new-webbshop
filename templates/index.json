@@ -9,6 +9,23 @@
  */
 {
   "sections": {
+    "1779358367171cf212": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_af29dad_N8hL44": {
+          "type": "ai_gen_block_af29dad",
+          "settings": {
+            "vimeo_url": "",
+            "background_color": "#000000"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_af29dad_N8hL44"
+      ],
+      "settings": {}
+    },
     "blocks_fttnUT": {
       "type": "_blocks",
       "blocks": {
@@ -37,6 +54,7 @@
       "block_order": [
         "ai_gen_block_f5482c7_4NXxbV"
       ],
+      "disabled": true,
       "name": "Fullscreen hero video",
       "settings": {}
     },
@@ -390,6 +408,7 @@
     }
   },
   "order": [
+    "1779358367171cf212",
     "blocks_fttnUT",
     "blocks_kGAgti",
     "slideshow",
