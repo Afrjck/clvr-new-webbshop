@@ -142,41 +142,11 @@
         "show_currency_selector": true,
         "show_currency_flags": true
       }
-    },
-    "blocks_qKYNVt": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_2e48659_Ktnb38": {
-          "type": "ai_gen_block_2e48659",
-          "settings": {
-            "heading_text": "ENTER THE GAME",
-            "font_family": "montserrat_n7",
-            "font_size": 70,
-            "letter_spacing": 4,
-            "text_alignment": "center",
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "glow_color": "#00d4ff",
-            "glow_intensity": 20,
-            "animation_duration": 2,
-            "desktop_width_percent": 100,
-            "padding_vertical": 60,
-            "padding_horizontal": 20
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_2e48659_Ktnb38"
-      ],
-      "name": "Glowing heading",
-      "settings": {}
     }
   },
   "order": [
     "announcement",
     "scrolling_announcement_bar_9pcDe6",
-    "header",
-    "blocks_qKYNVt"
+    "header"
   ]
 }
