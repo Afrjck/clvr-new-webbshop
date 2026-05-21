@@ -21,6 +21,7 @@
       "block_order": [
         "ai_gen_block_525ad21_EKR7Yg"
       ],
+      "disabled": true,
       "settings": {}
     },
     "blocks_fttnUT": {
@@ -35,7 +36,7 @@
             "overlay_opacity_bottom": 0,
             "heading": "CLVR",
             "tagline": "Premium streetwear essentials",
-            "text_color": "#c20000",
+            "text_color": "#ffd700",
             "text_shadow_opacity": 0.8,
             "heading_font": "serif",
             "heading_size": 80,
@@ -51,7 +52,6 @@
       "block_order": [
         "ai_gen_block_f5482c7_4NXxbV"
       ],
-      "disabled": true,
       "name": "Fullscreen hero video",
       "settings": {}
     },
