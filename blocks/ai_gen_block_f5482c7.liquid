@@ -121,6 +121,27 @@
     text-shadow: 0 2px 8px rgba(0, 0, 0, {{ block.settings.text_shadow_opacity }});
   }
 
+  .ai-hero-video__sound-btn-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background 0.2s;
+  }
+
+  .ai-hero-video__sound-btn-{{ ai_gen_id }}:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
   @media screen and (max-width: 749px) {
     .ai-hero-video__heading-{{ ai_gen_id }} {
       font-size: {{ block.settings.heading_size | times: 0.6 }}px;
@@ -137,6 +158,7 @@
     {% if block.settings.video %}
       <video
         class="ai-hero-video__video-{{ ai_gen_id }}"
+        id="hero-video-el-{{ ai_gen_id }}"
         autoplay
         muted
         loop
@@ -147,6 +169,14 @@
           <source src="{{ source.url }}" type="{{ source.mime_type }}">
         {% endfor %}
       </video>
+
+      <button
+        class="ai-hero-video__sound-btn-{{ ai_gen_id }}"
+        id="sound-btn-{{ ai_gen_id }}"
+        aria-label="Toggle sound"
+      >
+        🔇 Sound
+      </button>
     {% else %}
       <div class="ai-hero-video__placeholder-{{ ai_gen_id }}">
         {{ 'hero-apparel-1' | placeholder_svg_tag }}
@@ -182,8 +212,12 @@
 
       connectedCallback() {
         this.video = this.querySelector('.ai-hero-video__video-{{ ai_gen_id }}');
+        this.soundBtn = this.querySelector('#sound-btn-{{ ai_gen_id }}');
         if (this.video) {
           this.ensureVideoPlays();
+          if (this.soundBtn) {
+            this.soundBtn.addEventListener('click', () => this.toggleSound());
+          }
         }
       }
 
@@ -195,6 +229,11 @@
             this.video.play();
           });
         }
+      }
+
+      toggleSound() {
+        this.video.muted = !this.video.muted;
+        this.soundBtn.innerHTML = this.video.muted ? '🔇 Sound' : '🔊 Sound';
       }
     }
 
