@@ -178,6 +178,64 @@
         "divider": false
       }
     },
+    "1779439960640a2b82": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_aa4aa03_L7hUDR": {
+          "type": "ai_gen_block_aa4aa03",
+          "settings": {
+            "desktop_width_percent": 100,
+            "max_width": 1200,
+            "section_padding": 60,
+            "item_spacing": 80,
+            "content_padding": 25,
+            "background_color": "#0f0f0f",
+            "card_background": "#1a1a1a",
+            "line_color": "#333333",
+            "dot_color": "#666666",
+            "accent_color": "#d4af37",
+            "title_color": "#ffffff",
+            "text_color": "#cccccc",
+            "glow_color": "#d4af37",
+            "border_radius": 8,
+            "dot_size": 16,
+            "glow_size": 20,
+            "date_size": 14,
+            "title_size": 22,
+            "description_size": 14,
+            "item_1_enabled": false,
+            "item_1_date": "2020",
+            "item_1_title": "The Beginning",
+            "item_1_description": "Our journey started with a vision to redefine streetwear culture.",
+            "item_2_enabled": false,
+            "item_2_date": "2021",
+            "item_2_title": "First Collection",
+            "item_2_description": "Launched our debut collection, setting the tone for premium quality.",
+            "item_3_enabled": true,
+            "item_3_date": "2023",
+            "item_3_title": "The Vision",
+            "item_3_description": "The idea for CLVR is born. First sketches, moodboards, and the foundation of the brand identity.",
+            "item_4_enabled": true,
+            "item_4_date": "2024",
+            "item_4_title": "Building the Foundation",
+            "item_4_description": "Collections developed, suppliers sourced, and the brand starts taking shape.",
+            "item_5_enabled": true,
+            "item_5_date": "2025",
+            "item_5_title": "Official Launch",
+            "item_5_description": "CLVR goes live. The store opens its doors and the brand steps into the streetwear scene.",
+            "item_6_enabled": true,
+            "item_6_date": "2026",
+            "item_6_title": "First Drop",
+            "item_6_description": "The first official drop lands. First customers, first orders, first real momentum."
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_aa4aa03_L7hUDR"
+      ],
+      "settings": {}
+    },
     "featured_collections_cfHkr4": {
       "type": "featured-collections",
       "blocks": {
@@ -411,6 +469,7 @@
     "slideshow",
     "rich-text",
     "featured-collection",
+    "1779439960640a2b82",
     "featured_collections_cfHkr4",
     "580bc108-8f79-4c00-b080-103cccb091ef",
     "text_and_image_nfpwGg",
