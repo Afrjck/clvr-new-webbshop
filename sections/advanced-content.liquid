@@ -234,6 +234,7 @@
   const INITIAL_HINTS = 3;
   const HINT_COST = 150;
   const HINT_PACK = 5;
+  const SAVE_KEY = 'clvr_game_state';
 
   let discovered = new Set(STARTERS);
   let selected = null;
@@ -241,6 +242,29 @@
   let hints = INITIAL_HINTS;
   let revealedHints = [];
   let notifTimer = null;
+
+  // --- localStorage opslaan & laden ---
+  function saveGame() {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      discovered: [...discovered],
+      energy: energy,
+      hints: hints,
+      revealedHints: revealedHints
+    }));
+  }
+
+  function loadGame() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (data.discovered) discovered = new Set(data.discovered);
+      if (typeof data.energy === 'number') energy = data.energy;
+      if (typeof data.hints === 'number') hints = data.hints;
+      if (Array.isArray(data.revealedHints)) revealedHints = data.revealedHints;
+    } catch(e) {}
+  }
+  // ------------------------------------
 
   function getEl(id) { return ELEMENTS.find(e => e.id === id); }
 
@@ -344,6 +368,7 @@
             energy += 50;
             document.getElementById('win-banner').classList.add('visible');
           }
+          saveGame(); // opslaan na nieuwe ontdekking
         }
       } else {
         showNotif('Geen combinatie gevonden. Probeer iets anders!', 'info');
@@ -361,6 +386,7 @@
     if (!revealedHints.some(h => h.r === pick.r)) {
       revealedHints.push({ a: pick.a, b: pick.b, r: pick.r });
     }
+    saveGame(); // opslaan na hint gebruik
     render();
   };
 
@@ -368,6 +394,7 @@
     if (energy < HINT_COST) { showNotif('Niet genoeg energie! Je hebt ' + HINT_COST + ' ⚡ nodig maar hebt ' + energy + ' ⚡.', 'error'); return; }
     energy -= HINT_COST;
     hints += HINT_PACK;
+    saveGame(); // opslaan na hints kopen
     render();
   };
 
@@ -377,12 +404,14 @@
     energy = INITIAL_ENERGY;
     hints = INITIAL_HINTS;
     revealedHints = [];
+    localStorage.removeItem(SAVE_KEY); // localStorage wissen bij reset
     document.getElementById('selected-bar').style.display = 'none';
     document.getElementById('win-banner').classList.remove('visible');
     document.getElementById('notification').className = 'notification';
     render();
   };
 
+  loadGame(); // laden bij opstarten
   render();
 })();
 </script>
