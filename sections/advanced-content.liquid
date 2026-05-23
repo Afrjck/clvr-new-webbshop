@@ -128,55 +128,55 @@
 <script>
 (function() {
   const ELEMENTS = [
-    { id: 'stof',       emoji: '🧵', name: 'Stof',                 starter: true },
-    { id: 'verf',       emoji: '🎨', name: 'Verf',                 starter: true },
-    { id: 'straat',     emoji: '🏙️', name: 'Straat',               starter: true },
-    { id: 'nacht',      emoji: '🌙', name: 'Nacht',                starter: true },
-    { id: 'naald',      emoji: '🪡', name: 'Naald',                starter: true },
-    { id: 'schaar',     emoji: '✂️', name: 'Schaar',               starter: true },
+    { id: 'stof',       emoji: '🧵', name: 'Fabric',               starter: true },
+    { id: 'verf',       emoji: '🎨', name: 'Paint',                starter: true },
+    { id: 'straat',     emoji: '🏙️', name: 'Street',               starter: true },
+    { id: 'nacht',      emoji: '🌙', name: 'Night',                starter: true },
+    { id: 'naald',      emoji: '🪡', name: 'Needle',               starter: true },
+    { id: 'schaar',     emoji: '✂️', name: 'Scissors',             starter: true },
     { id: 'sneaker',    emoji: '👟', name: 'Sneaker',              starter: true },
-    { id: 'leer',       emoji: '🐄', name: 'Leer',                 starter: true },
-    { id: 'rits',       emoji: '🤐', name: 'Rits',                 starter: true },
-    { id: 'zonnebril',  emoji: '🕶️', name: 'Zonnebril',           starter: true },
+    { id: 'leer',       emoji: '🐄', name: 'Leather',              starter: true },
+    { id: 'rits',       emoji: '🤐', name: 'Zipper',               starter: true },
+    { id: 'zonnebril',  emoji: '🕶️', name: 'Sunglasses',          starter: true },
     { id: 'print',      emoji: '🖨️', name: 'Print',               starter: false },
     { id: 'shirt',      emoji: '👕', name: 'Shirt',                starter: false },
     { id: 'drop',       emoji: '💧', name: 'Drop',                 starter: false },
     { id: 'hype',       emoji: '🔥', name: 'Hype',                 starter: false },
-    { id: 'collectie',  emoji: '👗', name: 'Collectie',            starter: false },
+    { id: 'collectie',  emoji: '👗', name: 'Collection',           starter: false },
     { id: 'clvr_shirt', emoji: '🇲🇦', name: 'CLVR x Morocco Shirt', starter: false, special: true, url: '/products/clvr-x-morocco-shirt' },
-    { id: 'cultuur',    emoji: '🎭', name: 'Cultuur',              starter: false },
-    { id: 'icoon',      emoji: '⭐', name: 'Icoon',                starter: false },
-    { id: 'katoen',     emoji: '☁️', name: 'Katoen',              starter: false },
+    { id: 'cultuur',    emoji: '🎭', name: 'Culture',              starter: false },
+    { id: 'icoon',      emoji: '⭐', name: 'Icon',                 starter: false },
+    { id: 'katoen',     emoji: '☁️', name: 'Cotton',              starter: false },
     { id: 'denim',      emoji: '👖', name: 'Denim',                starter: false },
     { id: 'hoodie',     emoji: '🧥', name: 'Hoodie',               starter: false },
-    { id: 'laars',      emoji: '🥾', name: 'Laars',                starter: false },
-    { id: 'sokken',     emoji: '🧦', name: 'Sokken',               starter: false },
-    { id: 'jas',        emoji: '🧣', name: 'Jas',                  starter: false },
-    { id: 'muts',       emoji: '🧢', name: 'Muts',                 starter: false },
+    { id: 'laars',      emoji: '🥾', name: 'Boot',                 starter: false },
+    { id: 'sokken',     emoji: '🧦', name: 'Socks',                starter: false },
+    { id: 'jas',        emoji: '🧣', name: 'Jacket',               starter: false },
+    { id: 'muts',       emoji: '🧢', name: 'Beanie',               starter: false },
     { id: 'cap',        emoji: '🎩', name: 'Cap',                  starter: false },
     { id: 'look',       emoji: '👀', name: 'Look',                 starter: false },
-    { id: 'fotograaf',  emoji: '📸', name: 'Fotograaf',            starter: false },
-    { id: 'campagne',   emoji: '📢', name: 'Campagne',             starter: false },
+    { id: 'fotograaf',  emoji: '📸', name: 'Photographer',         starter: false },
+    { id: 'campagne',   emoji: '📢', name: 'Campaign',             starter: false },
     { id: 'model',      emoji: '🚶', name: 'Model',                starter: false },
     { id: 'runway',     emoji: '🛤️', name: 'Runway',              starter: false },
-    { id: 'seizoen',    emoji: '🍂', name: 'Seizoen',              starter: false },
+    { id: 'seizoen',    emoji: '🍂', name: 'Season',               starter: false },
     { id: 'trend',      emoji: '📈', name: 'Trend',                starter: false },
     { id: 'vintage',    emoji: '📻', name: 'Vintage',              starter: false },
     { id: 'patch',      emoji: '🩹', name: 'Patch',                starter: false },
-    { id: 'borduursel', emoji: '🌸', name: 'Borduursel',           starter: false },
+    { id: 'borduursel', emoji: '🌸', name: 'Embroidery',           starter: false },
     { id: 'logo',       emoji: '🔖', name: 'Logo',                 starter: false },
-    { id: 'merk',       emoji: '🏷️', name: 'Merk',               starter: false },
+    { id: 'merk',       emoji: '🏷️', name: 'Brand',              starter: false },
     { id: 'streetwear', emoji: '🛹', name: 'Streetwear',           starter: false },
     { id: 'uniform',    emoji: '🎽', name: 'Uniform',              starter: false },
     { id: 'outfit',     emoji: '🪞', name: 'Outfit',               starter: false },
-    { id: 'stijl',      emoji: '💎', name: 'Stijl',                starter: false },
-    { id: 'kleur',      emoji: '🌈', name: 'Kleur',                starter: false },
-    { id: 'patroon',    emoji: '🔷', name: 'Patroon',              starter: false },
-    { id: 'textuur',    emoji: '🧱', name: 'Textuur',              starter: false },
-    { id: 'materiaal',  emoji: '⚙️', name: 'Materiaal',           starter: false },
-    { id: 'kwaliteit',  emoji: '🏅', name: 'Kwaliteit',            starter: false },
-    { id: 'luxe',       emoji: '👑', name: 'Luxe',                 starter: false },
-    { id: 'exclusief',  emoji: '🔐', name: 'Exclusief',            starter: false },
+    { id: 'stijl',      emoji: '💎', name: 'Style',                starter: false },
+    { id: 'kleur',      emoji: '🌈', name: 'Color',                starter: false },
+    { id: 'patroon',    emoji: '🔷', name: 'Pattern',              starter: false },
+    { id: 'textuur',    emoji: '🧱', name: 'Texture',              starter: false },
+    { id: 'materiaal',  emoji: '⚙️', name: 'Material',            starter: false },
+    { id: 'kwaliteit',  emoji: '🏅', name: 'Quality',              starter: false },
+    { id: 'luxe',       emoji: '👑', name: 'Luxury',               starter: false },
+    { id: 'exclusief',  emoji: '🔐', name: 'Exclusive',            starter: false },
     { id: 'signature',  emoji: '✍️', name: 'Signature',           starter: false },
     { id: 'clvr_dna',   emoji: '🧬', name: 'CLVR DNA',             starter: false, superspecial: true },
   ];
@@ -243,7 +243,6 @@
   let revealedHints = [];
   let notifTimer = null;
 
-  // --- localStorage opslaan & laden ---
   function saveGame() {
     localStorage.setItem(SAVE_KEY, JSON.stringify({
       discovered: [...discovered],
@@ -264,7 +263,6 @@
       if (Array.isArray(data.revealedHints)) revealedHints = data.revealedHints;
     } catch(e) {}
   }
-  // ------------------------------------
 
   function getEl(id) { return ELEMENTS.find(e => e.id === id); }
 
@@ -272,7 +270,7 @@
     document.getElementById('energy-badge').textContent = '⚡ ' + energy;
     document.getElementById('hints-badge').textContent = '💡 ' + hints;
     const pb = document.getElementById('progress-badge');
-    pb.textContent = discovered.size + ' / ' + TOTAL + ' ontdekt';
+    pb.textContent = discovered.size + ' / ' + TOTAL + ' discovered';
     pb.className = 'badge progress' + (discovered.size === TOTAL ? ' done' : '');
     document.getElementById('disc-count').textContent = discovered.size;
     document.getElementById('use-hint-btn').disabled = hints <= 0;
@@ -283,7 +281,7 @@
     clearTimeout(notifTimer);
     const el = document.getElementById('notification');
     el.className = 'notification ' + type;
-    el.innerHTML = msg + (link ? ' <a href="' + link + '" target="_blank">Bekijk het product →</a>' : '');
+    el.innerHTML = msg + (link ? ' <a href="' + link + '" target="_blank">View product →</a>' : '');
     const dur = type === 'error' ? 3500 : type === 'success' ? 5000 : 2500;
     notifTimer = setTimeout(() => { el.className = 'notification'; }, dur);
   }
@@ -295,9 +293,9 @@
       const d = document.createElement('div');
       d.className = 'card' + (selected === e.id ? ' selected' : '') + (e.special ? ' special' : '') + (e.superspecial ? ' superspecial' : '');
       d.innerHTML = '<span class="emoji">' + e.emoji + '</span><span class="name">' + e.name + '</span>' +
-        (e.starter ? '<span class="tag basis">Basis</span>' : '') +
-        (e.special ? '<span class="tag speciaal">Speciaal</span>' : '') +
-        (e.superspecial ? '<span class="tag legendarisch">Legendarisch</span>' : '');
+        (e.starter ? '<span class="tag basis">Basic</span>' : '') +
+        (e.special ? '<span class="tag speciaal">Special</span>' : '') +
+        (e.superspecial ? '<span class="tag legendarisch">Legendary</span>' : '');
       d.onclick = () => handleClick(e.id);
       grid.appendChild(d);
     });
@@ -312,7 +310,7 @@
       d.className = 'overview-card' + (isDisc ? '' : ' locked');
       d.innerHTML = '<div style="font-size:1.4rem;">' + (isDisc ? e.emoji : '🔒') + '</div>' +
         '<div>' + (isDisc ? e.name : '???') + '</div>' +
-        (isDisc && e.special ? '<a href="' + e.url + '" target="_blank">Bekijk product</a>' : '');
+        (isDisc && e.special ? '<a href="' + e.url + '" target="_blank">View product</a>' : '');
       grid.appendChild(d);
     });
   }
@@ -343,7 +341,7 @@
       selected = id;
       const bar = document.getElementById('selected-bar');
       bar.style.display = 'block';
-      bar.innerHTML = '✋ Geselecteerd: ' + getEl(id).emoji + ' <strong>' + getEl(id).name + '</strong> — klik nu op een tweede element';
+      bar.innerHTML = '✋ Selected: ' + getEl(id).emoji + ' <strong>' + getEl(id).name + '</strong> — now click a second element';
       renderGameGrid();
     } else {
       const prev = selected;
@@ -354,47 +352,47 @@
       if (resultId) {
         const rEl = getEl(resultId);
         if (discovered.has(resultId)) {
-          showNotif('Al ontdekt: ' + rEl.emoji + ' ' + rEl.name, 'info');
+          showNotif('Already discovered: ' + rEl.emoji + ' ' + rEl.name, 'info');
         } else {
           discovered.add(resultId);
           if (rEl.superspecial) {
-            showNotif('🧬 LEGENDARISCH ELEMENT ONTDEKT: ' + rEl.emoji + ' ' + rEl.name + '! De DNA van CLVR zit in jou.', 'success');
+            showNotif('🧬 LEGENDARY ELEMENT DISCOVERED: ' + rEl.emoji + ' ' + rEl.name + '! The DNA of CLVR runs through you.', 'success');
           } else if (rEl.special) {
-            showNotif('🎉 SPECIAAL ELEMENT ONTDEKT: ' + rEl.emoji + ' ' + rEl.name + '!', 'success', rEl.url);
+            showNotif('🎉 SPECIAL ELEMENT DISCOVERED: ' + rEl.emoji + ' ' + rEl.name + '!', 'success', rEl.url);
           } else {
-            showNotif('🎉 Nieuw element ontdekt: ' + rEl.emoji + ' ' + rEl.name + '!', 'success');
+            showNotif('🎉 New element discovered: ' + rEl.emoji + ' ' + rEl.name + '!', 'success');
           }
           if (discovered.size === TOTAL) {
             energy += 50;
             document.getElementById('win-banner').classList.add('visible');
           }
-          saveGame(); // opslaan na nieuwe ontdekking
+          saveGame();
         }
       } else {
-        showNotif('Geen combinatie gevonden. Probeer iets anders!', 'info');
+        showNotif('No combination found. Try something else!', 'info');
       }
       render();
     }
   }
 
   window.useHint = function() {
-    if (hints <= 0) { showNotif('Geen hints meer! Koop meer hints met energie.', 'error'); return; }
+    if (hints <= 0) { showNotif('No hints left! Buy more hints with energy.', 'error'); return; }
     const undiscovered = RECIPES.filter(r => !discovered.has(r.r));
-    if (undiscovered.length === 0) { showNotif('Alle elementen zijn al ontdekt!', 'info'); return; }
+    if (undiscovered.length === 0) { showNotif('All elements already discovered!', 'info'); return; }
     const pick = undiscovered[Math.floor(Math.random() * undiscovered.length)];
     hints--;
     if (!revealedHints.some(h => h.r === pick.r)) {
       revealedHints.push({ a: pick.a, b: pick.b, r: pick.r });
     }
-    saveGame(); // opslaan na hint gebruik
+    saveGame();
     render();
   };
 
   window.buyHints = function() {
-    if (energy < HINT_COST) { showNotif('Niet genoeg energie! Je hebt ' + HINT_COST + ' ⚡ nodig maar hebt ' + energy + ' ⚡.', 'error'); return; }
+    if (energy < HINT_COST) { showNotif('Not enough energy! You need ' + HINT_COST + ' ⚡ but have ' + energy + ' ⚡.', 'error'); return; }
     energy -= HINT_COST;
     hints += HINT_PACK;
-    saveGame(); // opslaan na hints kopen
+    saveGame();
     render();
   };
 
@@ -404,14 +402,14 @@
     energy = INITIAL_ENERGY;
     hints = INITIAL_HINTS;
     revealedHints = [];
-    localStorage.removeItem(SAVE_KEY); // localStorage wissen bij reset
+    localStorage.removeItem(SAVE_KEY);
     document.getElementById('selected-bar').style.display = 'none';
     document.getElementById('win-banner').classList.remove('visible');
     document.getElementById('notification').className = 'notification';
     render();
   };
 
-  loadGame(); // laden bij opstarten
+  loadGame();
   render();
 })();
 </script>
