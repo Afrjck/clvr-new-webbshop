@@ -214,6 +214,9 @@
         this.video = this.querySelector('.ai-hero-video__video-{{ ai_gen_id }}');
         this.soundBtn = this.querySelector('#sound-btn-{{ ai_gen_id }}');
         if (this.video) {
+          this.video.muted = true;
+          this.video.setAttribute('muted', '');
+          this.video.setAttribute('playsinline', '');
           this.ensureVideoPlays();
           if (this.soundBtn) {
             this.soundBtn.addEventListener('click', () => this.toggleSound());
@@ -226,7 +229,15 @@
         if (playPromise !== undefined) {
           playPromise.catch(() => {
             this.video.muted = true;
-            this.video.play();
+            this.video.play().catch(() => {
+              // Wacht op eerste gebruikersinteractie
+              document.addEventListener('touchstart', () => {
+                this.video.play();
+              }, { once: true });
+              document.addEventListener('click', () => {
+                this.video.play();
+              }, { once: true });
+            });
           });
         }
       }
