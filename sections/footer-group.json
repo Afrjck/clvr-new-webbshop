@@ -22,12 +22,22 @@
             "container_width": 30
           }
         },
-        "4e942b48-8a32-4d0c-bb8a-599029d7c631": {
-          "type": "custom",
+        "newsletter_imiydA": {
+          "type": "newsletter",
           "settings": {
             "show_footer_title": true,
-            "title": "Customer Service",
-            "text": "<p><strong>Do you have a question or need advice?</strong><br/><br/>Feel free to contact us. We're here to help and support you.<br/><br/><strong>Email: clv3r4@gmail.com</strong></p>",
+            "title": "JOIN THE CLUB.",
+            "text": "<p>Join and enter to win a gift card worth <strong>€100</strong></p>",
+            "container_width": 25
+          }
+        },
+        "4e942b48-8a32-4d0c-bb8a-599029d7c631": {
+          "type": "custom",
+          "disabled": true,
+          "settings": {
+            "show_footer_title": true,
+            "title": "JOIN THE CLUB.",
+            "text": "<p>Join and enter to win a gift card worth €150</p>",
             "container_width": 30
           }
         },
@@ -43,6 +53,7 @@
       },
       "block_order": [
         "footer-1",
+        "newsletter_imiydA",
         "4e942b48-8a32-4d0c-bb8a-599029d7c631",
         "16f46420-be73-4503-875a-4e9c1c8d139e"
       ],
