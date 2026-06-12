@@ -1,6 +1,639 @@
+{% doc %}
+  @prompt
+    Create a World Cup prediction widget section for a Shopify page. The widget should:
+    
+    - Show a contest banner: "Marokko vs Brazilië — 14 juni 2026" with a live countdown timer that counts down to June 14, 2026 at 20:00 Amsterdam time (CEST). After the deadline, show "Inzending gesloten" and hide the form.
+    - Show a scarcity notification: "Nog ~20 shirts beschikbaar" as a subtle badge/tag
+    - A form with:
+      - Email field (required, label: "Jouw e-mailadres")
+      - Score prediction: two number inputs side by side labeled "Marokko" and "Brazilië" (min 0, integers only)
+      - Optional text field: "Doelpuntenmakers (optioneel)" with placeholder "Bijv. Hakimi, En-Nesyri, Vinicius — komma-gescheiden"
+      - Submit button: "Doe mee"
+    - After submit, show a success message: "Jouw voorspelling is opgeslagen! Je hoort van ons als je gewonnen hebt."
+    - Prizes explanation section below the form:
+      - "🎯 Juiste score → €20 korting"
+      - "🏆 Juiste score + doelpuntenmaker → Gratis shirt"
+    - On submit, the form data should be saved as a Shopify customer (create customer with email if not exists, add tags: "wk-voorspelling", "mar-bra-2026") and store the prediction in a customer note or metafield
+    - One submission per email — if email already submitted, show: "Je hebt al meegedaan!"
+    - Deadline: June 14, 2026 at 20:00 CEST (18:00 UTC) — after this, form is hidden and replaced with "De inzending is gesloten."
+    - Dark, premium streetwear aesthetic: dark background (#0a0a0a), white text, minimal typography, gold accent color (#c9a84c) for highlights
+    - All text in Dutch
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-wk-widget-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    padding: 40px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-wk-widget__header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .ai-wk-widget__banner-{{ ai_gen_id }} {
+    font-size: {{ block.settings.banner_font_size }}px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-wk-widget__countdown-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .ai-wk-widget__countdown-item-{{ ai_gen_id }} {
+    text-align: center;
+  }
+
+  .ai-wk-widget__countdown-value-{{ ai_gen_id }} {
+    font-size: 32px;
+    font-weight: 700;
+    color: {{ block.settings.accent_color }};
+    display: block;
+  }
+
+  .ai-wk-widget__countdown-label-{{ ai_gen_id }} {
+    font-size: 12px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .ai-wk-widget__scarcity-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .ai-wk-widget__closed-{{ ai_gen_id }} {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 40px 20px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.7;
+  }
+
+  .ai-wk-widget__form-{{ ai_gen_id }} {
+    margin-top: 30px;
+  }
+
+  .ai-wk-widget__field-{{ ai_gen_id }} {
+    margin-bottom: 20px;
+  }
+
+  .ai-wk-widget__label-{{ ai_gen_id }} {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-wk-widget__input-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: {{ block.settings.input_background }};
+    border: 1px solid {{ block.settings.input_border }};
+    border-radius: 6px;
+    color: {{ block.settings.text_color }};
+    font-size: 15px;
+  }
+
+  .ai-wk-widget__input-{{ ai_gen_id }}::placeholder {
+    color: {{ block.settings.text_color }};
+    opacity: 0.5;
+  }
+
+  .ai-wk-widget__score-row-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .ai-wk-widget__score-field-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-wk-widget__score-input-{{ ai_gen_id }} {
+    padding: 12px 16px;
+    background-color: {{ block.settings.input_background }};
+    border: 1px solid {{ block.settings.input_border }};
+    border-radius: 6px;
+    color: {{ block.settings.text_color }};
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .ai-wk-widget__button-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 16px 32px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-wk-widget__button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  .ai-wk-widget__button-{{ ai_gen_id }}:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ai-wk-widget__message-{{ ai_gen_id }} {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .ai-wk-widget__message--success-{{ ai_gen_id }} {
+    background-color: rgba(201, 168, 76, 0.2);
+    color: {{ block.settings.accent_color }};
+  }
+
+  .ai-wk-widget__message--error-{{ ai_gen_id }} {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+  }
+
+  .ai-wk-widget__prizes-{{ ai_gen_id }} {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid {{ block.settings.input_border }};
+  }
+
+  .ai-wk-widget__prizes-title-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .ai-wk-widget__prize-item-{{ ai_gen_id }} {
+    padding: 12px 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .ai-wk-widget__hidden-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-wk-widget-{{ ai_gen_id }} {
+      padding: 24px;
+    }
+
+    .ai-wk-widget__banner-{{ ai_gen_id }} {
+      font-size: {{ block.settings.banner_font_size | times: 0.8 }}px;
+    }
+
+    .ai-wk-widget__countdown-{{ ai_gen_id }} {
+      gap: 12px;
+    }
+
+    .ai-wk-widget__countdown-value-{{ ai_gen_id }} {
+      font-size: 24px;
+    }
+  }
+{% endstyle %}
+
+<wk-prediction-widget-{{ ai_gen_id }}
+  class="ai-wk-widget-{{ ai_gen_id }}"
+  data-deadline="{{ block.settings.deadline_datetime }}"
+  data-stock="{{ block.settings.stock_count }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-wk-widget__header-{{ ai_gen_id }}">
+    <h2 class="ai-wk-widget__banner-{{ ai_gen_id }}">{{ block.settings.match_title }}</h2>
+    
+    <div class="ai-wk-widget__countdown-{{ ai_gen_id }}" data-countdown>
+      <div class="ai-wk-widget__countdown-item-{{ ai_gen_id }}">
+        <span class="ai-wk-widget__countdown-value-{{ ai_gen_id }}" data-days>00</span>
+        <span class="ai-wk-widget__countdown-label-{{ ai_gen_id }}">Dagen</span>
+      </div>
+      <div class="ai-wk-widget__countdown-item-{{ ai_gen_id }}">
+        <span class="ai-wk-widget__countdown-value-{{ ai_gen_id }}" data-hours>00</span>
+        <span class="ai-wk-widget__countdown-label-{{ ai_gen_id }}">Uren</span>
+      </div>
+      <div class="ai-wk-widget__countdown-item-{{ ai_gen_id }}">
+        <span class="ai-wk-widget__countdown-value-{{ ai_gen_id }}" data-minutes>00</span>
+        <span class="ai-wk-widget__countdown-label-{{ ai_gen_id }}">Min</span>
+      </div>
+      <div class="ai-wk-widget__countdown-item-{{ ai_gen_id }}">
+        <span class="ai-wk-widget__countdown-value-{{ ai_gen_id }}" data-seconds>00</span>
+        <span class="ai-wk-widget__countdown-label-{{ ai_gen_id }}">Sec</span>
+      </div>
+    </div>
+
+    <div class="ai-wk-widget__scarcity-{{ ai_gen_id }}" data-scarcity>
+      Nog ~<span data-stock-count>{{ block.settings.stock_count }}</span> shirts beschikbaar
+    </div>
+  </div>
+
+  <div class="ai-wk-widget__closed-{{ ai_gen_id }} ai-wk-widget__hidden-{{ ai_gen_id }}" data-closed-message>
+    De inzending is gesloten.
+  </div>
+
+  <div data-form-container>
+    {%- form 'contact' -%}
+      <input type="hidden" name="contact[tags]" value="wk-voorspelling,mar-bra-2026">
+      
+      <div class="ai-wk-widget__form-{{ ai_gen_id }}">
+        <div class="ai-wk-widget__field-{{ ai_gen_id }}">
+          <label class="ai-wk-widget__label-{{ ai_gen_id }}" for="email-{{ ai_gen_id }}">
+            Jouw e-mailadres
+          </label>
+          <input
+            type="email"
+            id="email-{{ ai_gen_id }}"
+            name="contact[email]"
+            class="ai-wk-widget__input-{{ ai_gen_id }}"
+            required
+            aria-required="true"
+            autocomplete="email"
+            data-email-input
+          >
+        </div>
+
+        <div class="ai-wk-widget__field-{{ ai_gen_id }}">
+          <label class="ai-wk-widget__label-{{ ai_gen_id }}">
+            Voorspel de score
+          </label>
+          <div class="ai-wk-widget__score-row-{{ ai_gen_id }}">
+            <div class="ai-wk-widget__score-field-{{ ai_gen_id }}">
+              <label class="ai-wk-widget__label-{{ ai_gen_id }}" for="score-morocco-{{ ai_gen_id }}">
+                Marokko
+              </label>
+              <input
+                type="number"
+                id="score-morocco-{{ ai_gen_id }}"
+                name="contact[score_morocco]"
+                class="ai-wk-widget__score-input-{{ ai_gen_id }}"
+                min="0"
+                step="1"
+                value="0"
+                required
+                data-score-morocco
+              >
+            </div>
+            <div class="ai-wk-widget__score-field-{{ ai_gen_id }}">
+              <label class="ai-wk-widget__label-{{ ai_gen_id }}" for="score-brazil-{{ ai_gen_id }}">
+                Brazilië
+              </label>
+              <input
+                type="number"
+                id="score-brazil-{{ ai_gen_id }}"
+                name="contact[score_brazil]"
+                class="ai-wk-widget__score-input-{{ ai_gen_id }}"
+                min="0"
+                step="1"
+                value="0"
+                required
+                data-score-brazil
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-wk-widget__field-{{ ai_gen_id }}">
+          <label class="ai-wk-widget__label-{{ ai_gen_id }}" for="scorers-{{ ai_gen_id }}">
+            Doelpuntenmakers (optioneel)
+          </label>
+          <input
+            type="text"
+            id="scorers-{{ ai_gen_id }}"
+            name="contact[goal_scorers]"
+            class="ai-wk-widget__input-{{ ai_gen_id }}"
+            placeholder="Bijv. Hakimi, En-Nesyri, Vinicius — komma-gescheiden"
+            data-scorers-input
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="ai-wk-widget__button-{{ ai_gen_id }}"
+          data-submit-button
+        >
+          Doe mee
+        </button>
+      </div>
+    {%- endform -%}
+
+    <div class="ai-wk-widget__message-{{ ai_gen_id }} ai-wk-widget__message--success-{{ ai_gen_id }} ai-wk-widget__hidden-{{ ai_gen_id }}" data-success-message>
+      Jouw voorspelling is opgeslagen! Je hoort van ons als je gewonnen hebt.
+    </div>
+
+    <div class="ai-wk-widget__message-{{ ai_gen_id }} ai-wk-widget__message--error-{{ ai_gen_id }} ai-wk-widget__hidden-{{ ai_gen_id }}" data-error-message>
+      Je hebt al meegedaan!
+    </div>
+
+    <div class="ai-wk-widget__prizes-{{ ai_gen_id }}">
+      <h3 class="ai-wk-widget__prizes-title-{{ ai_gen_id }}">Prijzen</h3>
+      <div class="ai-wk-widget__prize-item-{{ ai_gen_id }}">
+        🎯 Juiste score → €20 korting
+      </div>
+      <div class="ai-wk-widget__prize-item-{{ ai_gen_id }}">
+        🏆 Juiste score + doelpuntenmaker → Gratis shirt
+      </div>
+    </div>
+  </div>
+</wk-prediction-widget-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class WkPredictionWidget{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.deadline = new Date(this.dataset.deadline);
+        this.countdownInterval = null;
+        this.submittedEmails = this.getSubmittedEmails();
+      }
+
+      connectedCallback() {
+        this.countdown = this.querySelector('[data-countdown]');
+        this.closedMessage = this.querySelector('[data-closed-message]');
+        this.formContainer = this.querySelector('[data-form-container]');
+        this.form = this.querySelector('form');
+        this.emailInput = this.querySelector('[data-email-input]');
+        this.submitButton = this.querySelector('[data-submit-button]');
+        this.successMessage = this.querySelector('[data-success-message]');
+        this.errorMessage = this.querySelector('[data-error-message]');
+
+        this.daysEl = this.querySelector('[data-days]');
+        this.hoursEl = this.querySelector('[data-hours]');
+        this.minutesEl = this.querySelector('[data-minutes]');
+        this.secondsEl = this.querySelector('[data-seconds]');
+
+        this.startCountdown();
+        this.setupFormHandler();
+      }
+
+      disconnectedCallback() {
+        if (this.countdownInterval) {
+          clearInterval(this.countdownInterval);
+        }
+      }
+
+      startCountdown() {
+        this.updateCountdown();
+        this.countdownInterval = setInterval(() => {
+          this.updateCountdown();
+        }, 1000);
+      }
+
+      updateCountdown() {
+        const now = new Date().getTime();
+        const distance = this.deadline.getTime() - now;
+
+        if (distance < 0) {
+          clearInterval(this.countdownInterval);
+          this.showClosedState();
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        this.daysEl.textContent = String(days).padStart(2, '0');
+        this.hoursEl.textContent = String(hours).padStart(2, '0');
+        this.minutesEl.textContent = String(minutes).padStart(2, '0');
+        this.secondsEl.textContent = String(seconds).padStart(2, '0');
+      }
+
+      showClosedState() {
+        this.countdown.classList.add('ai-wk-widget__hidden-{{ ai_gen_id }}');
+        this.formContainer.classList.add('ai-wk-widget__hidden-{{ ai_gen_id }}');
+        this.closedMessage.classList.remove('ai-wk-widget__hidden-{{ ai_gen_id }}');
+      }
+
+      setupFormHandler() {
+        this.form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const email = this.emailInput.value.trim().toLowerCase();
+          
+          if (this.submittedEmails.includes(email)) {
+            this.showError();
+            return;
+          }
+
+          this.submitButton.disabled = true;
+          this.submitButton.textContent = 'Bezig...';
+
+          const formData = new FormData(this.form);
+          const scoreMorocco = this.querySelector('[data-score-morocco]').value;
+          const scoreBrazil = this.querySelector('[data-score-brazil]').value;
+          const scorers = this.querySelector('[data-scorers-input]').value;
+
+          const note = `WK Voorspelling: Marokko ${scoreMorocco} - ${scoreBrazil} Brazilië. Doelpuntenmakers: ${scorers || 'Geen'}`;
+          formData.append('contact[note]', note);
+
+          fetch('/contact', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              this.saveSubmittedEmail(email);
+              this.showSuccess();
+            } else {
+              this.showError();
+            }
+          })
+          .catch(() => {
+            this.showError();
+          })
+          .finally(() => {
+            this.submitButton.disabled = false;
+            this.submitButton.textContent = 'Doe mee';
+          });
+        });
+      }
+
+      getSubmittedEmails() {
+        try {
+          const stored = localStorage.getItem('wk_submitted_emails_{{ ai_gen_id }}');
+          return stored ? JSON.parse(stored) : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      saveSubmittedEmail(email) {
+        this.submittedEmails.push(email);
+        try {
+          localStorage.setItem('wk_submitted_emails_{{ ai_gen_id }}', JSON.stringify(this.submittedEmails));
+        } catch (e) {
+          console.error('Could not save to localStorage');
+        }
+      }
+
+      showSuccess() {
+        this.form.classList.add('ai-wk-widget__hidden-{{ ai_gen_id }}');
+        this.errorMessage.classList.add('ai-wk-widget__hidden-{{ ai_gen_id }}');
+        this.successMessage.classList.remove('ai-wk-widget__hidden-{{ ai_gen_id }}');
+      }
+
+      showError() {
+        this.successMessage.classList.add('ai-wk-widget__hidden-{{ ai_gen_id }}');
+        this.errorMessage.classList.remove('ai-wk-widget__hidden-{{ ai_gen_id }}');
+      }
+    }
+
+    customElements.define('wk-prediction-widget-{{ ai_gen_id }}', WkPredictionWidget{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "WK voorspelling widget",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Wedstrijd details"
+    },
+    {
+      "type": "text",
+      "id": "match_title",
+      "label": "Wedstrijd titel",
+      "default": "Marokko vs Brazilië — 14 juni 2026"
+    },
+    {
+      "type": "text",
+      "id": "deadline_datetime",
+      "label": "Deadline (ISO format)",
+      "default": "2026-06-14T18:00:00Z",
+      "info": "Format: YYYY-MM-DDTHH:MM:SSZ (UTC tijd). Voor 20:00 CEST gebruik 18:00 UTC."
+    },
+    {
+      "type": "range",
+      "id": "stock_count",
+      "label": "Beschikbare shirts",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Stijl"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop breedte",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Achtergrondkleur",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Tekstkleur",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accentkleur",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Invoerveld achtergrond",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "Invoerveld rand",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Knop kleur",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Knop tekstkleur",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Knop hover kleur",
+      "default": "#d4b55e"
+    },
+    {
+      "type": "range",
+      "id": "banner_font_size",
+      "label": "Banner lettergrootte",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Hoekradius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "WK voorspelling widget"
+    }
+  ]
+}
 {% endschema %}
