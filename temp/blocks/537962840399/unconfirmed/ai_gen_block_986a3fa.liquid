@@ -1,6 +1,647 @@
+{% doc %}
+  @prompt
+    Create a World Cup prediction widget section for a Shopify page with a dark premium streetwear aesthetic. Same layout, same countdown timer style, same form structure, same prize section layout as a previously built version.
+    
+    DESIGN:
+    - Dark background #000000, white text, gold accent #c9a84c
+    - Minimal, editorial typography
+    - Clean form inputs with dark styling
+    - Gold submit button
+    - Countdown timer displayed as blocks showing days, hours, minutes, seconds — streetwear drop timer style
+    
+    CONTENT (ALL TEXT IN ENGLISH):
+    - Header: "Morocco vs Brazil — June 14, 2026"
+    - Live countdown timer to June 14 2026 00:10 CEST (June 13 2026 22:10 UTC) — show DD:HH:MM:SS blocks with labels "Days", "Hours", "Minutes", "Seconds"
+    - After deadline show "Submissions closed" and hide the form
+    - Scarcity badge: "~18 shirts remaining" in gold
+    - Form fields:
+      - Email (required, label: "Your email address")
+      - Two side-by-side number inputs for Morocco and Brazil scores (min 0, integers only), labeled "Morocco" and "Brazil"
+      - Optional text field: "Goalscorers (optional)" with placeholder "e.g. Hakimi, En-Nesyri, Vinicius — comma-separated"
+      - Submit button: "Enter now"
+    - Success message: "Your prediction has been saved! We'll let you know if you've won."
+    - Prizes section below the form:
+      - "🎯 Correct score → €15 discount"
+      - "🏆 Correct score + goalscorer → Free shirt"
+    
+    FUNCTIONALITY:
+    - Deadline: June 14 2026 00:10 CEST (June 13 2026 22:10 UTC) — after this, hide form and show "Submissions are closed."
+    - On submit: save customer with email, add tags "wk-voorspelling" and "mar-bra-2026", store prediction in customer note or metafield
+    - DUPLICATE CHECK: only show "You've already entered!" if the email has ALREADY submitted a prediction for this contest (has tag mar-bra-2026 AND stored prediction). Do NOT block existing customers who have not yet submitted a prediction.
+    - All text in English
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-wc-prediction-{{ ai_gen_id }} {
+    display: block;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    padding: 60px 20px;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+  }
+
+  .ai-wc-prediction__container-{{ ai_gen_id }} {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .ai-wc-prediction__header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-wc-prediction__title-{{ ai_gen_id }} {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin: 0 0 20px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-wc-prediction__scarcity-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .ai-wc-prediction__countdown-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .ai-wc-prediction__countdown-block-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+  }
+
+  .ai-wc-prediction__countdown-value-{{ ai_gen_id }} {
+    background-color: {{ block.settings.countdown_bg }};
+    color: {{ block.settings.text_color }};
+    font-size: 36px;
+    font-weight: 700;
+    padding: 16px 12px;
+    min-width: 70px;
+    text-align: center;
+    border: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-wc-prediction__countdown-label-{{ ai_gen_id }} {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.7;
+  }
+
+  .ai-wc-prediction__closed-{{ ai_gen_id }} {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ block.settings.accent_color }};
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-wc-prediction__form-{{ ai_gen_id }} {
+    margin-bottom: 40px;
+  }
+
+  .ai-wc-prediction__field-{{ ai_gen_id }} {
+    margin-bottom: 24px;
+  }
+
+  .ai-wc-prediction__label-{{ ai_gen_id }} {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: {{ block.settings.text_color }};
+    font-weight: 600;
+  }
+
+  .ai-wc-prediction__input-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: {{ block.settings.input_bg }};
+    border: 1px solid {{ block.settings.border_color }};
+    color: {{ block.settings.text_color }};
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+
+  .ai-wc-prediction__input-{{ ai_gen_id }}::placeholder {
+    color: {{ block.settings.text_color }};
+    opacity: 0.5;
+  }
+
+  .ai-wc-prediction__input-{{ ai_gen_id }}:focus {
+    outline: none;
+    border-color: {{ block.settings.accent_color }};
+  }
+
+  .ai-wc-prediction__score-row-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .ai-wc-prediction__submit-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+    border: none;
+    padding: 16px 32px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-wc-prediction__submit-{{ ai_gen_id }}:hover {
+    opacity: 0.9;
+  }
+
+  .ai-wc-prediction__submit-{{ ai_gen_id }}:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ai-wc-prediction__message-{{ ai_gen_id }} {
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+    border: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-wc-prediction__message--success-{{ ai_gen_id }} {
+    background-color: rgba(201, 168, 76, 0.1);
+    color: {{ block.settings.accent_color }};
+  }
+
+  .ai-wc-prediction__message--error-{{ ai_gen_id }} {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+  }
+
+  .ai-wc-prediction__prizes-{{ ai_gen_id }} {
+    border-top: 1px solid {{ block.settings.border_color }};
+    padding-top: 40px;
+  }
+
+  .ai-wc-prediction__prize-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .ai-wc-prediction__prize-icon-{{ ai_gen_id }} {
+    font-size: 24px;
+  }
+
+  .ai-wc-prediction__hidden-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-wc-prediction-{{ ai_gen_id }} {
+      padding: 40px 20px;
+    }
+
+    .ai-wc-prediction__title-{{ ai_gen_id }} {
+      font-size: 24px;
+    }
+
+    .ai-wc-prediction__countdown-{{ ai_gen_id }} {
+      gap: 12px;
+    }
+
+    .ai-wc-prediction__countdown-block-{{ ai_gen_id }} {
+      min-width: 60px;
+    }
+
+    .ai-wc-prediction__countdown-value-{{ ai_gen_id }} {
+      font-size: 28px;
+      padding: 12px 8px;
+      min-width: 60px;
+    }
+
+    .ai-wc-prediction__countdown-label-{{ ai_gen_id }} {
+      font-size: 10px;
+    }
+  }
+{% endstyle %}
+
+<world-cup-prediction-{{ ai_gen_id }}
+  class="ai-wc-prediction-{{ ai_gen_id }}"
+  data-deadline="{{ block.settings.deadline_utc }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-wc-prediction__container-{{ ai_gen_id }}">
+    <div class="ai-wc-prediction__header-{{ ai_gen_id }}">
+      <h2 class="ai-wc-prediction__title-{{ ai_gen_id }}">{{ block.settings.match_title }}</h2>
+      <div class="ai-wc-prediction__scarcity-{{ ai_gen_id }}">{{ block.settings.scarcity_text }}</div>
+    </div>
+
+    <div class="ai-wc-prediction__countdown-{{ ai_gen_id }}" data-countdown>
+      <div class="ai-wc-prediction__countdown-block-{{ ai_gen_id }}">
+        <div class="ai-wc-prediction__countdown-value-{{ ai_gen_id }}" data-days>00</div>
+        <div class="ai-wc-prediction__countdown-label-{{ ai_gen_id }}">Days</div>
+      </div>
+      <div class="ai-wc-prediction__countdown-block-{{ ai_gen_id }}">
+        <div class="ai-wc-prediction__countdown-value-{{ ai_gen_id }}" data-hours>00</div>
+        <div class="ai-wc-prediction__countdown-label-{{ ai_gen_id }}">Hours</div>
+      </div>
+      <div class="ai-wc-prediction__countdown-block-{{ ai_gen_id }}">
+        <div class="ai-wc-prediction__countdown-value-{{ ai_gen_id }}" data-minutes>00</div>
+        <div class="ai-wc-prediction__countdown-label-{{ ai_gen_id }}">Minutes</div>
+      </div>
+      <div class="ai-wc-prediction__countdown-block-{{ ai_gen_id }}">
+        <div class="ai-wc-prediction__countdown-value-{{ ai_gen_id }}" data-seconds>00</div>
+        <div class="ai-wc-prediction__countdown-label-{{ ai_gen_id }}">Seconds</div>
+      </div>
+    </div>
+
+    <div class="ai-wc-prediction__closed-{{ ai_gen_id }} ai-wc-prediction__hidden-{{ ai_gen_id }}" data-closed-message>
+      Submissions are closed.
+    </div>
+
+    <div data-form-container>
+      <div class="ai-wc-prediction__message-{{ ai_gen_id }} ai-wc-prediction__message--success-{{ ai_gen_id }} ai-wc-prediction__hidden-{{ ai_gen_id }}" data-success-message>
+        {{ block.settings.success_message }}
+      </div>
+
+      <div class="ai-wc-prediction__message-{{ ai_gen_id }} ai-wc-prediction__message--error-{{ ai_gen_id }} ai-wc-prediction__hidden-{{ ai_gen_id }}" data-error-message></div>
+
+      <div class="ai-wc-prediction__message-{{ ai_gen_id }} ai-wc-prediction__message--error-{{ ai_gen_id }} ai-wc-prediction__hidden-{{ ai_gen_id }}" data-already-entered>
+        You've already entered!
+      </div>
+
+      <form class="ai-wc-prediction__form-{{ ai_gen_id }}" data-prediction-form>
+        <div class="ai-wc-prediction__field-{{ ai_gen_id }}">
+          <label class="ai-wc-prediction__label-{{ ai_gen_id }}" for="email-{{ ai_gen_id }}">
+            Your email address
+          </label>
+          <input
+            type="email"
+            id="email-{{ ai_gen_id }}"
+            name="email"
+            class="ai-wc-prediction__input-{{ ai_gen_id }}"
+            required
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="ai-wc-prediction__field-{{ ai_gen_id }}">
+          <label class="ai-wc-prediction__label-{{ ai_gen_id }}">
+            Score prediction
+          </label>
+          <div class="ai-wc-prediction__score-row-{{ ai_gen_id }}">
+            <div>
+              <label class="ai-wc-prediction__label-{{ ai_gen_id }}" for="morocco-{{ ai_gen_id }}">
+                {{ block.settings.team_1_name }}
+              </label>
+              <input
+                type="number"
+                id="morocco-{{ ai_gen_id }}"
+                name="morocco_score"
+                class="ai-wc-prediction__input-{{ ai_gen_id }}"
+                min="0"
+                step="1"
+                required
+              >
+            </div>
+            <div>
+              <label class="ai-wc-prediction__label-{{ ai_gen_id }}" for="brazil-{{ ai_gen_id }}">
+                {{ block.settings.team_2_name }}
+              </label>
+              <input
+                type="number"
+                id="brazil-{{ ai_gen_id }}"
+                name="brazil_score"
+                class="ai-wc-prediction__input-{{ ai_gen_id }}"
+                min="0"
+                step="1"
+                required
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-wc-prediction__field-{{ ai_gen_id }}">
+          <label class="ai-wc-prediction__label-{{ ai_gen_id }}" for="goalscorers-{{ ai_gen_id }}">
+            Goalscorers (optional)
+          </label>
+          <input
+            type="text"
+            id="goalscorers-{{ ai_gen_id }}"
+            name="goalscorers"
+            class="ai-wc-prediction__input-{{ ai_gen_id }}"
+            placeholder="e.g. Hakimi, En-Nesyri, Vinicius — comma-separated"
+          >
+        </div>
+
+        <button type="submit" class="ai-wc-prediction__submit-{{ ai_gen_id }}">
+          {{ block.settings.submit_text }}
+        </button>
+      </form>
+    </div>
+
+    <div class="ai-wc-prediction__prizes-{{ ai_gen_id }}">
+      <div class="ai-wc-prediction__prize-{{ ai_gen_id }}">
+        <span class="ai-wc-prediction__prize-icon-{{ ai_gen_id }}">🎯</span>
+        <span>{{ block.settings.prize_1_text }}</span>
+      </div>
+      <div class="ai-wc-prediction__prize-{{ ai_gen_id }}">
+        <span class="ai-wc-prediction__prize-icon-{{ ai_gen_id }}">🏆</span>
+        <span>{{ block.settings.prize_2_text }}</span>
+      </div>
+    </div>
+  </div>
+</world-cup-prediction-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class WorldCupPrediction{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.deadline = new Date(this.dataset.deadline);
+        this.countdownInterval = null;
+        this.form = this.querySelector('[data-prediction-form]');
+        this.formContainer = this.querySelector('[data-form-container]');
+        this.closedMessage = this.querySelector('[data-closed-message]');
+        this.successMessage = this.querySelector('[data-success-message]');
+        this.errorMessage = this.querySelector('[data-error-message]');
+        this.alreadyEnteredMessage = this.querySelector('[data-already-entered]');
+        this.countdownElement = this.querySelector('[data-countdown]');
+      }
+
+      connectedCallback() {
+        this.startCountdown();
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.checkIfClosed();
+      }
+
+      disconnectedCallback() {
+        if (this.countdownInterval) {
+          clearInterval(this.countdownInterval);
+        }
+      }
+
+      startCountdown() {
+        this.updateCountdown();
+        this.countdownInterval = setInterval(() => {
+          this.updateCountdown();
+        }, 1000);
+      }
+
+      updateCountdown() {
+        const now = new Date().getTime();
+        const distance = this.deadline.getTime() - now;
+
+        if (distance < 0) {
+          this.showClosed();
+          if (this.countdownInterval) {
+            clearInterval(this.countdownInterval);
+          }
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        this.querySelector('[data-days]').textContent = String(days).padStart(2, '0');
+        this.querySelector('[data-hours]').textContent = String(hours).padStart(2, '0');
+        this.querySelector('[data-minutes]').textContent = String(minutes).padStart(2, '0');
+        this.querySelector('[data-seconds]').textContent = String(seconds).padStart(2, '0');
+      }
+
+      checkIfClosed() {
+        const now = new Date().getTime();
+        if (this.deadline.getTime() - now < 0) {
+          this.showClosed();
+        }
+      }
+
+      showClosed() {
+        this.countdownElement.classList.add('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+        this.formContainer.classList.add('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+        this.closedMessage.classList.remove('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+      }
+
+      async handleSubmit(e) {
+        e.preventDefault();
+
+        const submitButton = this.form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        this.hideMessages();
+
+        const formData = new FormData(this.form);
+        const email = formData.get('email');
+        const moroccoScore = formData.get('morocco_score');
+        const brazilScore = formData.get('brazil_score');
+        const goalscorers = formData.get('goalscorers') || '';
+
+        const predictionData = {
+          email: email,
+          tags: 'wk-voorspelling,mar-bra-2026',
+          note: `World Cup Prediction - Morocco ${moroccoScore} vs ${brazilScore} Brazil | Goalscorers: ${goalscorers} | Submitted: ${new Date().toISOString()}`
+        };
+
+        try {
+          const checkResponse = await fetch('/apps/customer-check?email=' + encodeURIComponent(email));
+          
+          if (checkResponse.ok) {
+            const checkData = await checkResponse.json();
+            if (checkData.hasTag && checkData.hasPrediction) {
+              this.alreadyEnteredMessage.classList.remove('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+              submitButton.disabled = false;
+              return;
+            }
+          }
+
+          const response = await fetch('/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              contact: predictionData
+            })
+          });
+
+          if (response.ok) {
+            this.successMessage.classList.remove('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+            this.form.reset();
+          } else {
+            throw new Error('Submission failed');
+          }
+        } catch (error) {
+          this.errorMessage.textContent = 'Something went wrong. Please try again.';
+          this.errorMessage.classList.remove('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+        } finally {
+          submitButton.disabled = false;
+        }
+      }
+
+      hideMessages() {
+        this.successMessage.classList.add('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+        this.errorMessage.classList.add('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+        this.alreadyEnteredMessage.classList.add('ai-wc-prediction__hidden-{{ ai_gen_id }}');
+      }
+    }
+
+    customElements.define('world-cup-prediction-{{ ai_gen_id }}', WorldCupPrediction{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "World Cup prediction",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Match details"
+    },
+    {
+      "type": "text",
+      "id": "match_title",
+      "label": "Match title",
+      "default": "Morocco vs Brazil — June 14, 2026"
+    },
+    {
+      "type": "text",
+      "id": "team_1_name",
+      "label": "Team 1 name",
+      "default": "Morocco"
+    },
+    {
+      "type": "text",
+      "id": "team_2_name",
+      "label": "Team 2 name",
+      "default": "Brazil"
+    },
+    {
+      "type": "text",
+      "id": "deadline_utc",
+      "label": "Deadline (UTC)",
+      "default": "2026-06-13T22:10:00Z",
+      "info": "Format: YYYY-MM-DDTHH:MM:SSZ (June 13 2026 22:10 UTC = June 14 2026 00:10 CEST)"
+    },
+    {
+      "type": "text",
+      "id": "scarcity_text",
+      "label": "Scarcity badge text",
+      "default": "~18 shirts remaining"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "submit_text",
+      "label": "Submit button text",
+      "default": "Enter now"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Your prediction has been saved! We'll let you know if you've won."
+    },
+    {
+      "type": "header",
+      "content": "Prizes"
+    },
+    {
+      "type": "text",
+      "id": "prize_1_text",
+      "label": "Prize 1 text",
+      "default": "Correct score → €15 discount"
+    },
+    {
+      "type": "text",
+      "id": "prize_2_text",
+      "label": "Prize 2 text",
+      "default": "Correct score + goalscorer → Free shirt"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "Input background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "countdown_bg",
+      "label": "Countdown background",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "World Cup prediction"
+    }
+  ]
+}
 {% endschema %}
