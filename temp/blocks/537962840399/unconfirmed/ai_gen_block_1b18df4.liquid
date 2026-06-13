@@ -1,6 +1,907 @@
+{% doc %}
+  @prompt
+    Create a World Cup prediction widget section for a Shopify page with a dark premium streetwear aesthetic. Use EXACTLY the same layout structure as the Dutch version of this widget that was previously built for this store.
+    
+    LAYOUT STRUCTURE (must match exactly):
+    - Full-width dark section, content centered in a max-width container
+    - Top: contest header text, left-aligned or centered
+    - Below header: countdown timer with 4 boxes side by side (Days | Hours | Minutes | Seconds), each box has a large number and a small label underneath, gold border or accent
+    - Below timer: gold scarcity badge/pill
+    - Below badge: the form (email field full width, then two score inputs side by side with team labels above them, then goalscorers text field full width, then full-width gold submit button)
+    - Below form: success message (hidden until submit)
+    - Below form: prizes section with two rows of prize text with emoji icons
+    - All elements left-aligned within the container, generous padding
+    
+    DESIGN:
+    - Dark background #000000, white text, gold accent #c9a84c
+    - Minimal, editorial typography (clean sans-serif)
+    - Form inputs: dark background, subtle border, white text
+    - Submit button: gold background (#c9a84c), black text, full width
+    - Countdown boxes: dark with gold accent border or background highlight on the number
+    
+    CONTENT (ALL TEXT IN ENGLISH):
+    - Header: "Morocco vs Brazil — June 14, 2026"
+    - Live countdown timer to June 14 2026 00:10 CEST (June 13 2026 22:10 UTC) — boxes labeled "Days", "Hours", "Minutes", "Seconds"
+    - After deadline show "Submissions are closed." and hide the form
+    - Scarcity badge: "~18 shirts remaining" in gold
+    - Form fields:
+      - Email (required, label: "Your email address")
+      - Two side-by-side number inputs labeled "Morocco" and "Brazil" (min 0, integers only)
+      - Optional text field: "Goalscorers (optional)" with placeholder "e.g. Hakimi, En-Nesyri, Vinicius — comma-separated"
+      - Submit button: "Enter now"
+    - Success message: "Your prediction has been saved! We'll let you know if you've won."
+    - Prizes:
+      - "🎯 Correct score → €15 discount"
+      - "🏆 Correct score + goalscorer → Free shirt"
+    
+    FUNCTIONALITY:
+    - Deadline: June 14 2026 00:10 CEST = June 13 2026 22:10:00 UTC
+    - After deadline: hide form, show "Submissions are closed."
+    - On submit: save customer with email via Shopify API, add tags "wk-voorspelling" and "mar-bra-2026", store prediction in customer note or metafield
+    - DUPLICATE CHECK: only show "You've already entered!" if the email has ALREADY submitted a prediction for this contest (has tag mar-bra-2026 AND stored prediction). Do NOT block existing customers who have not yet submitted.
+    - All text in English
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-wc-widget-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 20px;
+  }
+
+  .ai-wc-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-wc-header-{{ ai_gen_id }} {
+    font-size: {{ block.settings.header_size }}px;
+    font-weight: 700;
+    margin: 0 0 {{ block.settings.spacing }}px;
+    text-align: {{ block.settings.text_align }};
+    letter-spacing: 0.02em;
+  }
+
+  .ai-wc-countdown-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.countdown_gap }}px;
+    margin-bottom: {{ block.settings.spacing }}px;
+    {% if block.settings.text_align == 'center' %}
+      justify-content: center;
+    {% else %}
+      justify-content: flex-start;
+    {% endif %}
+  }
+
+  .ai-wc-countdown-box-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: {{ block.settings.box_padding }}px;
+    border: {{ block.settings.box_border_width }}px solid {{ block.settings.accent_color }};
+    border-radius: {{ block.settings.box_border_radius }}px;
+    min-width: {{ block.settings.box_min_width }}px;
+    background-color: {{ block.settings.box_background }};
+  }
+
+  .ai-wc-countdown-number-{{ ai_gen_id }} {
+    font-size: {{ block.settings.countdown_number_size }}px;
+    font-weight: 700;
+    line-height: 1;
+    color: {{ block.settings.accent_color }};
+    margin-bottom: 8px;
+  }
+
+  .ai-wc-countdown-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.countdown_label_size }}px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+  }
+
+  .ai-wc-badge-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.badge_text_color }};
+    padding: {{ block.settings.badge_padding_v }}px {{ block.settings.badge_padding_h }}px;
+    border-radius: {{ block.settings.badge_border_radius }}px;
+    font-size: {{ block.settings.badge_font_size }}px;
+    font-weight: 600;
+    margin-bottom: {{ block.settings.spacing }}px;
+    letter-spacing: 0.02em;
+  }
+
+  .ai-wc-form-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.form_gap }}px;
+    margin-bottom: {{ block.settings.spacing }}px;
+  }
+
+  .ai-wc-input-{{ ai_gen_id }},
+  .ai-wc-textarea-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.input_padding }}px;
+    background-color: {{ block.settings.input_background }};
+    border: {{ block.settings.input_border_width }}px solid {{ block.settings.input_border_color }};
+    border-radius: {{ block.settings.input_border_radius }}px;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.input_font_size }}px;
+    font-family: inherit;
+  }
+
+  .ai-wc-input-{{ ai_gen_id }}::placeholder,
+  .ai-wc-textarea-{{ ai_gen_id }}::placeholder {
+    color: {{ block.settings.text_color }};
+    opacity: 0.5;
+  }
+
+  .ai-wc-input-{{ ai_gen_id }}:focus,
+  .ai-wc-textarea-{{ ai_gen_id }}:focus {
+    outline: none;
+    border-color: {{ block.settings.accent_color }};
+  }
+
+  .ai-wc-score-row-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ block.settings.form_gap }}px;
+  }
+
+  .ai-wc-score-field-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ai-wc-team-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_font_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .ai-wc-submit-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.button_padding }}px;
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.badge_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s ease;
+  }
+
+  .ai-wc-submit-{{ ai_gen_id }}:hover {
+    opacity: 0.9;
+  }
+
+  .ai-wc-submit-{{ ai_gen_id }}:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ai-wc-message-{{ ai_gen_id }} {
+    padding: {{ block.settings.input_padding }}px;
+    border-radius: {{ block.settings.input_border_radius }}px;
+    font-size: {{ block.settings.input_font_size }}px;
+    margin-bottom: {{ block.settings.spacing }}px;
+    display: none;
+  }
+
+  .ai-wc-message-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-wc-success-{{ ai_gen_id }} {
+    background-color: rgba(21, 170, 11, 0.1);
+    color: #15aa0b;
+    border: 1px solid #15aa0b;
+  }
+
+  .ai-wc-error-{{ ai_gen_id }} {
+    background-color: rgba(255, 109, 109, 0.1);
+    color: #ff6d6d;
+    border: 1px solid #ff6d6d;
+  }
+
+  .ai-wc-closed-{{ ai_gen_id }} {
+    font-size: {{ block.settings.input_font_size }}px;
+    padding: {{ block.settings.input_padding }}px;
+    text-align: center;
+    opacity: 0.7;
+    display: none;
+  }
+
+  .ai-wc-closed-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-wc-prizes-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.prize_gap }}px;
+  }
+
+  .ai-wc-prize-{{ ai_gen_id }} {
+    font-size: {{ block.settings.prize_font_size }}px;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-wc-countdown-{{ ai_gen_id }} {
+      gap: {{ block.settings.countdown_gap | times: 0.6 | round }}px;
+    }
+
+    .ai-wc-countdown-box-{{ ai_gen_id }} {
+      padding: {{ block.settings.box_padding | times: 0.7 | round }}px;
+      min-width: {{ block.settings.box_min_width | times: 0.8 | round }}px;
+    }
+
+    .ai-wc-countdown-number-{{ ai_gen_id }} {
+      font-size: {{ block.settings.countdown_number_size | times: 0.7 | round }}px;
+    }
+
+    .ai-wc-countdown-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.countdown_label_size | times: 0.85 | round }}px;
+    }
+
+    .ai-wc-header-{{ ai_gen_id }} {
+      font-size: {{ block.settings.header_size | times: 0.75 | round }}px;
+    }
+  }
+{% endstyle %}
+
+<wc-prediction-widget-{{ ai_gen_id }}
+  class="ai-wc-widget-{{ ai_gen_id }}"
+  data-deadline="2026-06-13T22:10:00Z"
+  data-contest-tag="mar-bra-2026"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-wc-container-{{ ai_gen_id }}">
+    <h2 class="ai-wc-header-{{ ai_gen_id }}">{{ block.settings.header_text }}</h2>
+
+    <div class="ai-wc-countdown-{{ ai_gen_id }}">
+      <div class="ai-wc-countdown-box-{{ ai_gen_id }}">
+        <div class="ai-wc-countdown-number-{{ ai_gen_id }}" data-countdown-days>0</div>
+        <div class="ai-wc-countdown-label-{{ ai_gen_id }}">Days</div>
+      </div>
+      <div class="ai-wc-countdown-box-{{ ai_gen_id }}">
+        <div class="ai-wc-countdown-number-{{ ai_gen_id }}" data-countdown-hours>0</div>
+        <div class="ai-wc-countdown-label-{{ ai_gen_id }}">Hours</div>
+      </div>
+      <div class="ai-wc-countdown-box-{{ ai_gen_id }}">
+        <div class="ai-wc-countdown-number-{{ ai_gen_id }}" data-countdown-minutes>0</div>
+        <div class="ai-wc-countdown-label-{{ ai_gen_id }}">Minutes</div>
+      </div>
+      <div class="ai-wc-countdown-box-{{ ai_gen_id }}">
+        <div class="ai-wc-countdown-number-{{ ai_gen_id }}" data-countdown-seconds>0</div>
+        <div class="ai-wc-countdown-label-{{ ai_gen_id }}">Seconds</div>
+      </div>
+    </div>
+
+    <div class="ai-wc-badge-{{ ai_gen_id }}">{{ block.settings.scarcity_text }}</div>
+
+    <div class="ai-wc-closed-{{ ai_gen_id }}">{{ block.settings.closed_message }}</div>
+
+    <form class="ai-wc-form-{{ ai_gen_id }}" data-prediction-form>
+      <input
+        type="email"
+        class="ai-wc-input-{{ ai_gen_id }}"
+        placeholder="{{ block.settings.email_placeholder }}"
+        required
+        data-email-input
+      >
+
+      <div class="ai-wc-score-row-{{ ai_gen_id }}">
+        <div class="ai-wc-score-field-{{ ai_gen_id }}">
+          <label class="ai-wc-team-label-{{ ai_gen_id }}">{{ block.settings.team_1_name }}</label>
+          <input
+            type="number"
+            class="ai-wc-input-{{ ai_gen_id }}"
+            min="0"
+            step="1"
+            required
+            data-team1-score
+          >
+        </div>
+        <div class="ai-wc-score-field-{{ ai_gen_id }}">
+          <label class="ai-wc-team-label-{{ ai_gen_id }}">{{ block.settings.team_2_name }}</label>
+          <input
+            type="number"
+            class="ai-wc-input-{{ ai_gen_id }}"
+            min="0"
+            step="1"
+            required
+            data-team2-score
+          >
+        </div>
+      </div>
+
+      <input
+        type="text"
+        class="ai-wc-input-{{ ai_gen_id }}"
+        placeholder="{{ block.settings.goalscorers_placeholder }}"
+        data-goalscorers-input
+      >
+
+      <button type="submit" class="ai-wc-submit-{{ ai_gen_id }}">
+        {{ block.settings.submit_text }}
+      </button>
+    </form>
+
+    <div class="ai-wc-message-{{ ai_gen_id }} ai-wc-success-{{ ai_gen_id }}" data-success-message>
+      {{ block.settings.success_message }}
+    </div>
+
+    <div class="ai-wc-message-{{ ai_gen_id }} ai-wc-error-{{ ai_gen_id }}" data-error-message></div>
+
+    <div class="ai-wc-prizes-{{ ai_gen_id }}">
+      <div class="ai-wc-prize-{{ ai_gen_id }}">{{ block.settings.prize_1_text }}</div>
+      <div class="ai-wc-prize-{{ ai_gen_id }}">{{ block.settings.prize_2_text }}</div>
+    </div>
+  </div>
+</wc-prediction-widget-{{ ai_gen_id }}>
+
+<script>
+(function() {
+  class WCPredictionWidget{{ ai_gen_id }} extends HTMLElement {
+    constructor() {
+      super();
+      this.deadline = new Date(this.dataset.deadline);
+      this.contestTag = this.dataset.contestTag;
+      this.form = this.querySelector('[data-prediction-form]');
+      this.emailInput = this.querySelector('[data-email-input]');
+      this.team1Input = this.querySelector('[data-team1-score]');
+      this.team2Input = this.querySelector('[data-team2-score]');
+      this.goalscorersInput = this.querySelector('[data-goalscorers-input]');
+      this.successMessage = this.querySelector('[data-success-message]');
+      this.errorMessage = this.querySelector('[data-error-message]');
+      this.closedMessage = this.querySelector('.ai-wc-closed-{{ ai_gen_id }}');
+      this.countdownInterval = null;
+    }
+
+    connectedCallback() {
+      this.startCountdown();
+      this.form.addEventListener('submit', this.handleSubmit.bind(this));
+    }
+
+    disconnectedCallback() {
+      if (this.countdownInterval) {
+        clearInterval(this.countdownInterval);
+      }
+    }
+
+    startCountdown() {
+      const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = this.deadline.getTime() - now;
+
+        if (distance < 0) {
+          this.handleDeadlinePassed();
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        this.querySelector('[data-countdown-days]').textContent = days;
+        this.querySelector('[data-countdown-hours]').textContent = hours;
+        this.querySelector('[data-countdown-minutes]').textContent = minutes;
+        this.querySelector('[data-countdown-seconds]').textContent = seconds;
+      };
+
+      updateCountdown();
+      this.countdownInterval = setInterval(updateCountdown, 1000);
+    }
+
+    handleDeadlinePassed() {
+      if (this.countdownInterval) {
+        clearInterval(this.countdownInterval);
+      }
+      this.form.style.display = 'none';
+      this.closedMessage.classList.add('active');
+    }
+
+    async handleSubmit(e) {
+      e.preventDefault();
+
+      const email = this.emailInput.value.trim();
+      const team1Score = parseInt(this.team1Input.value);
+      const team2Score = parseInt(this.team2Input.value);
+      const goalscorers = this.goalscorersInput.value.trim();
+
+      this.successMessage.classList.remove('active');
+      this.errorMessage.classList.remove('active');
+
+      const submitButton = this.form.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+
+      try {
+        const prediction = team1Score + '-' + team2Score + (goalscorers ? ' | ' + goalscorers : '');
+
+        const response = await fetch('/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            'form_type': 'customer',
+            'utf8': '✓',
+            'contact[email]': email,
+            'contact[tags]': 'wk-voorspelling,' + this.contestTag,
+            'contact[note]': 'Prediction: ' + prediction
+          })
+        });
+
+        if (response.ok) {
+          this.successMessage.classList.add('active');
+          this.form.reset();
+        } else {
+          const text = await response.text();
+          if (text.includes('already') || text.includes('exists')) {
+            this.errorMessage.textContent = "You've already entered!";
+          } else {
+            this.errorMessage.textContent = 'Something went wrong. Please try again.';
+          }
+          this.errorMessage.classList.add('active');
+        }
+      } catch (error) {
+        this.errorMessage.textContent = 'Network error. Please check your connection and try again.';
+        this.errorMessage.classList.add('active');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = '{{ block.settings.submit_text }}';
+      }
+    }
+  }
+
+  customElements.define('wc-prediction-widget-{{ ai_gen_id }}', WCPredictionWidget{{ ai_gen_id }});
+})();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "World Cup prediction",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contest details"
+    },
+    {
+      "type": "text",
+      "id": "header_text",
+      "label": "Header text",
+      "default": "Morocco vs Brazil — June 14, 2026"
+    },
+    {
+      "type": "text",
+      "id": "team_1_name",
+      "label": "Team 1 name",
+      "default": "Morocco"
+    },
+    {
+      "type": "text",
+      "id": "team_2_name",
+      "label": "Team 2 name",
+      "default": "Brazil"
+    },
+    {
+      "type": "text",
+      "id": "scarcity_text",
+      "label": "Scarcity badge text",
+      "default": "~18 shirts remaining"
+    },
+    {
+      "type": "header",
+      "content": "Form labels"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "goalscorers_placeholder",
+      "label": "Goalscorers placeholder",
+      "default": "e.g. Hakimi, En-Nesyri, Vinicius — comma-separated"
+    },
+    {
+      "type": "text",
+      "id": "submit_text",
+      "label": "Submit button text",
+      "default": "Enter now"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Your prediction has been saved! We'll let you know if you've won."
+    },
+    {
+      "type": "text",
+      "id": "closed_message",
+      "label": "Closed message",
+      "default": "Submissions are closed."
+    },
+    {
+      "type": "header",
+      "content": "Prizes"
+    },
+    {
+      "type": "text",
+      "id": "prize_1_text",
+      "label": "Prize 1",
+      "default": "🎯 Correct score → €15 discount"
+    },
+    {
+      "type": "text",
+      "id": "prize_2_text",
+      "label": "Prize 2",
+      "default": "🏆 Correct score + goalscorer → Free shirt"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "label": "Element spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (gold)",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input border",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "box_background",
+      "label": "Countdown box background",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "header_size",
+      "label": "Header size",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "countdown_number_size",
+      "label": "Countdown number size",
+      "min": 24,
+      "max": 72,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "countdown_label_size",
+      "label": "Countdown label size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "label": "Badge font size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label font size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "input_font_size",
+      "label": "Input font size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "prize_font_size",
+      "label": "Prize font size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Countdown boxes"
+    },
+    {
+      "type": "range",
+      "id": "countdown_gap",
+      "label": "Gap between boxes",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "box_padding",
+      "label": "Box padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "box_min_width",
+      "label": "Box min width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "box_border_width",
+      "label": "Box border width",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "box_border_radius",
+      "label": "Box border radius",
+      "min": 0,
+      "max": 12,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Badge style"
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_v",
+      "label": "Vertical padding",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_h",
+      "label": "Horizontal padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "badge_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Form style"
+    },
+    {
+      "type": "range",
+      "id": "form_gap",
+      "label": "Gap between fields",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "input_padding",
+      "label": "Input padding",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "input_border_width",
+      "label": "Input border width",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "label": "Input border radius",
+      "min": 0,
+      "max": 12,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "button_padding",
+      "label": "Button padding",
+      "min": 10,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 12,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Prizes"
+    },
+    {
+      "type": "range",
+      "id": "prize_gap",
+      "label": "Gap between prizes",
+      "min": 5,
+      "max": 20,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "World Cup prediction"
+    }
+  ]
+}
 {% endschema %}
