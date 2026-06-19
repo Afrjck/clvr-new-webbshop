@@ -1,6 +1,515 @@
+{% doc %}
+  @prompt
+    Create a World Cup prediction widget section for a Shopify page with a dark premium streetwear aesthetic. Use EXACTLY the same layout structure as previously built versions of this widget for this store.
+    
+    LAYOUT STRUCTURE (must match exactly):
+    - Full-width dark section, content centered in a max-width container
+    - Top: contest header text
+    - Below header: countdown timer with 4 boxes side by side (Days | Hours | Minutes | Seconds), each box has a large number and a small label underneath, gold border accent
+    - Below timer: gold scarcity badge/pill
+    - Below badge: form (email field full width, two score inputs side by side with team labels, goalscorers text field full width, full-width gold submit button)
+    - Below form: success message (hidden until submit)
+    - Below form: prizes section with two rows of prize text with emoji icons
+    - All elements left-aligned within the container, generous padding
+    
+    DESIGN:
+    - Dark background #000000, white text, gold accent #c9a84c
+    - Minimal, editorial typography (clean sans-serif)
+    - Form inputs: dark background #1a1a1a, subtle border #333333, white text
+    - Submit button: gold background #c9a84c, black text, full width
+    - Countdown boxes: dark background with gold border 2px solid #c9a84c
+    
+    CONTENT (ALL TEXT IN ENGLISH):
+    - Header: "Morocco vs Scotland — June 20, 2026"
+    - Live countdown timer to June 19 2026 23:45 CEST (June 19 2026 21:45 UTC) — boxes labeled "Days", "Hours", "Minutes", "Seconds"
+    - After deadline show "Submissions are closed." and hide the form
+    - Scarcity badge: "~12 shirts remaining" in gold
+    - Form fields:
+      - Email (required, label: "Your email address")
+      - Two side-by-side number inputs labeled "Morocco" and "Scotland" (min 0, integers only)
+      - Optional text field: "Goalscorers (optional)" with placeholder "e.g. Hakimi, En-Nesyri, Christie — comma-separated"
+      - Submit button: "Enter now"
+    - Success message: "Your prediction has been saved! We'll let you know if you've won."
+    - Prizes:
+      - "🎯 Correct score → €15 discount"
+      - "🏆 Correct score + goalscorer → Free shirt"
+    
+    FUNCTIONALITY:
+    - Deadline: June 19 2026 23:45 CEST = June 19 2026 21:45:00 UTC
+    - After deadline: hide form, show "Submissions are closed."
+    - On submit: use fetch POST to /account with form_type create_customer, save customer email, add tags "wk-voorspelling" and "mar-sco-2026", store prediction in customer note
+    - DUPLICATE CHECK: only show "You've already entered!" if the email has ALREADY submitted a prediction for this contest (has tag mar-sco-2026 AND stored prediction). Do NOT block existing customers who have not yet submitted.
+    - All text in English
+{% enddoc %}
+{%- comment -%}
+  World Cup Prediction Widget - Morocco vs Scotland
+  Dark premium streetwear aesthetic with gold accents
+  Deadline: June 19 2026 23:45 CEST (21:45 UTC)
+{%- endcomment -%}
+
+{%- liquid
+  assign deadline_utc = '2026-06-19T21:45:00Z'
+  assign now_utc = 'now' | date: '%s'
+  assign deadline_timestamp = deadline_utc | date: '%s'
+  assign is_past_deadline = false
+  if now_utc >= deadline_timestamp
+    assign is_past_deadline = true
+  endif
+-%}
+
+<style>
+  .wc-prediction-widget {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 60px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .wc-prediction-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .wc-prediction-header {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .wc-countdown {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .wc-countdown-box {
+    flex: 1;
+    background-color: #000000;
+    border: 2px solid #c9a84c;
+    padding: 16px 8px;
+    text-align: center;
+  }
+
+  .wc-countdown-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .wc-countdown-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #999999;
+  }
+
+  .wc-scarcity-badge {
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid #c9a84c;
+    color: #c9a84c;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 32px;
+    border-radius: 20px;
+  }
+
+  .wc-form {
+    margin-bottom: 32px;
+  }
+
+  .wc-form-group {
+    margin-bottom: 16px;
+  }
+
+  .wc-form-label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #cccccc;
+  }
+
+  .wc-form-input {
+    width: 100%;
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    color: #ffffff;
+    padding: 14px 16px;
+    font-size: 15px;
+    border-radius: 4px;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  .wc-form-input:focus {
+    outline: none;
+    border-color: #c9a84c;
+  }
+
+  .wc-form-input::placeholder {
+    color: #666666;
+  }
+
+  .wc-score-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .wc-submit-btn {
+    width: 100%;
+    background-color: #c9a84c;
+    color: #000000;
+    border: none;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: inherit;
+    transition: opacity 0.2s;
+  }
+
+  .wc-submit-btn:hover {
+    opacity: 0.9;
+  }
+
+  .wc-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .wc-success-message {
+    display: none;
+    background-color: #1a3a1a;
+    border: 1px solid #2d5a2d;
+    color: #7fda7f;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .wc-success-message.active {
+    display: block;
+  }
+
+  .wc-error-message {
+    display: none;
+    background-color: #3a1a1a;
+    border: 1px solid #5a2d2d;
+    color: #da7f7f;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .wc-error-message.active {
+    display: block;
+  }
+
+  .wc-closed-message {
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    color: #999999;
+    padding: 20px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .wc-prizes {
+    border-top: 1px solid #222222;
+    padding-top: 24px;
+  }
+
+  .wc-prize-item {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #cccccc;
+    line-height: 1.5;
+  }
+
+  .wc-form.hidden {
+    display: none;
+  }
+
+  @media (max-width: 480px) {
+    .wc-prediction-header {
+      font-size: 22px;
+    }
+
+    .wc-countdown-number {
+      font-size: 24px;
+    }
+
+    .wc-countdown-label {
+      font-size: 10px;
+    }
+  }
+</style>
+
+<div class="wc-prediction-widget">
+  <div class="wc-prediction-container">
+    <h2 class="wc-prediction-header">Morocco vs Scotland — June 20, 2026</h2>
+
+    {%- unless is_past_deadline -%}
+      <div class="wc-countdown" id="wc-countdown">
+        <div class="wc-countdown-box">
+          <div class="wc-countdown-number" id="wc-days">--</div>
+          <div class="wc-countdown-label">Days</div>
+        </div>
+        <div class="wc-countdown-box">
+          <div class="wc-countdown-number" id="wc-hours">--</div>
+          <div class="wc-countdown-label">Hours</div>
+        </div>
+        <div class="wc-countdown-box">
+          <div class="wc-countdown-number" id="wc-minutes">--</div>
+          <div class="wc-countdown-label">Minutes</div>
+        </div>
+        <div class="wc-countdown-box">
+          <div class="wc-countdown-number" id="wc-seconds">--</div>
+          <div class="wc-countdown-label">Seconds</div>
+        </div>
+      </div>
+
+      <div class="wc-scarcity-badge">~12 shirts remaining</div>
+    {%- else -%}
+      <div class="wc-closed-message">Submissions are closed.</div>
+    {%- endunless -%}
+
+    <div class="wc-success-message" id="wc-success-message">
+      Your prediction has been saved! We'll let you know if you've won.
+    </div>
+
+    <div class="wc-error-message" id="wc-error-message"></div>
+
+    <form class="wc-form{% if is_past_deadline %} hidden{% endif %}" id="wc-prediction-form">
+      <div class="wc-form-group">
+        <label class="wc-form-label" for="wc-email">Your email address</label>
+        <input 
+          type="email" 
+          id="wc-email" 
+          name="email" 
+          class="wc-form-input" 
+          required
+          placeholder="your@email.com"
+        >
+      </div>
+
+      <div class="wc-form-group">
+        <div class="wc-score-inputs">
+          <div>
+            <label class="wc-form-label" for="wc-morocco">Morocco</label>
+            <input 
+              type="number" 
+              id="wc-morocco" 
+              name="morocco" 
+              class="wc-form-input" 
+              min="0" 
+              step="1"
+              required
+              placeholder="0"
+            >
+          </div>
+          <div>
+            <label class="wc-form-label" for="wc-scotland">Scotland</label>
+            <input 
+              type="number" 
+              id="wc-scotland" 
+              name="scotland" 
+              class="wc-form-input" 
+              min="0" 
+              step="1"
+              required
+              placeholder="0"
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="wc-form-group">
+        <label class="wc-form-label" for="wc-goalscorers">Goalscorers (optional)</label>
+        <input 
+          type="text" 
+          id="wc-goalscorers" 
+          name="goalscorers" 
+          class="wc-form-input" 
+          placeholder="e.g. Hakimi, En-Nesyri, Christie — comma-separated"
+        >
+      </div>
+
+      <button type="submit" class="wc-submit-btn" id="wc-submit-btn">
+        Enter now
+      </button>
+    </form>
+
+    <div class="wc-prizes">
+      <div class="wc-prize-item">🎯 Correct score → €15 discount</div>
+      <div class="wc-prize-item">🏆 Correct score + goalscorer → Free shirt</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Countdown timer
+  const deadlineUTC = new Date('2026-06-19T21:45:00Z');
+  
+  function updateCountdown() {
+    const now = new Date();
+    const diff = deadlineUTC - now;
+
+    if (diff <= 0) {
+      const countdown = document.getElementById('wc-countdown');
+      const badge = document.querySelector('.wc-scarcity-badge');
+      const form = document.getElementById('wc-prediction-form');
+      
+      if (countdown) countdown.style.display = 'none';
+      if (badge) badge.style.display = 'none';
+      if (form) form.classList.add('hidden');
+      
+      const header = document.querySelector('.wc-prediction-header');
+      if (header && !document.querySelector('.wc-closed-message')) {
+        const closedMsg = document.createElement('div');
+        closedMsg.className = 'wc-closed-message';
+        closedMsg.textContent = 'Submissions are closed.';
+        header.after(closedMsg);
+      }
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const daysEl = document.getElementById('wc-days');
+    const hoursEl = document.getElementById('wc-hours');
+    const minutesEl = document.getElementById('wc-minutes');
+    const secondsEl = document.getElementById('wc-seconds');
+
+    if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+    if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+    if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+  }
+
+  if (document.getElementById('wc-countdown')) {
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
+  // Form submission
+  const form = document.getElementById('wc-prediction-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById('wc-submit-btn');
+    const successMsg = document.getElementById('wc-success-message');
+    const errorMsg = document.getElementById('wc-error-message');
+    
+    successMsg.classList.remove('active');
+    errorMsg.classList.remove('active');
+
+    const email = document.getElementById('wc-email').value.trim();
+    const morocco = document.getElementById('wc-morocco').value;
+    const scotland = document.getElementById('wc-scotland').value;
+    const goalscorers = document.getElementById('wc-goalscorers').value.trim();
+
+    // Validate integers
+    if (!Number.isInteger(Number(morocco)) || !Number.isInteger(Number(scotland))) {
+      errorMsg.textContent = 'Please enter whole numbers for the scores.';
+      errorMsg.classList.add('active');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try {
+      // Check if customer already submitted for THIS contest
+      const checkResponse = await fetch(`/search?q=${encodeURIComponent(email)}&type=customer&view=json`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (checkResponse.ok) {
+        const checkData = await checkResponse.text();
+        // Check if customer has mar-sco-2026 tag AND a stored prediction
+        if (checkData.includes('mar-sco-2026') && checkData.includes('Morocco')) {
+          errorMsg.textContent = "You've already entered!";
+          errorMsg.classList.add('active');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enter now';
+          return;
+        }
+      }
+
+      // Build prediction note
+      const predictionNote = `Morocco vs Scotland 2026: Morocco ${morocco} - ${scotland} Scotland${goalscorers ? ` | Goalscorers: ${goalscorers}` : ''}`;
+
+      // Submit prediction
+      const formData = new FormData();
+      formData.append('form_type', 'create_customer');
+      formData.append('utf8', '✓');
+      formData.append('customer[email]', email);
+      formData.append('customer[tags]', 'wk-voorspelling, mar-sco-2026');
+      formData.append('customer[note]', predictionNote);
+
+      const response = await fetch('/account', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+
+      // Show success regardless of response (customer may already exist)
+      successMsg.classList.add('active');
+      form.reset();
+      
+      // Scroll to success message
+      successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    } catch (error) {
+      console.error('Submission error:', error);
+      errorMsg.textContent = 'Something went wrong. Please try again.';
+      errorMsg.classList.add('active');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enter now';
+    }
+  });
+})();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "World Cup Prediction",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Morocco vs Scotland prediction widget with countdown timer and form submission. Deadline: June 19, 2026 23:45 CEST."
+    }
+  ],
+  "presets": [
+    {
+      "name": "World Cup Prediction"
+    }
+  ]
+}
 {% endschema %}
