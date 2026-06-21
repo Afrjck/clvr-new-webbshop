@@ -50,63 +50,17 @@
       "name": "t:sections.advanced-content.presets.custom_content.name",
       "settings": {}
     },
-    "17813855631d538882": {
+    "178203873067da0e80": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_1b18df4_NnPcFU": {
-          "type": "ai_gen_block_1b18df4",
-          "settings": {
-            "header_text": "Morocco vs Brazil — June 14, 2026",
-            "team_1_name": "Morocco",
-            "team_2_name": "Brazil",
-            "scarcity_text": "~18 shirts remaining",
-            "email_placeholder": "Your email address",
-            "goalscorers_placeholder": "e.g. Hakimi, En-Nesyri, Vinicius — comma-separated",
-            "submit_text": "Enter now",
-            "success_message": "Your prediction has been saved! We'll let you know if you've won.",
-            "closed_message": "Submissions are closed.",
-            "prize_1_text": "🎯 Correct score → €15 discount",
-            "prize_2_text": "🏆 Correct score + goalscorer → Free shirt",
-            "max_width": 600,
-            "section_padding": 60,
-            "spacing": 25,
-            "text_align": "left",
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "accent_color": "#c9a84c",
-            "badge_text_color": "#000000",
-            "input_background": "#1a1a1a",
-            "input_border_color": "#333333",
-            "box_background": "#000000",
-            "header_size": 28,
-            "countdown_number_size": 40,
-            "countdown_label_size": 11,
-            "badge_font_size": 13,
-            "label_font_size": 14,
-            "input_font_size": 14,
-            "button_font_size": 15,
-            "prize_font_size": 14,
-            "countdown_gap": 15,
-            "box_padding": 16,
-            "box_min_width": 70,
-            "box_border_width": 2,
-            "box_border_radius": 4,
-            "badge_padding_v": 8,
-            "badge_padding_h": 16,
-            "badge_border_radius": 20,
-            "form_gap": 14,
-            "input_padding": 14,
-            "input_border_width": 1,
-            "input_border_radius": 4,
-            "button_padding": 16,
-            "button_border_radius": 4,
-            "prize_gap": 10
-          },
+        "ai_gen_block_d88b9fd_UEVQWx": {
+          "type": "ai_gen_block_d88b9fd",
+          "settings": {},
           "blocks": {}
         }
       },
       "block_order": [
-        "ai_gen_block_1b18df4_NnPcFU"
+        "ai_gen_block_d88b9fd_UEVQWx"
       ],
       "settings": {}
     }
@@ -115,6 +69,6 @@
     "blocks_KPD3Tg",
     "main",
     "advanced_content_Tic9YK",
-    "17813855631d538882"
+    "178203873067da0e80"
   ]
 }
