@@ -42,7 +42,6 @@
     - DUPLICATE CHECK: only show "You've already entered!" if the email has ALREADY submitted a prediction for this contest (has tag mar-hai-2026 AND stored prediction). Do NOT block existing customers who have not yet submitted.
     - All text in English
 {% enddoc %}
-{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
@@ -156,9 +155,10 @@
     color: #c9a84c;
     font-size: 16px;
     margin-bottom: 24px;
-    display: none;
+    padding: 16px;
+    border: 1px solid #c9a84c;
+    border-radius: 4px;
   }
-  .wc-success-{{ ai_gen_id }}.visible { display: block; }
   .wc-prizes-{{ ai_gen_id }} {
     display: flex;
     flex-direction: column;
@@ -200,48 +200,47 @@
     </div>
 
     <div class="wc-badge-{{ ai_gen_id }}">~12 shirts remaining</div>
-
     <div class="wc-closed-{{ ai_gen_id }}" id="wc-closed-{{ ai_gen_id }}">Submissions are closed.</div>
 
     <div class="wc-form-wrap-{{ ai_gen_id }}" id="wc-formwrap-{{ ai_gen_id }}">
       {% form 'contact' %}
-        <div class="wc-form-inner-{{ ai_gen_id }}">
-          <input type="hidden" name="contact[subject]" value="WK Prediction: Morocco vs Haiti">
+        {% if form.posted_successfully? %}
+          <div class="wc-success-{{ ai_gen_id }}">Your prediction has been saved! We'll let you know if you've won.</div>
+        {% else %}
+          <div class="wc-form-inner-{{ ai_gen_id }}">
+            <input type="hidden" name="contact[subject]" value="WK Prediction: Morocco vs Haiti">
 
-          <div class="wc-field-{{ ai_gen_id }}">
-            <label class="wc-label-{{ ai_gen_id }}" for="wc-email-{{ ai_gen_id }}">Your email address</label>
-            <input type="email" id="wc-email-{{ ai_gen_id }}" name="contact[email]" class="wc-input-{{ ai_gen_id }}" required autocomplete="email">
-          </div>
-
-          <div class="wc-score-row-{{ ai_gen_id }}">
             <div class="wc-field-{{ ai_gen_id }}">
-              <label class="wc-label-{{ ai_gen_id }}" for="wc-morocco-{{ ai_gen_id }}">Morocco</label>
-              <input type="number" id="wc-morocco-{{ ai_gen_id }}" name="contact[morocco_score]" class="wc-input-{{ ai_gen_id }}" min="0" step="1" required>
+              <label class="wc-label-{{ ai_gen_id }}" for="wc-email-{{ ai_gen_id }}">Your email address</label>
+              <input type="email" id="wc-email-{{ ai_gen_id }}" name="contact[email]" class="wc-input-{{ ai_gen_id }}" required autocomplete="email">
             </div>
+
+            <div class="wc-score-row-{{ ai_gen_id }}">
+              <div class="wc-field-{{ ai_gen_id }}">
+                <label class="wc-label-{{ ai_gen_id }}" for="wc-morocco-{{ ai_gen_id }}">Morocco</label>
+                <input type="number" id="wc-morocco-{{ ai_gen_id }}" name="contact[morocco_score]" class="wc-input-{{ ai_gen_id }}" min="0" step="1" required>
+              </div>
+              <div class="wc-field-{{ ai_gen_id }}">
+                <label class="wc-label-{{ ai_gen_id }}" for="wc-haiti-{{ ai_gen_id }}">Haiti</label>
+                <input type="number" id="wc-haiti-{{ ai_gen_id }}" name="contact[haiti_score]" class="wc-input-{{ ai_gen_id }}" min="0" step="1" required>
+              </div>
+            </div>
+
             <div class="wc-field-{{ ai_gen_id }}">
-              <label class="wc-label-{{ ai_gen_id }}" for="wc-haiti-{{ ai_gen_id }}">Haiti</label>
-              <input type="number" id="wc-haiti-{{ ai_gen_id }}" name="contact[haiti_score]" class="wc-input-{{ ai_gen_id }}" min="0" step="1" required>
+              <label class="wc-label-{{ ai_gen_id }}" for="wc-goalscorers-{{ ai_gen_id }}">Goalscorers (optional)</label>
+              <input type="text" id="wc-goalscorers-{{ ai_gen_id }}" name="contact[goalscorers]" class="wc-input-{{ ai_gen_id }}" placeholder="e.g. Hakimi, En-Nesyri, Laguerre — comma-separated">
             </div>
-          </div>
 
-          <div class="wc-field-{{ ai_gen_id }}">
-            <label class="wc-label-{{ ai_gen_id }}" for="wc-goalscorers-{{ ai_gen_id }}">Goalscorers (optional)</label>
-            <input type="text" id="wc-goalscorers-{{ ai_gen_id }}" name="contact[goalscorers]" class="wc-input-{{ ai_gen_id }}" placeholder="e.g. Hakimi, En-Nesyri, Laguerre — comma-separated">
-          </div>
+            <div class="wc-field-{{ ai_gen_id }}">
+              <label class="wc-label-{{ ai_gen_id }}" for="wc-social-{{ ai_gen_id }}">Instagram or TikTok handle</label>
+              <input type="text" id="wc-social-{{ ai_gen_id }}" name="contact[social]" class="wc-input-{{ ai_gen_id }}" placeholder="@yourhandle" required>
+            </div>
 
-          <div class="wc-field-{{ ai_gen_id }}">
-            <label class="wc-label-{{ ai_gen_id }}" for="wc-social-{{ ai_gen_id }}">Instagram or TikTok handle</label>
-            <input type="text" id="wc-social-{{ ai_gen_id }}" name="contact[social]" class="wc-input-{{ ai_gen_id }}" placeholder="@yourhandle" required>
+            <button type="submit" class="wc-submit-{{ ai_gen_id }}">Enter now</button>
           </div>
-
-          <button type="submit" class="wc-submit-{{ ai_gen_id }}">Enter now</button>
-        </div>
+        {% endif %}
       {% endform %}
     </div>
-
-    {% if form.posted_successfully? %}
-      <div class="wc-success-{{ ai_gen_id }} visible">Your prediction has been saved! We'll let you know if you've won.</div>
-    {% endif %}
 
     <div class="wc-prizes-{{ ai_gen_id }}">
       <div class="wc-prize-{{ ai_gen_id }}">🎯 Correct score → €15 discount</div>
