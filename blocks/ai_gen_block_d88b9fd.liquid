@@ -417,12 +417,19 @@ setupForm() {
     try {
       const prediction = `Prediction [${this.contestTag}]: ${morocco}-${haiti} | Goalscorers: ${goalscorers} | Social: ${social}`;
 
+      // Get CSRF token first
+      const tokenRes = await fetch('/contact', { method: 'GET' });
+      const html = await tokenRes.text();
+      const match = html.match(/name="authenticity_token"[^>]*value="([^"]+)"/);
+      const token = match ? match[1] : '';
+
       const response = await fetch('/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
           'form_type': 'contact',
           'utf8': '✓',
+          'authenticity_token': token,
           'contact[email]': email,
           'contact[body]': prediction
         })
@@ -445,6 +452,7 @@ setupForm() {
     }
   });
 }
+    }
 
     customElements.define('wc-prediction-widget-{{ ai_gen_id }}', WCPredictionWidget{{ ai_gen_id }});
   })();
