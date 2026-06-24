@@ -390,68 +390,81 @@
         this.closedMessage.classList.add('visible');
       }
 
-setupForm() {
-  this.form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+      setupForm() {
+        this.form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const now = new Date();
+          if (now >= this.deadline) {
+            this.showClosed();
+            return;
+          }
 
-    const now = new Date();
-    if (now >= this.deadline) {
-      this.showClosed();
-      return;
-    }
+          const formData = new FormData(this.form);
+          const email = formData.get('email');
+          const morocco = formData.get('morocco');
+          const haiti = formData.get('haiti');
+          const goalscorers = formData.get('goalscorers') || 'None';
+          const social = formData.get('social');
 
-    const formData = new FormData(this.form);
-    const email = formData.get('email');
-    const morocco = formData.get('morocco');
-    const haiti = formData.get('haiti');
-    const goalscorers = formData.get('goalscorers') || 'None';
-    const social = formData.get('social');
+          this.errorMessage.classList.remove('visible');
+          this.errorMessage.textContent = '';
 
-    this.errorMessage.classList.remove('visible');
-    this.errorMessage.textContent = '';
+          const submitButton = this.form.querySelector('button[type="submit"]');
+          submitButton.disabled = true;
+          submitButton.textContent = 'Submitting...';
 
-    const submitButton = this.form.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Submitting...';
+          try {
+            const checkResponse = await fetch('/account', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                'form_type': 'customer_login',
+                'customer[email]': email,
+                'return_to': '/account'
+              })
+            });
 
-    try {
-      const prediction = `Prediction [${this.contestTag}]: ${morocco}-${haiti} | Goalscorers: ${goalscorers} | Social: ${social}`;
+            const prediction = `Prediction [${this.contestTag}]: ${morocco}-${haiti} | Goalscorers: ${goalscorers} | Social: ${social}`;
 
-      // Get CSRF token first
-      const tokenRes = await fetch('/contact', { method: 'GET' });
-      const html = await tokenRes.text();
-      const match = html.match(/name="authenticity_token"[^>]*value="([^"]+)"/);
-      const token = match ? match[1] : '';
+            const response = await fetch('/account', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                'form_type': 'create_customer',
+                'customer[email]': email,
+                'customer[tags]': `wk-voorspelling,${this.contestTag}`,
+                'customer[note]': prediction,
+                'customer[accepts_marketing]': 'true'
+              })
+            });
 
-      const response = await fetch('/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form_type': 'contact',
-          'utf8': '✓',
-          'authenticity_token': token,
-          'contact[email]': email,
-          'contact[body]': prediction
-        })
-      });
-
-      if (response.ok) {
-        this.form.classList.add('hidden');
-        this.successMessage.classList.add('visible');
-      } else {
-        this.errorMessage.textContent = 'Something went wrong. Please try again.';
-        this.errorMessage.classList.add('visible');
-        submitButton.disabled = false;
-        submitButton.textContent = 'Enter now';
+            if (response.ok || response.status === 303) {
+              this.form.classList.add('hidden');
+              this.successMessage.classList.add('visible');
+            } else {
+              const text = await response.text();
+              if (text.includes('already') || text.includes('exists')) {
+                this.errorMessage.textContent = "You've already entered!";
+              } else {
+                this.errorMessage.textContent = 'Something went wrong. Please try again.';
+              }
+              this.errorMessage.classList.add('visible');
+              submitButton.disabled = false;
+              submitButton.textContent = 'Enter now';
+            }
+          } catch (error) {
+            this.errorMessage.textContent = 'Network error. Please check your connection and try again.';
+            this.errorMessage.classList.add('visible');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Enter now';
+          }
+        });
       }
-    } catch (error) {
-      this.errorMessage.textContent = 'Something went wrong. Please try again.';
-      this.errorMessage.classList.add('visible');
-      submitButton.disabled = false;
-      submitButton.textContent = 'Enter now';
-    }
-  });
-}
     }
 
     customElements.define('wc-prediction-widget-{{ ai_gen_id }}', WCPredictionWidget{{ ai_gen_id }});
