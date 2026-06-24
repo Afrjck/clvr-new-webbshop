@@ -44,59 +44,52 @@
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
 {% style %}
-  .wc-prediction-widget-{{ ai_gen_id }} {
+  .wc-widget-{{ ai_gen_id }} {
     display: block;
     width: 100%;
     background-color: #000000;
     padding: 60px 20px;
   }
-
-  .wc-prediction-container-{{ ai_gen_id }} {
+  .wc-container-{{ ai_gen_id }} {
     max-width: 600px;
     margin: 0 auto;
   }
-
-  .wc-prediction-header-{{ ai_gen_id }} {
+  .wc-header-{{ ai_gen_id }} {
     color: #ffffff;
     font-size: 28px;
     font-weight: 600;
     margin: 0 0 32px 0;
-    text-align: left;
   }
-
-  .wc-prediction-countdown-{{ ai_gen_id }} {
+  .wc-countdown-{{ ai_gen_id }} {
     display: flex;
     gap: 16px;
     margin-bottom: 24px;
   }
-
-  .wc-prediction-countdown-box-{{ ai_gen_id }} {
+  .wc-countdown-box-{{ ai_gen_id }} {
     flex: 1;
     background-color: #000000;
     border: 2px solid #c9a84c;
     padding: 16px 8px;
     text-align: center;
   }
-
-  .wc-prediction-countdown-number-{{ ai_gen_id }} {
+  .wc-countdown-number-{{ ai_gen_id }} {
     color: #ffffff;
     font-size: 32px;
     font-weight: 700;
     line-height: 1;
     margin-bottom: 8px;
   }
-
-  .wc-prediction-countdown-label-{{ ai_gen_id }} {
+  .wc-countdown-label-{{ ai_gen_id }} {
     color: #c9a84c;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-
-  .wc-prediction-scarcity-{{ ai_gen_id }} {
+  .wc-badge-{{ ai_gen_id }} {
     display: inline-block;
-    background-color: transparent;
     border: 1px solid #c9a84c;
     color: #c9a84c;
     padding: 8px 16px;
@@ -104,31 +97,33 @@
     font-size: 14px;
     margin-bottom: 32px;
   }
-
-  .wc-prediction-form-{{ ai_gen_id }} {
+  .wc-closed-{{ ai_gen_id }} {
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 24px;
+    display: none;
+  }
+  .wc-closed-{{ ai_gen_id }}.visible { display: block; }
+  .wc-form-wrap-{{ ai_gen_id }} {
+    margin-bottom: 32px;
+  }
+  .wc-form-wrap-{{ ai_gen_id }}.hidden { display: none; }
+  .wc-form-inner-{{ ai_gen_id }} {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 32px;
   }
-
-  .wc-prediction-form-{{ ai_gen_id }}.hidden {
-    display: none;
-  }
-
-  .wc-prediction-field-{{ ai_gen_id }} {
+  .wc-field-{{ ai_gen_id }} {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
-
-  .wc-prediction-label-{{ ai_gen_id }} {
+  .wc-label-{{ ai_gen_id }} {
     color: #ffffff;
     font-size: 14px;
     font-weight: 500;
   }
-
-  .wc-prediction-input-{{ ai_gen_id }} {
+  .wc-input-{{ ai_gen_id }} {
     background-color: #1a1a1a;
     border: 1px solid #333333;
     color: #ffffff;
@@ -136,24 +131,16 @@
     font-size: 16px;
     border-radius: 4px;
     width: 100%;
+    box-sizing: border-box;
   }
-
-  .wc-prediction-input-{{ ai_gen_id }}::placeholder {
-    color: #666666;
-  }
-
-  .wc-prediction-input-{{ ai_gen_id }}:focus {
-    outline: none;
-    border-color: #c9a84c;
-  }
-
-  .wc-prediction-score-row-{{ ai_gen_id }} {
+  .wc-input-{{ ai_gen_id }}::placeholder { color: #666666; }
+  .wc-input-{{ ai_gen_id }}:focus { outline: none; border-color: #c9a84c; }
+  .wc-score-row-{{ ai_gen_id }} {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-
-  .wc-prediction-submit-{{ ai_gen_id }} {
+  .wc-submit-{{ ai_gen_id }} {
     background-color: #c9a84c;
     color: #000000;
     border: none;
@@ -163,327 +150,139 @@
     cursor: pointer;
     border-radius: 4px;
     width: 100%;
-    transition: opacity 0.3s ease;
   }
-
-  .wc-prediction-submit-{{ ai_gen_id }}:hover {
-    opacity: 0.9;
-  }
-
-  .wc-prediction-submit-{{ ai_gen_id }}:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .wc-prediction-success-{{ ai_gen_id }} {
+  .wc-submit-{{ ai_gen_id }}:hover { opacity: 0.9; }
+  .wc-success-{{ ai_gen_id }} {
     color: #c9a84c;
     font-size: 16px;
     margin-bottom: 24px;
     display: none;
   }
-
-  .wc-prediction-success-{{ ai_gen_id }}.visible {
-    display: block;
-  }
-
-  .wc-prediction-closed-{{ ai_gen_id }} {
-    color: #ffffff;
-    font-size: 18px;
-    margin-bottom: 24px;
-    display: none;
-  }
-
-  .wc-prediction-closed-{{ ai_gen_id }}.visible {
-    display: block;
-  }
-
-  .wc-prediction-prizes-{{ ai_gen_id }} {
+  .wc-success-{{ ai_gen_id }}.visible { display: block; }
+  .wc-prizes-{{ ai_gen_id }} {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
-
-  .wc-prediction-prize-{{ ai_gen_id }} {
+  .wc-prize-{{ ai_gen_id }} {
     color: #ffffff;
     font-size: 16px;
     line-height: 1.5;
   }
-
-  .wc-prediction-error-{{ ai_gen_id }} {
-    color: #ff6d6d;
-    font-size: 14px;
-    margin-top: 8px;
-    display: none;
-  }
-
-  .wc-prediction-error-{{ ai_gen_id }}.visible {
-    display: block;
-  }
-
   @media screen and (max-width: 749px) {
-    .wc-prediction-header-{{ ai_gen_id }} {
-      font-size: 22px;
-    }
-
-    .wc-prediction-countdown-number-{{ ai_gen_id }} {
-      font-size: 24px;
-    }
-
-    .wc-prediction-countdown-label-{{ ai_gen_id }} {
-      font-size: 10px;
-    }
+    .wc-header-{{ ai_gen_id }} { font-size: 22px; }
+    .wc-countdown-number-{{ ai_gen_id }} { font-size: 24px; }
+    .wc-countdown-label-{{ ai_gen_id }} { font-size: 10px; }
   }
 {% endstyle %}
 
-<wc-prediction-widget-{{ ai_gen_id }} class="wc-prediction-widget-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
-  <div class="wc-prediction-container-{{ ai_gen_id }}">
-    <h2 class="wc-prediction-header-{{ ai_gen_id }}">Morocco vs Haiti — June 25, 2026</h2>
+<div class="wc-widget-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="wc-container-{{ ai_gen_id }}">
+    <h2 class="wc-header-{{ ai_gen_id }}">Morocco vs Haiti — June 25, 2026</h2>
 
-    <div class="wc-prediction-countdown-{{ ai_gen_id }}" data-deadline="2026-06-24T21:50:00Z">
-      <div class="wc-prediction-countdown-box-{{ ai_gen_id }}">
-        <div class="wc-prediction-countdown-number-{{ ai_gen_id }}" data-unit="days">0</div>
-        <div class="wc-prediction-countdown-label-{{ ai_gen_id }}">Days</div>
+    <div class="wc-countdown-{{ ai_gen_id }}">
+      <div class="wc-countdown-box-{{ ai_gen_id }}">
+        <div class="wc-countdown-number-{{ ai_gen_id }}" id="wc-days-{{ ai_gen_id }}">0</div>
+        <div class="wc-countdown-label-{{ ai_gen_id }}">Days</div>
       </div>
-      <div class="wc-prediction-countdown-box-{{ ai_gen_id }}">
-        <div class="wc-prediction-countdown-number-{{ ai_gen_id }}" data-unit="hours">0</div>
-        <div class="wc-prediction-countdown-label-{{ ai_gen_id }}">Hours</div>
+      <div class="wc-countdown-box-{{ ai_gen_id }}">
+        <div class="wc-countdown-number-{{ ai_gen_id }}" id="wc-hours-{{ ai_gen_id }}">0</div>
+        <div class="wc-countdown-label-{{ ai_gen_id }}">Hours</div>
       </div>
-      <div class="wc-prediction-countdown-box-{{ ai_gen_id }}">
-        <div class="wc-prediction-countdown-number-{{ ai_gen_id }}" data-unit="minutes">0</div>
-        <div class="wc-prediction-countdown-label-{{ ai_gen_id }}">Minutes</div>
+      <div class="wc-countdown-box-{{ ai_gen_id }}">
+        <div class="wc-countdown-number-{{ ai_gen_id }}" id="wc-minutes-{{ ai_gen_id }}">0</div>
+        <div class="wc-countdown-label-{{ ai_gen_id }}">Minutes</div>
       </div>
-      <div class="wc-prediction-countdown-box-{{ ai_gen_id }}">
-        <div class="wc-prediction-countdown-number-{{ ai_gen_id }}" data-unit="seconds">0</div>
-        <div class="wc-prediction-countdown-label-{{ ai_gen_id }}">Seconds</div>
+      <div class="wc-countdown-box-{{ ai_gen_id }}">
+        <div class="wc-countdown-number-{{ ai_gen_id }}" id="wc-seconds-{{ ai_gen_id }}">0</div>
+        <div class="wc-countdown-label-{{ ai_gen_id }}">Seconds</div>
       </div>
     </div>
 
-    <div class="wc-prediction-scarcity-{{ ai_gen_id }}">~12 shirts remaining</div>
+    <div class="wc-badge-{{ ai_gen_id }}">~12 shirts remaining</div>
 
-    <div class="wc-prediction-closed-{{ ai_gen_id }}">Submissions are closed.</div>
+    <div class="wc-closed-{{ ai_gen_id }}" id="wc-closed-{{ ai_gen_id }}">Submissions are closed.</div>
 
-    <form class="wc-prediction-form-{{ ai_gen_id }}" data-form>
-      <div class="wc-prediction-field-{{ ai_gen_id }}">
-        <label class="wc-prediction-label-{{ ai_gen_id }}" for="email-{{ ai_gen_id }}">Your email address</label>
-        <input
-          type="email"
-          id="email-{{ ai_gen_id }}"
-          name="email"
-          class="wc-prediction-input-{{ ai_gen_id }}"
-          required
-          autocomplete="email"
-        >
-      </div>
+    <div class="wc-form-wrap-{{ ai_gen_id }}" id="wc-formwrap-{{ ai_gen_id }}">
+      {% form 'contact' %}
+        <div class="wc-form-inner-{{ ai_gen_id }}">
+          <input type="hidden" name="contact[subject]" value="WK Prediction: Morocco vs Haiti">
 
-      <div class="wc-prediction-score-row-{{ ai_gen_id }}">
-        <div class="wc-prediction-field-{{ ai_gen_id }}">
-          <label class="wc-prediction-label-{{ ai_gen_id }}" for="morocco-{{ ai_gen_id }}">Morocco</label>
-          <input
-            type="number"
-            id="morocco-{{ ai_gen_id }}"
-            name="morocco"
-            class="wc-prediction-input-{{ ai_gen_id }}"
-            min="0"
-            step="1"
-            required
-          >
+          <div class="wc-field-{{ ai_gen_id }}">
+            <label class="wc-label-{{ ai_gen_id }}" for="wc-email-{{ ai_gen_id }}">Your email address</label>
+            <input type="email" id="wc-email-{{ ai_gen_id }}" name="contact[email]" class="wc-input-{{ ai_gen_id }}" required autocomplete="email">
+          </div>
+
+          <div class="wc-score-row-{{ ai_gen_id }}">
+            <div class="wc-field-{{ ai_gen_id }}">
+              <label class="wc-label-{{ ai_gen_id }}" for="wc-morocco-{{ ai_gen_id }}">Morocco</label>
+              <input type="number" id="wc-morocco-{{ ai_gen_id }}" name="contact[morocco_score]" class="wc-input-{{ ai_gen_id }}" min="0" step="1" required>
+            </div>
+            <div class="wc-field-{{ ai_gen_id }}">
+              <label class="wc-label-{{ ai_gen_id }}" for="wc-haiti-{{ ai_gen_id }}">Haiti</label>
+              <input type="number" id="wc-haiti-{{ ai_gen_id }}" name="contact[haiti_score]" class="wc-input-{{ ai_gen_id }}" min="0" step="1" required>
+            </div>
+          </div>
+
+          <div class="wc-field-{{ ai_gen_id }}">
+            <label class="wc-label-{{ ai_gen_id }}" for="wc-goalscorers-{{ ai_gen_id }}">Goalscorers (optional)</label>
+            <input type="text" id="wc-goalscorers-{{ ai_gen_id }}" name="contact[goalscorers]" class="wc-input-{{ ai_gen_id }}" placeholder="e.g. Hakimi, En-Nesyri, Laguerre — comma-separated">
+          </div>
+
+          <div class="wc-field-{{ ai_gen_id }}">
+            <label class="wc-label-{{ ai_gen_id }}" for="wc-social-{{ ai_gen_id }}">Instagram or TikTok handle</label>
+            <input type="text" id="wc-social-{{ ai_gen_id }}" name="contact[social]" class="wc-input-{{ ai_gen_id }}" placeholder="@yourhandle" required>
+          </div>
+
+          <button type="submit" class="wc-submit-{{ ai_gen_id }}">Enter now</button>
         </div>
-        <div class="wc-prediction-field-{{ ai_gen_id }}">
-          <label class="wc-prediction-label-{{ ai_gen_id }}" for="haiti-{{ ai_gen_id }}">Haiti</label>
-          <input
-            type="number"
-            id="haiti-{{ ai_gen_id }}"
-            name="haiti"
-            class="wc-prediction-input-{{ ai_gen_id }}"
-            min="0"
-            step="1"
-            required
-          >
-        </div>
-      </div>
-
-      <div class="wc-prediction-field-{{ ai_gen_id }}">
-        <label class="wc-prediction-label-{{ ai_gen_id }}" for="goalscorers-{{ ai_gen_id }}">Goalscorers (optional)</label>
-        <input
-          type="text"
-          id="goalscorers-{{ ai_gen_id }}"
-          name="goalscorers"
-          class="wc-prediction-input-{{ ai_gen_id }}"
-          placeholder="e.g. Hakimi, En-Nesyri, Laguerre — comma-separated"
-        >
-      </div>
-
-      <div class="wc-prediction-field-{{ ai_gen_id }}">
-        <label class="wc-prediction-label-{{ ai_gen_id }}" for="social-{{ ai_gen_id }}">Instagram or TikTok handle</label>
-        <input
-          type="text"
-          id="social-{{ ai_gen_id }}"
-          name="social"
-          class="wc-prediction-input-{{ ai_gen_id }}"
-          placeholder="@yourhandle"
-          required
-        >
-      </div>
-
-      <div class="wc-prediction-error-{{ ai_gen_id }}" data-error></div>
-
-      <button type="submit" class="wc-prediction-submit-{{ ai_gen_id }}">Enter now</button>
-    </form>
-
-    <div class="wc-prediction-success-{{ ai_gen_id }}" data-success>
-      Your prediction has been saved! We'll let you know if you've won.
+      {% endform %}
     </div>
 
-    <div class="wc-prediction-prizes-{{ ai_gen_id }}">
-      <div class="wc-prediction-prize-{{ ai_gen_id }}">🎯 Correct score → €15 discount</div>
-      <div class="wc-prediction-prize-{{ ai_gen_id }}">🏆 Correct score + goalscorer → Free shirt</div>
+    {% if form.posted_successfully? %}
+      <div class="wc-success-{{ ai_gen_id }} visible">Your prediction has been saved! We'll let you know if you've won.</div>
+    {% endif %}
+
+    <div class="wc-prizes-{{ ai_gen_id }}">
+      <div class="wc-prize-{{ ai_gen_id }}">🎯 Correct score → €15 discount</div>
+      <div class="wc-prize-{{ ai_gen_id }}">🏆 Correct score + goalscorer → Free shirt</div>
     </div>
   </div>
-</wc-prediction-widget-{{ ai_gen_id }}>
+</div>
 
 <script>
-  (function() {
-    class WCPredictionWidget{{ ai_gen_id }} extends HTMLElement {
-      constructor() {
-        super();
-        this.countdown = this.querySelector('[data-deadline]');
-        this.form = this.querySelector('[data-form]');
-        this.successMessage = this.querySelector('[data-success]');
-        this.errorMessage = this.querySelector('[data-error]');
-        this.closedMessage = this.querySelector('.wc-prediction-closed-{{ ai_gen_id }}');
-        this.deadline = new Date('2026-06-24T21:50:00Z');
-        this.contestTag = 'mar-hai-2026';
-      }
+(function() {
+  var deadline = new Date('2026-06-24T21:50:00Z');
+  var daysEl = document.getElementById('wc-days-{{ ai_gen_id }}');
+  var hoursEl = document.getElementById('wc-hours-{{ ai_gen_id }}');
+  var minutesEl = document.getElementById('wc-minutes-{{ ai_gen_id }}');
+  var secondsEl = document.getElementById('wc-seconds-{{ ai_gen_id }}');
+  var closedEl = document.getElementById('wc-closed-{{ ai_gen_id }}');
+  var formWrap = document.getElementById('wc-formwrap-{{ ai_gen_id }}');
 
-      connectedCallback() {
-        this.startCountdown();
-        this.setupForm();
-      }
-
-      startCountdown() {
-        const updateCountdown = () => {
-          const now = new Date();
-          const diff = this.deadline - now;
-
-          if (diff <= 0) {
-            this.showClosed();
-            return;
-          }
-
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-          this.querySelector('[data-unit="days"]').textContent = days;
-          this.querySelector('[data-unit="hours"]').textContent = hours;
-          this.querySelector('[data-unit="minutes"]').textContent = minutes;
-          this.querySelector('[data-unit="seconds"]').textContent = seconds;
-        };
-
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-      }
-
-      showClosed() {
-        this.form.classList.add('hidden');
-        this.closedMessage.classList.add('visible');
-      }
-
-      setupForm() {
-        this.form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
-          const now = new Date();
-          if (now >= this.deadline) {
-            this.showClosed();
-            return;
-          }
-
-          const formData = new FormData(this.form);
-          const email = formData.get('email');
-          const morocco = formData.get('morocco');
-          const haiti = formData.get('haiti');
-          const goalscorers = formData.get('goalscorers') || 'None';
-          const social = formData.get('social');
-
-          this.errorMessage.classList.remove('visible');
-          this.errorMessage.textContent = '';
-
-          const submitButton = this.form.querySelector('button[type="submit"]');
-          submitButton.disabled = true;
-          submitButton.textContent = 'Submitting...';
-
-          try {
-            const checkResponse = await fetch('/account', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: new URLSearchParams({
-                'form_type': 'customer_login',
-                'customer[email]': email,
-                'return_to': '/account'
-              })
-            });
-
-            const prediction = `Prediction [${this.contestTag}]: ${morocco}-${haiti} | Goalscorers: ${goalscorers} | Social: ${social}`;
-
-            const response = await fetch('/account', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: new URLSearchParams({
-                'form_type': 'create_customer',
-                'customer[email]': email,
-                'customer[tags]': `wk-voorspelling,${this.contestTag}`,
-                'customer[note]': prediction,
-                'customer[accepts_marketing]': 'true'
-              })
-            });
-
-            if (response.ok || response.status === 303) {
-              this.form.classList.add('hidden');
-              this.successMessage.classList.add('visible');
-            } else {
-              const text = await response.text();
-              if (text.includes('already') || text.includes('exists')) {
-                this.errorMessage.textContent = "You've already entered!";
-              } else {
-                this.errorMessage.textContent = 'Something went wrong. Please try again.';
-              }
-              this.errorMessage.classList.add('visible');
-              submitButton.disabled = false;
-              submitButton.textContent = 'Enter now';
-            }
-          } catch (error) {
-            this.errorMessage.textContent = 'Network error. Please check your connection and try again.';
-            this.errorMessage.classList.add('visible');
-            submitButton.disabled = false;
-            submitButton.textContent = 'Enter now';
-          }
-        });
-      }
+  function updateCountdown() {
+    var diff = deadline - new Date();
+    if (diff <= 0) {
+      if (formWrap) formWrap.classList.add('hidden');
+      if (closedEl) closedEl.classList.add('visible');
+      clearInterval(timer);
+      return;
     }
+    daysEl.textContent = Math.floor(diff / 86400000);
+    hoursEl.textContent = Math.floor((diff % 86400000) / 3600000);
+    minutesEl.textContent = Math.floor((diff % 3600000) / 60000);
+    secondsEl.textContent = Math.floor((diff % 60000) / 1000);
+  }
 
-    customElements.define('wc-prediction-widget-{{ ai_gen_id }}', WCPredictionWidget{{ ai_gen_id }});
-  })();
+  updateCountdown();
+  var timer = setInterval(updateCountdown, 1000);
+})();
 </script>
 
 {% schema %}
 {
   "name": "World Cup prediction",
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "Morocco vs Haiti prediction widget with countdown timer, form submission, and prize display. Deadline: June 24, 2026 23:50 CEST."
-    }
-  ],
-  "presets": [
-    {
-      "name": "World Cup prediction"
-    }
-  ]
+  "settings": [],
+  "presets": [{ "name": "World Cup prediction" }]
 }
 {% endschema %}
